@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jujutsu Kaisen Season 3 - AnimeVault India</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Noto+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050508;
+    --bg2: #0a0a12;
+    --bg3: #0f0f1a;
+    --card: #0d0d18;
+    --border: #1a1a2e;
+    --accent: #e63946;
+    --accent2: #ff6b35;
+    --gold: #ffd60a;
+    --text: #e8e8f0;
+    --muted: #6b6b8a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans', sans-serif;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(230,57,70,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(230,57,70,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* TOP AD */
+  .ad-top {
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 16px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 10;
+  }
+  .ad-top span { background: var(--accent); color: white; font-size: 9px; padding: 1px 5px; border-radius: 3px; margin-right: 6px; }
+
+  /* NAVBAR */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(5,5,8,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 52px;
+  }
+  .back-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { border-color: var(--accent); }
+  .nav-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  /* HERO BANNER */
+  .anime-hero {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0;
+  }
+  .hero-bg {
+    width: 100%;
+    height: 220px;
+    background: linear-gradient(135deg, #200010, #000520, #100020);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(transparent, var(--bg));
+  }
+  .hero-content {
+    background: var(--bg);
+    padding: 16px 16px 0;
+  }
+
+  /* BADGES ROW */
+  .badges-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+  .badge.status { background: rgba(0,200,100,0.15); color: #44dd77; border: 1px solid rgba(0,200,100,0.2); }
+  .badge.lang { background: rgba(255,165,0,0.15); color: #ffaa44; border: 1px solid rgba(255,165,0,0.2); }
+  .badge.quality { background: rgba(0,150,255,0.15); color: #44aaff; border: 1px solid rgba(0,150,255,0.2); }
+  .badge.genre { background: rgba(230,57,70,0.12); color: var(--accent); border: 1px solid rgba(230,57,70,0.2); }
+  .badge.year { background: var(--bg3); color: var(--muted); border: 1px solid var(--border); }
+
+  .anime-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .anime-title-jp {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .stat-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .stat-box .val {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 2px;
+  }
+  .stat-box .key {
+    font-size: 9px;
+    color: var(--muted);
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* DESCRIPTION */
+  .desc-section {
+    padding: 0 16px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .desc-text {
+    font-size: 13px;
+    color: rgba(232,232,240,0.75);
+    line-height: 1.7;
+    max-height: 80px;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .desc-text.expanded { max-height: 500px; }
+  .read-more {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 12px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 0;
+    letter-spacing: 0.5px;
+  }
+
+  /* MID AD */
+  .ad-mid {
+    margin: 0 16px 20px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+  }
+  .ad-mid .al { position: absolute; top: 6px; right: 8px; font-size: 9px; background: var(--accent); color: white; padding: 1px 4px; border-radius: 3px; }
+
+  /* SECTION TITLE */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 0 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .section-title h2 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .section-title .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  /* EPISODE LIST */
+  .ep-list {
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ep-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .ep-card:hover { border-color: rgba(230,57,70,0.4); }
+
+  .ep-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    cursor: pointer;
+  }
+  .ep-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(230,57,70,0.1);
+    border: 1px solid rgba(230,57,70,0.2);
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .ep-info { flex: 1; min-width: 0; }
+  .ep-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 3px;
+  }
+  .ep-meta {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .ep-tag {
+    font-size: 9px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+  .ep-tag.hd { background: rgba(0,200,100,0.12); color: #44dd77; }
+  .ep-tag.hin { background: rgba(255,165,0,0.12); color: #ffaa44; }
+  .ep-tag.dur { background: rgba(255,255,255,0.06); color: var(--muted); }
+
+  .ep-arrow {
+    color: var(--muted);
+    font-size: 14px;
+    transition: transform 0.3s, color 0.2s;
+    flex-shrink: 0;
+  }
+  .ep-card.open .ep-arrow {
+    transform: rotate(180deg);
+    color: var(--accent);
+  }
+
+  /* DOWNLOAD LINKS PANEL */
+  .dl-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    background: rgba(0,0,0,0.3);
+    border-top: 0px solid var(--border);
+  }
+  .ep-card.open .dl-panel {
+    max-height: 300px;
+    border-top: 1px solid var(--border);
+  }
+  .dl-panel-inner {
+    padding: 12px 14px;
+  }
+  .dl-quality-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .dl-links-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  .dl-link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    letter-spacing: 0.3px;
+  }
+  .dl-link-btn.p1080 {
+    background: linear-gradient(135deg, rgba(230,57,70,0.2), rgba(255,107,53,0.2));
+    border-color: rgba(230,57,70,0.3);
+    color: #ff8888;
+  }
+  .dl-link-btn.p720 {
+    background: linear-gradient(135deg, rgba(0,150,255,0.15), rgba(0,100,200,0.15));
+    border-color: rgba(0,150,255,0.25);
+    color: #88bbff;
+  }
+  .dl-link-btn.p480 {
+    background: linear-gradient(135deg, rgba(0,200,100,0.12), rgba(0,150,80,0.12));
+    border-color: rgba(0,200,100,0.2);
+    color: #88ffbb;
+  }
+  .dl-link-btn.p360 {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.08);
+    color: var(--muted);
+  }
+  .dl-link-btn:hover { transform: scale(1.03); filter: brightness(1.2); }
+
+  /* SHORTENER NOTE */
+  .shortener-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,214,10,0.06);
+    border: 1px solid rgba(255,214,10,0.15);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: rgba(255,214,10,0.8);
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  /* FOOTER SPACE */
+  .footer-space { height: 80px; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10,10,18,0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 100;
+  }
+  .bottom-nav a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 10px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    transition: color 0.2s;
+    gap: 3px;
+  }
+  .bottom-nav a:hover { color: var(--accent); }
+  .bottom-nav .nav-icon { font-size: 20px; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ep-card { animation: fadeUp 0.3s ease both; }
+  .ep-card:nth-child(odd) { animation-delay: 0.05s; }
+  .ep-card:nth-child(even) { animation-delay: 0.1s; }
+</style>
+</head>
+<body>
+
+<div class="ad-top">
+  <span>AD</span>
+  <!-- Monetag banner code here -->
+  Advertisement · 728×90
+</div>
+
+<nav>
+  <a href="index.html" class="back-btn">←</a>
+  <span class="nav-title">Jujutsu Kaisen S3</span>
+  <a href="index.html" class="logo">AV</a>
+</nav>
+
+<!-- HERO -->
+<div class="anime-hero">
+  <div class="hero-bg">⚔️</div>
+  <div class="hero-content">
+    <div class="badges-row">
+      <span class="badge status">● ONGOING</span>
+      <span class="badge lang">🇮🇳 HINDI DUB</span>
+      <span class="badge quality">✨ 1080p HD</span>
+      <span class="badge genre">Action</span>
+      <span class="badge year">2024</span>
+    </div>
+    <div class="anime-title">Jujutsu Kaisen</div>
+    <div class="anime-title-jp">Season 3 — Shibuya Incident Arc · 呪術廻戦</div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="val">21</div>
+        <div class="key">Episodes</div>
+      </div>
+      <div class="stat-box">
+        <div class="val">9.2</div>
+        <div class="key">Rating</div>
+      </div>
+      <div class="stat-box">
+        <div class="val">24m</div>
+        <div class="key">Duration</div>
+      </div>
+      <div class="stat-box">
+        <div class="val">MAPPA</div>
+        <div class="key">Studio</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DESCRIPTION -->
+<div class="desc-section">
+  <div class="desc-text" id="descText">
+    Shibuya Incident Arc mein Yuji Itadori aur uske saathiyon ko ek massive battle face karni padti hai jab Geto ke group ne Shibuya ke logo ko hostage le liya. Gojo Satoru ko seal kar diya jata hai aur Yuji ko apni limits se pare jaana padta hai. Yeh arc Jujutsu Kaisen ka sabse intense aur dark part hai jisme kai beloved characters apni zindagi kho dete hain.
+  </div>
+  <button class="read-more" onclick="toggleDesc()">▼ Read More</button>
+</div>
+
+<!-- MID AD -->
+<div class="ad-mid">
+  <span class="al">AD</span>
+  <!-- Monetag/AdsTerra 300x250 here -->
+  Advertisement · 300×250
+</div>
+
+<!-- EPISODE LIST -->
+<div class="section-title">
+  <h2>📺 EPISODES LIST</h2>
+  <div class="line"></div>
+</div>
+
+<div class="ep-list" id="epList">
+  <!-- Episodes will be rendered by JS -->
+</div>
+
+<div class="footer-space"></div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a href="index.html">
+    <span class="nav-icon">🏠</span>Home
+  </a>
+  <a href="#">
+    <span class="nav-icon">🔍</span>Search
+  </a>
+  <a href="#">
+    <span class="nav-icon">📺</span>Series
+  </a>
+  <a href="#">
+    <span class="nav-icon">⭐</span>Popular
+  </a>
+  <a href="admin.html">
+    <span class="nav-icon">⚙️</span>Admin
+  </a>
+</nav>
+
+<script>
+// =============================================
+// EPISODE DATA — Admin panel se yahan data aata hai
+// Actual site mein yeh JSON file se load hoga
+// =============================================
+const episodes = [
+  { num: 1, title: "The Shibuya Incident", duration: "24m", links: { "1080p": "https://gplinks.in/YOUR_LINK_HERE", "720p": "https://gplinks.in/YOUR_LINK_HERE", "480p": "https://gplinks.in/YOUR_LINK_HERE", "360p": "https://gplinks.in/YOUR_LINK_HERE" } },
+  { num: 2, title: "Encounter", duration: "24m", links: { "1080p": "https://gplinks.in/YOUR_LINK_HERE", "720p": "https://gplinks.in/YOUR_LINK_HERE", "480p": "https://gplinks.in/YOUR_LINK_HERE", "360p": "https://gplinks.in/YOUR_LINK_HERE" } },
+  { num: 3, title: "Hidden Inventory", duration: "24m", links: { "1080p": "https://gplinks.in/YOUR_LINK_HERE", "720p": "https://gplinks.in/YOUR_LINK_HERE", "480p": "https://gplinks.in/YOUR_LINK_HERE", "360p": "https://gplinks.in/YOUR_LINK_HERE" } },
+  { num: 4, title: "The Comeback", duration: "24m", links: { "1080p": "https://gplinks.in/YOUR_LINK_HERE", "720p": "https://gplinks.in/YOUR_LINK_HERE", "480p": "https://gplinks.in/YOUR_LINK_HERE", "360p": "https://gplinks.in/YOUR_LINK_HERE" } },
+  { num: 5, title: "Weal and Woe", duration: "24m", links: { "1080p": "https://gplinks.in/YOUR_LINK_HERE", "720p": "https://gplinks.in/YOUR_LINK_HERE", "480p": "https://gplinks.in/YOUR_LINK_HERE", "360p": "https://gplinks.in/YOUR_LINK_HERE" } },
+  { num: 6, title: "Evening Festival", duration: "24m", links: { "1080p": "https://gplinks.in/YOUR_LINK_HERE", "720p": "https://gplinks.in/YOUR_LINK_HERE", "480p": "https://gplinks.in/YOUR_LINK_HERE", "360p": "https://gplinks.in/YOUR_LINK_HERE" } },
+];
+
+const qualityClass = { "1080p": "p1080", "720p": "p720", "480p": "p480", "360p": "p360" };
+const qualityIcon = { "1080p": "🔴", "720p": "🔵", "480p": "🟢", "360p": "⚪" };
+
+function renderEpisodes() {
+  const list = document.getElementById('epList');
+  list.innerHTML = episodes.map((ep, i) => `
+    <div class="ep-card" id="ep${i}">
+      <div class="ep-header" onclick="toggleEp(${i})">
+        <div class="ep-num">${String(ep.num).padStart(2,'0')}</div>
+        <div class="ep-info">
+          <div class="ep-title">${ep.title}</div>
+          <div class="ep-meta">
+            <span class="ep-tag hin">HINDI</span>
+            <span class="ep-tag hd">HD</span>
+            <span class="ep-tag dur">⏱ ${ep.duration}</span>
+          </div>
+        </div>
+        <div class="ep-arrow">▼</div>
+      </div>
+      <div class="dl-panel">
+        <div class="dl-panel-inner">
+          <div class="dl-quality-label">📥 Download Quality Chunein</div>
+          <div class="dl-links-grid">
+            ${Object.entries(ep.links).map(([q, link]) => `
+              <a href="${link}" target="_blank" class="dl-link-btn ${qualityClass[q]}" onclick="trackDownload(${ep.num}, '${q}')">
+                ${qualityIcon[q]} ${q}
+              </a>
+            `).join('')}
+          </div>
+          <div class="shortener-note">
+            ⚡ Links GPLinks shortener se hain — ek short ad dekhne ke baad download shuru hoga.
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleEp(i) {
+  const card = document.getElementById('ep' + i);
+  card.classList.toggle('open');
+}
+
+function toggleDesc() {
+  const desc = document.getElementById('descText');
+  const btn = document.querySelector('.read-more');
+  desc.classList.toggle('expanded');
+  btn.textContent = desc.classList.contains('expanded') ? '▲ Read Less' : '▼ Read More';
+}
+
+function trackDownload(epNum, quality) {
+  // Analytics track kar sakte ho yahan
+  console.log('Download:', epNum, quality);
+}
+
+renderEpisodes();
+</script>
+</body>
+</html>
