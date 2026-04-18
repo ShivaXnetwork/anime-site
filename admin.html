@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — RareToonIndia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05050e;--bg2:#09091a;--bg3:#0e0e1f;--card:#0b0b1c;--border:#1c1c32;--accent:#e63946;--accent2:#ff6b35;--gold:#ffd60a;--green:#06d6a0;--text:#eaeaf4;--muted:#55557a;--fd:'Bebas Neue',sans-serif;--fb:'DM Sans',sans-serif;--fl:'Orbitron',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(230,57,70,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(230,57,70,.035) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
+
+/* LOGIN */
+#ls{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
+.lbox{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px 24px;width:100%;max-width:340px;text-align:center;position:relative;z-index:1}
+.licon{font-size:52px;margin-bottom:12px}
+.lbox h2{font-family:var(--fl);font-size:15px;font-weight:900;color:var(--accent);margin-bottom:4px;letter-spacing:2px}
+.lbox p{font-size:12px;color:var(--muted);margin-bottom:24px}
+.linput{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:13px 16px;border-radius:10px;font-size:16px;font-family:var(--fb);outline:none;margin-bottom:12px;transition:border-color .2s;text-align:center;letter-spacing:4px}
+.linput:focus{border-color:var(--accent)}
+.lbtn{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:14px;border-radius:10px;font-family:var(--fd);font-size:18px;letter-spacing:1px;cursor:pointer;transition:opacity .2s}
+.lbtn:hover{opacity:.85}
+.lerr{color:var(--accent);font-size:12px;margin-top:10px;display:none}
+
+/* ADMIN PANEL */
+#ap{display:none}
+
+/* NAVBAR */
+.nb{background:rgba(5,5,14,.95);backdrop-filter:blur(28px);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:50}
+.logo{font-family:var(--fl);font-size:13px;font-weight:900;letter-spacing:2px;display:flex;align-items:center}
+.lr{color:var(--accent)}.lt{color:var(--text)}.li{color:var(--gold)}
+.abadge{font-size:10px;background:rgba(230,57,70,.12);border:1px solid rgba(230,57,70,.25);color:var(--accent);padding:3px 10px;border-radius:10px;font-family:var(--fd);letter-spacing:1px}
+.logoutbtn{background:var(--bg3);border:1px solid var(--border);color:var(--muted);padding:6px 13px;border-radius:8px;font-size:12px;cursor:pointer;font-family:var(--fd);letter-spacing:.5px;transition:all .2s}
+.logoutbtn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* BODY */
+.ab{padding:16px;position:relative;z-index:1;padding-bottom:30px}
+
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:20px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:8px 16px;border-radius:9px;font-family:var(--fd);font-size:14px;letter-spacing:.5px;cursor:pointer;border:1px solid var(--border);background:var(--bg3);color:var(--muted);transition:all .2s}
+.tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.tc{display:none}.tc.active{display:block}
+
+/* DASHBOARD STATS */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+.sbox{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center}
+.sv{font-family:var(--fl);font-size:26px;font-weight:700;color:var(--gold);margin-bottom:4px}
+.sk{font-size:11px;color:var(--muted);font-family:var(--fd);letter-spacing:1px}
+.sbox.accent{border-color:rgba(230,57,70,.3);background:rgba(230,57,70,.05)}
+.sbox.accent .sv{color:var(--accent)}
+
+/* INFO CARD */
+.icard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:12px;line-height:1.8;color:var(--muted)}
+.icard strong{color:var(--gold)}
+.icard a{color:var(--accent);text-decoration:none}
+
+/* FORM */
+.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.sec-head h2{font-family:var(--fd);font-size:20px;letter-spacing:1.5px}
+.addbtn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:8px 16px;border-radius:9px;font-family:var(--fd);font-size:14px;letter-spacing:.5px;cursor:pointer;transition:opacity .2s}
+.addbtn:hover{opacity:.85}
+
+.fcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px}
+.fcard h3{font-family:var(--fd);font-size:16px;letter-spacing:1px;color:var(--accent);margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.row.full{grid-template-columns:1fr}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:10px;color:var(--muted);font-family:var(--fd);letter-spacing:.5px;text-transform:uppercase}
+.fg input,.fg select,.fg textarea{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:9px;font-size:13px;font-family:var(--fb);outline:none;transition:border-color .2s;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent)}
+.fg select option{background:var(--bg3)}
+.fg textarea{resize:vertical;min-height:80px;line-height:1.5}
+.submitbtn{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:13px;border-radius:10px;font-family:var(--fd);font-size:18px;letter-spacing:1px;cursor:pointer;transition:opacity .2s;margin-top:4px}
+.submitbtn:hover{opacity:.85}
+
+/* SHORTENER NOTE */
+.snote{background:rgba(255,214,10,.05);border:1px solid rgba(255,214,10,.15);border-radius:8px;padding:10px 12px;font-size:11px;color:rgba(255,214,10,.8);margin-bottom:10px;line-height:1.6}
+.snote a{color:var(--gold)}
+
+/* ANIME LIST */
+.alist{display:flex;flex-direction:column;gap:8px}
+.arow{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;animation:fu .3s ease both}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.at{width:46px;height:46px;border-radius:8px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;flex-shrink:0}
+.at img{width:100%;height:100%;object-fit:cover}
+.arowinfo{flex:1;min-width:0}
+.arowinfo h4{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arowinfo span{font-size:11px;color:var(--muted)}
+.aacts{display:flex;gap:6px;flex-shrink:0}
+.ebtn{width:32px;height:32px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s}
+.ebtn:hover{border-color:var(--accent)}
+.dbtn:hover{border-color:#ff4444;background:rgba(255,68,68,.1)}
+
+/* EP SELECT MINI CARD */
+.eprows{display:flex;flex-direction:column;gap:4px;margin-top:8px;max-height:200px;overflow-y:auto}
+.eprow{display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 10px;font-size:12px}
+.eprow .enum{font-family:var(--fl);font-size:11px;color:var(--accent);width:24px;flex-shrink:0}
+.eprow .etit{flex:1;color:var(--text)}
+.eprow .dbtn2{background:none;border:none;color:#ff6666;cursor:pointer;font-size:14px;padding:0 4px}
+
+/* SETTINGS */
+.settrow{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
+.settrow h3{font-family:var(--fd);font-size:14px;letter-spacing:1px;color:var(--muted);margin-bottom:12px}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:12px 24px;font-size:13px;font-weight:600;z-index:999;transition:transform .3s ease;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* Export btn */
+.expbtn{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:12px;border-radius:10px;font-family:var(--fd);font-size:16px;letter-spacing:.5px;cursor:pointer;transition:all .2s;margin-top:8px}
+.expbtn:hover{border-color:var(--gold);color:var(--gold)}
+
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="ls">
+  <div class="lbox">
+    <div class="licon">🔐</div>
+    <h2>ADMIN PANEL</h2>
+    <p>RareToonIndia — Secret Access</p>
+    <input class="linput" id="pinput" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="lbtn" onclick="doLogin()">ENTER KARO</button>
+    <div class="lerr" id="lerr">❌ Wrong password!</div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="ap">
+
+  <nav class="nb">
+    <div class="logo"><span class="lr">RTI</span><span class="lt">.</span><span class="li">ADMIN</span></div>
+    <span class="abadge">⚙️ PANEL</span>
+    <button class="logoutbtn" onclick="logout()">LOGOUT</button>
+  </nav>
+
+  <div class="ab">
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('dash')">📊 Dashboard</div>
+      <div class="tab" onclick="switchTab('addAnime')">➕ Add Anime</div>
+      <div class="tab" onclick="switchTab('addEp')">🎬 Add Episode</div>
+      <div class="tab" onclick="switchTab('manage')">📋 All Anime</div>
+      <div class="tab" onclick="switchTab('sett')">⚙️ Settings</div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="tc active" id="tab-dash">
+      <div class="stats">
+        <div class="sbox">
+          <div class="sv" id="tAnime">0</div>
+          <div class="sk">TOTAL ANIME</div>
+        </div>
+        <div class="sbox accent">
+          <div class="sv" id="tEp">0</div>
+          <div class="sk">TOTAL EPISODES</div>
+        </div>
+        <div class="sbox">
+          <div class="sv" id="tLinks">0</div>
+          <div class="sk">DOWNLOAD LINKS</div>
+        </div>
+        <div class="sbox accent">
+          <div class="sv" id="tNew">0</div>
+          <div class="sk">NEW (7 DAYS)</div>
+        </div>
+      </div>
+
+      <div class="icard">
+        <strong>🎯 Quick Guide:</strong><br>
+        1. "Add Anime" tab mein pehle anime create karo (poster URL dalna mat bhulo!)<br>
+        2. "Add Episode" tab mein us anime ke episodes add karo<br>
+        3. Download links <a href="https://indianshortener.in" target="_blank">IndianShortener.in</a> se wrap karke paste karo<br>
+        4. Homepage automatically update ho jaega!<br><br>
+        <strong>🌐 Site Link:</strong> <a href="index.html" target="_blank">index.html</a> (GitHub Pages pe upload karo)<br>
+        <strong>💰 Earnings:</strong> IndianShortener pays ~$5-8 per 1000 Indian clicks
+      </div>
+
+      <button class="expbtn" onclick="exportData()">📤 Export Data (JSON Backup)</button>
+      <button class="expbtn" onclick="importData()" style="margin-top:8px">📥 Import Data (JSON Restore)</button>
+      <input type="file" id="impFile" accept=".json" style="display:none" onchange="handleImport(this)">
+    </div>
+
+    <!-- ADD ANIME -->
+    <div class="tc" id="tab-addAnime">
+      <div class="sec-head">
+        <h2>➕ ADD ANIME</h2>
+      </div>
+      <div class="fcard">
+        <h3>📝 Anime Details</h3>
+        <div class="row">
+          <div class="fg"><label>Anime Name *</label><input id="aname" placeholder="e.g. Jujutsu Kaisen"></div>
+          <div class="fg"><label>Season</label><input id="aseason" placeholder="e.g. Season 3"></div>
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label>Genre *</label>
+            <select id="agenre">
+              <option>Action</option><option>Shonen</option><option>Isekai</option>
+              <option>Romance</option><option>Horror</option><option>Sports</option>
+              <option>Slice of Life</option><option>Mecha</option><option>Fantasy</option>
+              <option>Dark</option><option>Comedy</option><option>Thriller</option><option>Other</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Status</label>
+            <select id="astatus">
+              <option>Ongoing</option><option>Completed</option><option>Upcoming</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg"><label>Language</label>
+            <select id="alang"><option>Hindi Dub</option><option>Hindi + English</option><option>English Sub</option></select>
+          </div>
+          <div class="fg"><label>Quality</label>
+            <select id="aquality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg"><label>Year</label><input id="ayear" placeholder="e.g. 2024" type="number"></div>
+          <div class="fg"><label>Rating (out of 10)</label><input id="arating" placeholder="e.g. 9.2" type="number" step="0.1"></div>
+        </div>
+        <div class="row">
+          <div class="fg"><label>Total Episodes</label><input id="ateps" placeholder="e.g. 24" type="number"></div>
+          <div class="fg"><label>Studio</label><input id="astudio" placeholder="e.g. MAPPA"></div>
+        </div>
+        <div class="row full">
+          <div class="fg">
+            <label>🖼️ Poster Image URL (Important!)</label>
+            <input id="aposter" placeholder="https://i.imgur.com/... ya koi bhi direct image URL">
+          </div>
+        </div>
+        <div class="row full">
+          <div class="fg"><label>Description (Hindi ya English)</label>
+            <textarea id="adesc" placeholder="Anime ki kahani likhao..."></textarea>
+          </div>
+        </div>
+        <button class="submitbtn" onclick="addAnime()">✅ ANIME ADD KARO</button>
+      </div>
+    </div>
+
+    <!-- ADD EPISODE -->
+    <div class="tc" id="tab-addEp">
+      <div class="sec-head">
+        <h2>🎬 ADD EPISODE</h2>
+      </div>
+      <div class="fcard">
+        <h3>📺 Select Anime</h3>
+        <div class="row full">
+          <div class="fg">
+            <label>Anime Chunein *</label>
+            <select id="epAnime" onchange="showExistingEps()">
+              <option value="">-- Pehle Anime Select Karo --</option>
+            </select>
+          </div>
+        </div>
+        <div id="existingEps"></div>
+      </div>
+
+      <div class="fcard">
+        <h3>📋 Episode Details</h3>
+        <div class="row">
+          <div class="fg"><label>Episode Number *</label><input id="epnum" placeholder="e.g. 1" type="number"></div>
+          <div class="fg"><label>Episode Title</label><input id="eptit" placeholder="e.g. The Beginning"></div>
+        </div>
+        <div class="row">
+          <div class="fg"><label>Duration</label><input id="epdur" placeholder="e.g. 24m"></div>
+          <div class="fg"><label>Language</label>
+            <select id="eplang"><option>Hindi</option><option>Hindi + English</option><option>English Sub</option></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="fcard">
+        <h3>🔗 Download Links</h3>
+        <div class="snote">
+          ⚡ <strong>IndianShortener.in use karo!</strong><br>
+          1. <a href="https://indianshortener.in" target="_blank">indianshortener.in</a> pe jao → Account banao<br>
+          2. Direct download link paste karo → Shortened link copy karo<br>
+          3. Woh shortened link yahan paste karo<br>
+          💰 Indian traffic: ~$5-8 per 1000 clicks
+        </div>
+        <div class="qgrid">
+          <div class="fg"><label>🔴 1080p Link</label><input id="l1080" placeholder="https://indianshortener.in/..."></div>
+          <div class="fg"><label>🔵 720p Link</label><input id="l720" placeholder="https://indianshortener.in/..."></div>
+          <div class="fg"><label>🟢 480p Link</label><input id="l480" placeholder="https://indianshortener.in/..."></div>
+          <div class="fg"><label>⚪ 360p Link</label><input id="l360" placeholder="https://indianshortener.in/..."></div>
+        </div>
+        <button class="submitbtn" onclick="addEpisode()">✅ EPISODE ADD KARO</button>
+      </div>
+    </div>
+
+    <!-- ALL ANIME -->
+    <div class="tc" id="tab-manage">
+      <div class="sec-head">
+        <h2>📋 ALL ANIME</h2>
+        <button class="addbtn" onclick="switchTab('addAnime')">+ Add New</button>
+      </div>
+      <div class="alist" id="alist">
+        <p style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Koi anime nahi hai.</p>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="tc" id="tab-sett">
+      <h2 style="font-family:var(--fd);font-size:20px;letter-spacing:1.5px;margin-bottom:16px">⚙️ SETTINGS</h2>
+      <div class="settrow">
+        <h3>🔑 ADMIN PASSWORD CHANGE</h3>
+        <div class="row full">
+          <div class="fg"><label>New Password</label><input id="newpass" type="password" placeholder="Naya password..."></div>
+        </div>
+        <div class="row full">
+          <div class="fg"><label>Confirm Password</label><input id="confpass" type="password" placeholder="Confirm karo..."></div>
+        </div>
+        <button class="submitbtn" onclick="changePass()" style="margin-top:4px">🔒 PASSWORD CHANGE KARO</button>
+      </div>
+      <div class="settrow">
+        <h3>💰 MONETAG SETUP</h3>
+        <div class="row full">
+          <div class="fg"><label>Monetag Zone ID (Pop-Under)</label><input id="mzoneid" placeholder="e.g. 8734521"></div>
+        </div>
+        <div class="icard" style="margin-top:10px">
+          <strong>Monetag Setup:</strong><br>
+          1. <a href="https://monetag.com" target="_blank">monetag.com</a> pe register karo (email se)<br>
+          2. Dashboard → New Zone → Pop-Under → Zone ID copy karo<br>
+          3. Woh ID yahan paste karo, phir teeno HTML files mein script tag uncomment karo<br>
+          <strong>Note:</strong> Pop-under aur banner dono lagao for max income
+        </div>
+        <button class="submitbtn" onclick="saveSettings()">💾 SETTINGS SAVE KARO</button>
+      </div>
+      <div class="settrow">
+        <h3>🌐 GITHUB PAGES DEPLOY GUIDE</h3>
+        <div class="icard">
+          <strong>Step by Step:</strong><br>
+          1. <a href="https://github.com" target="_blank">github.com</a> pe free account banao<br>
+          2. New Repository → Public → Name: raretoonindia<br>
+          3. Teeno files (index.html, anime.html, admin.html) upload karo<br>
+          4. Settings → Pages → Source: main branch → Save<br>
+          5. Site live hogi: <strong>username.github.io/raretoonindia</strong><br><br>
+          <strong>Custom Domain:</strong> GoDaddy/Namecheap se .in domain lo (~₹500/year) → GitHub Pages mein add karo
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /ab -->
+</div><!-- /ap -->
+
+<div class="toast" id="toast">✅ Saved!</div>
+
+<script>
+// ============================================================
+// PASSWORD — localStorage mein save hota hai
+// ============================================================
+const DEFAULT_PASS='raretoonindia2024';
+const DB='rtiDB';
+const PASS_KEY='rtiPass';
+const SETT_KEY='rtiSett';
+
+const gDB=()=>JSON.parse(localStorage.getItem(DB)||'[]');
+const sDB=d=>localStorage.setItem(DB,JSON.stringify(d));
+const gPass=()=>localStorage.getItem(PASS_KEY)||DEFAULT_PASS;
+
+const EM=['⚔️','🔮','🗡️','🌀','💥','🔥','⚡','🌊','👊','🤖','💀','🌸'];
+const E=i=>EM[i%EM.length];
+const isNew=d=>d&&(Date.now()-new Date(d))<7*864e5;
+
+function toast(msg='✅ Saved!'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// LOGIN
+function doLogin(){
+  const p=document.getElementById('pinput').value;
+  if(p===gPass()){
+    document.getElementById('ls').style.display='none';
+    document.getElementById('ap').style.display='block';
+    updateStats();renderAnimeList();updateEpSelect();loadSettings();
+  } else {
+    document.getElementById('lerr').style.display='block';
+    document.getElementById('pinput').value='';
+    setTimeout(()=>document.getElementById('lerr').style.display='none',2000);
+  }
+}
+function logout(){
+  document.getElementById('ap').style.display='none';
+  document.getElementById('ls').style.display='flex';
+  document.getElementById('pinput').value='';
+}
+document.getElementById('pinput').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+// TABS
+function switchTab(t){
+  document.querySelectorAll('.tc').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+  const tabs=['dash','addAnime','addEp','manage','sett'];
+  const idx=tabs.indexOf(t);
+  document.querySelectorAll('.tab')[idx]?.classList.add('active');
+  if(t==='manage')renderAnimeList();
+  if(t==='addEp')updateEpSelect();
+}
+
+// STATS
+function updateStats(){
+  const db=gDB();
+  const eps=db.reduce((s,a)=>s+(a.episodes?.length||0),0);
+  const links=db.reduce((s,a)=>s+(a.episodes||[]).reduce((ss,e)=>ss+Object.values(e.links||{}).filter(l=>l&&l.trim()).length,0),0);
+  const newA=db.filter(a=>isNew(a.createdAt)).length;
+  document.getElementById('tAnime').textContent=db.length;
+  document.getElementById('tEp').textContent=eps;
+  document.getElementById('tLinks').textContent=links;
+  document.getElementById('tNew').textContent=newA;
+}
+
+// ADD ANIME
+function addAnime(){
+  const name=document.getElementById('aname').value.trim();
+  if(!name){toast('❌ Anime name daalo!');return;}
+  const db=gDB();
+  // Check duplicate
+  if(db.find(a=>a.name.toLowerCase()===name.toLowerCase()&&(document.getElementById('aseason').value||'')===(a.season||''))){
+    if(!confirm('Yeh anime already exist karta hai! Phir bhi add karein?'))return;
+  }
+  const a={
+    id:Date.now(),
+    name,
+    season:document.getElementById('aseason').value.trim(),
+    genre:document.getElementById('agenre').value,
+    status:document.getElementById('astatus').value,
+    language:document.getElementById('alang').value,
+    quality:document.getElementById('aquality').value,
+    year:document.getElementById('ayear').value,
+    rating:document.getElementById('arating').value,
+    totalEps:document.getElementById('ateps').value,
+    studio:document.getElementById('astudio').value.trim(),
+    poster:document.getElementById('aposter').value.trim(),
+    description:document.getElementById('adesc').value.trim(),
+    episodes:[],
+    createdAt:new Date().toISOString()
+  };
+  db.push(a);sDB(db);updateStats();
+  toast('✅ '+name+' add ho gaya!');
+  ['aname','aseason','ayear','arating','ateps','astudio','aposter','adesc'].forEach(id=>document.getElementById(id).value='');
+}
+
+// ADD EPISODE
+function addEpisode(){
+  const animeId=parseInt(document.getElementById('epAnime').value);
+  if(!animeId){toast('❌ Pehle anime select karo!');return;}
+  const epnum=document.getElementById('epnum').value;
+  if(!epnum){toast('❌ Episode number daalo!');return;}
+  const l1080=document.getElementById('l1080').value.trim();
+  const l720=document.getElementById('l720').value.trim();
+  const l480=document.getElementById('l480').value.trim();
+  const l360=document.getElementById('l360').value.trim();
+  if(!l1080&&!l720&&!l480&&!l360){toast('❌ Kam se kam ek download link daalo!');return;}
+
+  const db=gDB();
+  const anime=db.find(a=>a.id===animeId);
+  if(!anime){toast('❌ Anime nahi mila!');return;}
+  
+  // Check duplicate episode
+  if(anime.episodes&&anime.episodes.find(e=>e.num===parseInt(epnum))){
+    if(!confirm('Episode '+epnum+' already hai! Replace karein?')){return;}
+    anime.episodes=anime.episodes.filter(e=>e.num!==parseInt(epnum));
+  }
+
+  const ep={
+    num:parseInt(epnum),
+    title:document.getElementById('eptit').value.trim()||'Episode '+epnum,
+    duration:document.getElementById('epdur').value.trim()||'24m',
+    language:document.getElementById('eplang').value,
+    links:{},
+    addedAt:new Date().toISOString()
+  };
+  if(l1080)ep.links['1080p']=l1080;
+  if(l720)ep.links['720p']=l720;
+  if(l480)ep.links['480p']=l480;
+  if(l360)ep.links['360p']=l360;
+
+  anime.episodes=anime.episodes||[];
+  anime.episodes.push(ep);
+  anime.episodes.sort((a,b)=>a.num-b.num);
+  sDB(db);updateStats();showExistingEps();
+  toast('✅ Episode '+epnum+' add ho gaya!');
+  ['epnum','eptit','epdur','l1080','l720','l480','l360'].forEach(id=>document.getElementById(id).value='');
+}
+
+// EPISODE SELECT UPDATE
+function updateEpSelect(){
+  const db=gDB();
+  const sel=document.getElementById('epAnime');
+  const prev=sel.value;
+  sel.innerHTML='<option value="">-- Pehle Anime Select Karo --</option>'+
+    db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''} (${a.episodes?.length||0} ep)</option>`).join('');
+  if(prev)sel.value=prev;
+}
+
+function showExistingEps(){
+  const id=parseInt(document.getElementById('epAnime').value);
+  const el=document.getElementById('existingEps');
+  if(!id){el.innerHTML='';return;}
+  const db=gDB();
+  const anime=db.find(a=>a.id===id);
+  if(!anime||!anime.episodes?.length){el.innerHTML='<p style="color:var(--muted);font-size:12px;padding:8px 0">Abhi koi episode nahi. Pehla episode add karo!</p>';return;}
+  const sorted=[...anime.episodes].sort((a,b)=>a.num-b.num);
+  el.innerHTML=`<div class="eprows">${sorted.map(ep=>`
+    <div class="eprow">
+      <span class="enum">${String(ep.num).padStart(2,'0')}</span>
+      <span class="etit">${ep.title}</span>
+      <button class="dbtn2" onclick="deleteEp(${id},${ep.num})" title="Delete">🗑️</button>
+    </div>`).join('')}</div>`;
+}
+
+function deleteEp(animeId,epNum){
+  if(!confirm('Episode '+epNum+' delete karein?'))return;
+  const db=gDB();
+  const a=db.find(x=>x.id===animeId);
+  if(!a)return;
+  a.episodes=a.episodes.filter(e=>e.num!==epNum);
+  sDB(db);updateStats();showExistingEps();updateEpSelect();
+  toast('🗑️ Episode '+epNum+' deleted!');
+}
+
+// RENDER ANIME LIST
+function renderAnimeList(){
+  const db=gDB();
+  const el=document.getElementById('alist');
+  if(!db.length){el.innerHTML='<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Koi anime nahi hai. "Add Anime" se add karo!</p>';return;}
+  el.innerHTML=db.map((a,i)=>`
+  <div class="arow" style="animation-delay:${i*.04}s">
+    <div class="at">
+      ${a.poster?`<img src="${a.poster}" alt="" onerror="this.style.display='none'">`:(E(i))}
+    </div>
+    <div class="arowinfo">
+      <h4>${a.name}${a.season?' '+a.season:''}</h4>
+      <span>${a.genre} · ${a.episodes?.length||0} Episodes · ${a.status}</span>
+    </div>
+    <div class="aacts">
+      <a href="anime.html?id=${a.id}" target="_blank" class="ebtn" title="Preview">👁️</a>
+      <button class="ebtn dbtn" onclick="deleteAnime(${a.id})" title="Delete">🗑️</button>
+    </div>
+  </div>`).join('');
+}
+
+function deleteAnime(id){
+  const db=gDB();
+  const a=db.find(x=>x.id===id);
+  if(!confirm(`"${a?.name}" aur uske saare episodes delete karein?`))return;
+  sDB(db.filter(x=>x.id!==id));
+  updateStats();renderAnimeList();updateEpSelect();
+  toast('🗑️ Deleted!');
+}
+
+// PASSWORD CHANGE
+function changePass(){
+  const np=document.getElementById('newpass').value;
+  const cp=document.getElementById('confpass').value;
+  if(!np){toast('❌ New password daalo!');return;}
+  if(np!==cp){toast('❌ Passwords match nahi karte!');return;}
+  if(np.length<6){toast('❌ Password minimum 6 characters!');return;}
+  localStorage.setItem(PASS_KEY,np);
+  document.getElementById('newpass').value='';
+  document.getElementById('confpass').value='';
+  toast('✅ Password change ho gaya!');
+}
+
+// SETTINGS
+function saveSettings(){
+  const s={monetagZone:document.getElementById('mzoneid').value};
+  localStorage.setItem(SETT_KEY,JSON.stringify(s));
+  toast('💾 Settings save ho gayi!');
+}
+function loadSettings(){
+  const s=JSON.parse(localStorage.getItem(SETT_KEY)||'{}');
+  if(s.monetagZone)document.getElementById('mzoneid').value=s.monetagZone;
+}
+
+// EXPORT / IMPORT
+function exportData(){
+  const db=gDB();
+  const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='rtiDB-backup-'+Date.now()+'.json';a.click();
+  URL.revokeObjectURL(url);
+  toast('📤 Backup download ho gaya!');
+}
+function importData(){document.getElementById('impFile').click();}
+function handleImport(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!Array.isArray(data))throw new Error('Invalid format');
+      if(!confirm('Yeh '+data.length+' anime import karega. Current data replace ho jaega. Sure?'))return;
+      sDB(data);updateStats();renderAnimeList();updateEpSelect();
+      toast('✅ '+data.length+' anime import ho gaye!');
+    }catch{toast('❌ Invalid JSON file!');}
+  };
+  reader.readAsText(file);
+  input.value='';
+}
+</script>
+</body>
+</html>

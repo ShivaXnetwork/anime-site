@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RareToonIndia — Anime</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<!-- MONETAG POP-UNDER:
+<script src="//ophoacit.com/1?z=YOUR_ZONE_ID" data-cfasync="false"></script> -->
+<style>
+:root{--bg:#05050e;--bg2:#09091a;--bg3:#0e0e1f;--card:#0b0b1c;--border:#1c1c32;--accent:#e63946;--accent2:#ff6b35;--gold:#ffd60a;--blue:#4361ee;--green:#06d6a0;--text:#eaeaf4;--muted:#55557a;--fd:'Bebas Neue',sans-serif;--fb:'DM Sans',sans-serif;--fl:'Orbitron',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(230,57,70,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(230,57,70,.03) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
+
+/* AD TOP */
+.at{position:relative;z-index:10;background:var(--bg2);border-bottom:1px solid var(--border);padding:6px 16px;min-height:58px;display:flex;align-items:center;justify-content:center}
+.aw{width:100%;max-width:728px;min-height:50px;background:rgba(255,255,255,.025);border:1px dashed rgba(255,255,255,.07);border-radius:8px;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--muted);font-size:11px;letter-spacing:1px}
+.al{background:var(--accent);color:#fff;font-size:9px;padding:2px 7px;border-radius:4px;font-weight:700;letter-spacing:1px;flex-shrink:0}
+
+/* NAVBAR */
+.nb{position:sticky;top:0;z-index:100;background:rgba(5,5,14,.92);backdrop-filter:blur(28px);border-bottom:1px solid var(--border);padding:0 16px;height:52px;display:flex;align-items:center;gap:12px}
+.bbtn{background:var(--bg3);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:18px;transition:all .2s;flex-shrink:0}
+.bbtn:hover{border-color:var(--accent)}
+.ntit{font-family:var(--fd);font-size:16px;letter-spacing:1.5px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.logo{font-family:var(--fl);font-size:14px;font-weight:900;text-decoration:none}
+.lr{color:var(--accent)}.lt{color:var(--text)}.li{color:var(--gold)}
+
+/* HERO BANNER */
+.hbg{width:100%;height:240px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:90px;z-index:1}
+.hbg img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.hbg::after{content:'';position:absolute;bottom:0;left:0;right:0;height:140px;background:linear-gradient(transparent,var(--bg));z-index:2}
+
+/* ANIME INFO */
+.ainfo{position:relative;z-index:3;padding:16px 16px 0}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-family:var(--fd);letter-spacing:.5px;padding:3px 9px;border-radius:6px}
+.b-on{background:rgba(6,214,160,.12);color:#06d6a0;border:1px solid rgba(6,214,160,.2)}
+.b-cm{background:rgba(255,214,10,.1);color:var(--gold);border:1px solid rgba(255,214,10,.2)}
+.b-lang{background:rgba(255,165,0,.12);color:#ffaa44;border:1px solid rgba(255,165,0,.2)}
+.b-hd{background:rgba(67,97,238,.12);color:#7a9fff;border:1px solid rgba(67,97,238,.2)}
+.b-genre{background:rgba(230,57,70,.12);color:var(--accent);border:1px solid rgba(230,57,70,.2)}
+.b-yr{background:var(--bg3);color:var(--muted);border:1px solid var(--border)}
+.atit{font-family:var(--fd);font-size:30px;letter-spacing:2px;line-height:1.05;margin-bottom:3px}
+.atit2{font-size:12px;color:var(--muted);margin-bottom:14px}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.sbox{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 8px;text-align:center}
+.sv{font-family:var(--fl);font-size:15px;font-weight:700;color:var(--gold);margin-bottom:2px}
+.sk{font-size:9px;color:var(--muted);font-family:var(--fd);letter-spacing:.5px}
+
+/* DESCRIPTION */
+.desc{padding:0 16px;margin-bottom:18px;position:relative;z-index:1}
+.dtxt{font-size:13px;color:rgba(234,234,244,.72);line-height:1.72;max-height:75px;overflow:hidden;transition:max-height .4s ease}
+.dtxt.exp{max-height:600px}
+.rmbtn{background:none;border:none;color:var(--accent);font-size:12px;font-family:var(--fd);letter-spacing:.5px;cursor:pointer;padding:4px 0;display:block;margin-top:4px}
+
+/* MID AD */
+.amid{margin:0 16px 18px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;min-height:100px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;position:relative;z-index:1}
+
+/* SECTION HEAD */
+.sh{display:flex;align-items:center;gap:10px;padding:0 16px 14px;position:relative;z-index:1}
+.sh h2{font-family:var(--fd);font-size:20px;letter-spacing:2px;white-space:nowrap}
+.sl{flex:1;height:1px;background:linear-gradient(90deg,rgba(230,57,70,.5),transparent)}
+
+/* EPISODE LIST */
+.eplist{padding:0 16px;display:flex;flex-direction:column;gap:8px;margin-bottom:24px;position:relative;z-index:1}
+
+.ecard{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s;animation:fu .35s ease both}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.ecard.open{border-color:rgba(230,57,70,.4)}
+
+.ehead{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.enum{font-family:var(--fl);font-size:14px;font-weight:700;color:var(--accent);width:28px;flex-shrink:0}
+.einfo{flex:1;min-width:0}
+.etit{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.emeta{display:flex;gap:6px;margin-top:4px}
+.etag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.3px}
+.th{background:rgba(230,57,70,.18);color:var(--accent)}.thd{background:rgba(67,97,238,.18);color:#7a9fff}.tdur{background:var(--bg3);color:var(--muted);border:1px solid var(--border)}
+.earrow{font-size:12px;color:var(--muted);transition:transform .3s;flex-shrink:0}
+.ecard.open .earrow{transform:rotate(180deg);color:var(--accent)}
+
+/* DOWNLOAD PANEL */
+.dpanel{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.ecard.open .dpanel{max-height:400px}
+.dpinner{padding:0 14px 14px;border-top:1px solid var(--border)}
+.dqlabel{font-family:var(--fd);font-size:12px;letter-spacing:1px;color:var(--muted);margin:12px 0 8px}
+.dgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.dlbtn{display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 8px;border-radius:9px;font-family:var(--fd);font-size:14px;letter-spacing:.5px;cursor:pointer;text-decoration:none;transition:all .2s;border:1px solid transparent}
+.d1080{background:linear-gradient(135deg,rgba(230,57,70,.18),rgba(255,107,53,.18));border-color:rgba(230,57,70,.3);color:#ff8888}
+.d720{background:linear-gradient(135deg,rgba(67,97,238,.15),rgba(0,100,200,.15));border-color:rgba(67,97,238,.25);color:#88bbff}
+.d480{background:linear-gradient(135deg,rgba(6,214,160,.12),rgba(0,150,80,.12));border-color:rgba(6,214,160,.2);color:#88ffcc}
+.d360{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--muted)}
+.dlbtn:hover{transform:scale(1.04);filter:brightness(1.25)}
+.dnote{display:flex;align-items:center;gap:8px;background:rgba(255,214,10,.05);border:1px solid rgba(255,214,10,.13);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:11px;color:rgba(255,214,10,.8)}
+
+/* BOTTOM NAV */
+.fs{height:80px}
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(9,9,20,.95);backdrop-filter:blur(28px);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr)}
+.nl{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;gap:3px;text-decoration:none;color:var(--muted);font-size:10px;font-weight:600;transition:color .2s}
+.nl:hover{color:var(--accent)}.ni{font-size:20px}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+</style>
+</head>
+<body>
+
+<div class="at">
+  <div class="aw">
+    <span class="al">AD</span>
+    <!-- MONETAG 728x90 Banner Code Yahan -->
+    <span style="font-size:11px;letter-spacing:1px">Advertisement · 728×90</span>
+  </div>
+</div>
+
+<nav class="nb">
+  <a href="index.html" class="bbtn">←</a>
+  <span class="ntit" id="navTit">Loading...</span>
+  <a href="index.html" class="logo"><span class="lr">RTI</span></a>
+</nav>
+
+<div id="content">
+  <div style="text-align:center;padding:80px 20px;color:var(--muted)">
+    <div style="font-size:40px;margin-bottom:12px">⏳</div>
+    <p style="font-size:13px">Loading...</p>
+  </div>
+</div>
+
+<div class="fs"></div>
+<nav class="bnav">
+  <a href="index.html" class="nl"><span class="ni">🏠</span>Home</a>
+  <a href="index.html" class="nl"><span class="ni">🔍</span>Search</a>
+  <a href="index.html" class="nl"><span class="ni">📺</span>Series</a>
+  <a href="index.html" class="nl"><span class="ni">⭐</span>Popular</a>
+  <a href="admin.html" class="nl"><span class="ni">⚙️</span>Admin</a>
+</nav>
+
+<script>
+const DB='rtiDB';
+const EM=['⚔️','🔮','🗡️','🌀','💥','🔥','⚡','🌊','👊','🤖','💀','🌸'];
+const GR=['linear-gradient(135deg,#200010,#000520)','linear-gradient(135deg,#001020,#100020)','linear-gradient(135deg,#201000,#002010)','linear-gradient(135deg,#002020,#200020)','linear-gradient(135deg,#200005,#001020)','linear-gradient(135deg,#100520,#020520)'];
+
+// Get anime ID from URL
+const params=new URLSearchParams(window.location.search);
+const animeId=parseInt(params.get('id'));
+const db=JSON.parse(localStorage.getItem(DB)||'[]');
+const anime=db.find(a=>a.id===animeId);
+
+if(!anime){
+  document.getElementById('content').innerHTML=`
+    <div style="text-align:center;padding:80px 20px;color:var(--muted)">
+      <div style="font-size:60px;margin-bottom:16px">🔍</div>
+      <h2 style="font-family:var(--fd);font-size:24px;letter-spacing:2px;margin-bottom:10px">ANIME NAHI MILA</h2>
+      <p style="font-size:13px;margin-bottom:20px">Yeh anime database mein nahi hai.</p>
+      <a href="index.html" style="color:var(--accent);text-decoration:none;font-family:var(--fd);font-size:16px;letter-spacing:1px">← WAPAS JAO</a>
+    </div>`;
+  document.getElementById('navTit').textContent='Not Found';
+} else {
+  document.title=anime.name+(anime.season?' '+anime.season:'')+' — RareToonIndia';
+  document.getElementById('navTit').textContent=anime.name+(anime.season?' '+anime.season:'');
+  renderAnime(anime);
+}
+
+function statusBadge(s){
+  if(!s)return'';
+  const cls=s.toLowerCase().includes('ongo')?'b-on':'b-cm';
+  return`<span class="badge ${cls}">● ${s.toUpperCase()}</span>`;
+}
+
+function renderAnime(a){
+  const i=db.findIndex(x=>x.id===a.id)%GR.length;
+  const eps=a.episodes||[];
+
+  document.getElementById('content').innerHTML=`
+  <!-- HERO -->
+  <div class="hbg" style="${a.poster?'':'background:'+GR[i]}">
+    ${a.poster
+      ?`<img src="${a.poster}" alt="${a.name}" onerror="this.outerHTML='<div style=font-size:90px>${EM[i]}</div>'">`
+      :EM[i]}
+  </div>
+
+  <!-- ANIME INFO -->
+  <div class="ainfo">
+    <div class="badges">
+      ${statusBadge(a.status)}
+      ${a.language?`<span class="badge b-lang">🇮🇳 ${a.language.toUpperCase()}</span>`:'<span class="badge b-lang">🇮🇳 HINDI DUB</span>'}
+      ${a.quality?`<span class="badge b-hd">✨ ${a.quality}</span>`:''}
+      ${a.genre?`<span class="badge b-genre">${a.genre}</span>`:''}
+      ${a.year?`<span class="badge b-yr">${a.year}</span>`:''}
+    </div>
+    <div class="atit">${a.name}</div>
+    <div class="atit2">${a.season||''} ${a.studio?'· '+a.studio:''}</div>
+    <div class="stats">
+      <div class="sbox"><div class="sv">${eps.length||a.totalEps||'?'}</div><div class="sk">EPISODES</div></div>
+      <div class="sbox"><div class="sv">${a.rating||'?'}</div><div class="sk">RATING</div></div>
+      <div class="sbox"><div class="sv">${a.quality||'HD'}</div><div class="sk">QUALITY</div></div>
+      <div class="sbox"><div class="sv">${a.status==='Ongoing'||a.status==='Airing'?'ON AIR':'DONE'}</div><div class="sk">STATUS</div></div>
+    </div>
+  </div>
+
+  <!-- DESCRIPTION -->
+  ${a.description?`
+  <div class="desc">
+    <div class="dtxt" id="dtxt">${a.description}</div>
+    <button class="rmbtn" onclick="toggleDesc()">▼ Read More</button>
+  </div>`:''}
+
+  <!-- MID AD -->
+  <div class="amid">
+    <span class="al">AD</span>
+    <!-- MONETAG 300x250 Code Yahan Paste Karo -->
+    <p style="color:var(--muted);font-size:11px;letter-spacing:1px">Advertisement · 300×250</p>
+  </div>
+
+  <!-- EPISODE LIST -->
+  <div class="sh"><h2>📺 EPISODES</h2><div class="sl"></div></div>
+  <div class="eplist" id="eplist"></div>`;
+
+  renderEpisodes(eps);
+}
+
+function renderEpisodes(eps){
+  const el=document.getElementById('eplist');
+  if(!eps||!eps.length){
+    el.innerHTML='<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Abhi koi episode nahi hai. Admin se add karwao!</p>';
+    return;
+  }
+  const sorted=[...eps].sort((a,b)=>a.num-b.num);
+  el.innerHTML=sorted.map((ep,i)=>`
+  <div class="ecard" id="ep${i}" style="animation-delay:${Math.min(i*.04,.4)}s">
+    <div class="ehead" onclick="toggleEp(${i})">
+      <div class="enum">${String(ep.num).padStart(2,'0')}</div>
+      <div class="einfo">
+        <div class="etit">${ep.title||'Episode '+ep.num}</div>
+        <div class="emeta">
+          <span class="etag th">HINDI</span>
+          <span class="etag thd">HD</span>
+          <span class="etag tdur">⏱ ${ep.duration||'24m'}</span>
+        </div>
+      </div>
+      <div class="earrow">▼</div>
+    </div>
+    <div class="dpanel">
+      <div class="dpinner">
+        <div class="dqlabel">📥 QUALITY CHUNEIN</div>
+        <div class="dgrid">
+          ${ep.links?.['1080p']?`<a href="${ep.links['1080p']}" target="_blank" rel="noopener" class="dlbtn d1080" onclick="trackDL(${ep.num},'1080p')">🔴 1080p</a>`:''}
+          ${ep.links?.['720p']?`<a href="${ep.links['720p']}" target="_blank" rel="noopener" class="dlbtn d720" onclick="trackDL(${ep.num},'720p')">🔵 720p</a>`:''}
+          ${ep.links?.['480p']?`<a href="${ep.links['480p']}" target="_blank" rel="noopener" class="dlbtn d480" onclick="trackDL(${ep.num},'480p')">🟢 480p</a>`:''}
+          ${ep.links?.['360p']?`<a href="${ep.links['360p']}" target="_blank" rel="noopener" class="dlbtn d360" onclick="trackDL(${ep.num},'360p')">⚪ 360p</a>`:''}
+        </div>
+        <div class="dnote">⚡ Links IndianShortener se hain — ek short ad dekhne ke baad download hoga.</div>
+      </div>
+    </div>
+  </div>`).join('');
+}
+
+function toggleEp(i){
+  const c=document.getElementById('ep'+i);
+  const isOpen=c.classList.contains('open');
+  document.querySelectorAll('.ecard').forEach(x=>x.classList.remove('open'));
+  if(!isOpen)c.classList.add('open');
+}
+
+function toggleDesc(){
+  const d=document.getElementById('dtxt');
+  const b=document.querySelector('.rmbtn');
+  d.classList.toggle('exp');
+  b.textContent=d.classList.contains('exp')?'▲ Read Less':'▼ Read More';
+}
+
+function trackDL(ep,q){
+  console.log('DL: Ep'+ep+' '+q);
+  // Yahan analytics code add kar sakte ho
+}
+</script>
+</body>
+</html>
