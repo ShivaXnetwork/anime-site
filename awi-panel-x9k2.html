@@ -132,7 +132,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
     <h2>ADMIN PANEL</h2>
     <p>AnimeWorld India — Secret Access</p>
     <input class="linput" id="pinput" type="password" placeholder="••••••••">
-    <button class="lbtn" onclick="doLogin()">LOGIN KARO</button>
+    <button class="lbtn" onclick="doLogin()">LOGIN</button>
     <div class="lerr" id="lerr">❌ Wrong password!</div>
   </div>
 </div>
@@ -149,8 +149,8 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
     <div class="tabs">
       <button class="tab active" onclick="switchTab('dash')">📊 Dashboard</button>
       <button class="tab" onclick="switchTab('addAnime')">➕ Add Anime</button>
-      <button class="tab" onclick="switchTab('bulk')">⚡ Bulk Episodes</button>
-      <button class="tab" onclick="switchTab('addEp')">🎬 Single Ep</button>
+      <button class="tab" onclick="switchTab('bulk')">⚡ Bulk Add</button>
+      <button class="tab" onclick="switchTab('addEp')">🎬 Add Episode</button>
       <button class="tab" onclick="switchTab('season')">📦 Season Pack</button>
       <button class="tab" onclick="switchTab('manage')">📋 All Anime</button>
       <button class="tab" onclick="switchTab('sett')">⚙️ Settings</button>
@@ -248,7 +248,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
         </div>
         <div class="row full">
           <div class="fg"><label>Description</label>
-            <textarea id="adesc" placeholder="Anime ki story likhao..."></textarea>
+            <textarea id="adesc" placeholder="Enter anime story/synopsis..."></textarea>
           </div>
         </div>
       </div>
@@ -271,7 +271,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
             <input id="aul2" placeholder="https://indianshortener.in/xxxxxx">
           </div>
         </div>
-        <div class="fcard" style="margin-top:12px"><h3>📦 SEASON DOWNLOAD LINKS</h3><div class="ul-note">Pura season ka ek link daalo — visitor yahan se poora season download kar sakta hai.<br>Har quality ke liye alag link daalo (jo available ho).</div><div class="qgrid"><div class="fg"><label>🔴 1080p Season Link</label><input id="as1080" placeholder="https://indianshortener.in/..."></div><div class="fg"><label>🔵 720p Season Link</label><input id="as720" placeholder="https://indianshortener.in/..."></div><div class="fg"><label>🟢 480p Season Link</label><input id="as480" placeholder="https://indianshortener.in/..."></div><div class="fg"><label>⚪ 360p Season Link</label><input id="as360" placeholder="https://indianshortener.in/..."></div></div></div><button class="submitbtn" onclick="addAnime()">✅ ANIME ADD KARO</button>
+        <div class="fcard" style="margin-top:12px"><h3>📦 SEASON DOWNLOAD LINKS</h3><div class="ul-note">Pura season ka ek link daalo — visitor yahan se poora season download kar sakta hai.<br>Har quality ke liye alag link daalo (jo available ho).</div><div class="qgrid"><div class="fg"><label>🔴 1080p Season Link</label><input id="as1080" placeholder="https://indianshortener.in/..."></div><div class="fg"><label>🔵 720p Season Link</label><input id="as720" placeholder="https://indianshortener.in/..."></div><div class="fg"><label>🟢 480p Season Link</label><input id="as480" placeholder="https://indianshortener.in/..."></div><div class="fg"><label>⚪ 360p Season Link</label><input id="as360" placeholder="https://indianshortener.in/..."></div></div></div><button class="submitbtn" onclick="addAnime()">✅ ADD ANIME</button>
       </div>
     </div>
 
@@ -280,7 +280,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
       <div class="fcard">
         <h3>⚡ BULK EPISODE ADDER</h3>
         <div class="ul-note">Ek saath pura season add karo! Har line mein ek link paste karo — Episode 1 ka link line 1 pe, Ep 2 ka line 2 pe, aur so on.<br><strong>Format per line:</strong> seedha download link ya already shortened link</div>
-        <div class="row full"><div class="fg"><label>Anime Select Karo *</label><select id="blkAnime"><option value="">-- Anime Select Karo --</option></select></div></div>
+        <div class="row full"><div class="fg"><label>Anime Select Karo *</label><select id="blkAnime"><option value="">-- Select Anime --</option></select></div></div>
         <div class="row">
           <div class="fg"><label>Starting Episode Number</label><input id="blkStart" type="number" placeholder="1" value="1"></div>
           <div class="fg"><label>Quality (all same)</label><select id="blkQuality"><option value="1080p">1080p</option><option value="720p">720p</option><option value="480p">480p</option><option value="360p">360p</option></select></div>
@@ -299,7 +299,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <strong>Best use:</strong> Google Drive / Mega / TeraBox full season link yahan daalo.
         </div>
         <div class="row full"><div class="fg"><label>Anime Select Karo *</label>
-          <select id="spAnime"><option value="">-- Anime Select Karo --</option></select>
+          <select id="spAnime"><option value="">-- Select Anime --</option></select>
         </div></div>
         <div class="row">
           <div class="fg"><label>Pack Title</label><input id="spTitle" placeholder="e.g. Season 1 Complete"></div>
@@ -309,14 +309,14 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <div class="fg"><label>File Size</label><input id="spSize" placeholder="e.g. 2.7 GB"></div>
           <div class="fg"><label>Quality</label><select id="spQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
         </div>
-        <div class="ul-note" style="margin-top:8px">📥 Download Links (IndianShortener se shorten karke daalo)</div>
+        <div class="ul-note" style="margin-top:8px">📥 Download Links (Use IndianShortener to shorten)</div>
         <div class="qgrid">
           <div class="fg"><label>🔴 1080p Link</label><input id="sp1080" placeholder="https://..."></div>
           <div class="fg"><label>🔵 720p Link</label><input id="sp720" placeholder="https://..."></div>
           <div class="fg"><label>🟢 480p Link</label><input id="sp480" placeholder="https://..."></div>
           <div class="fg"><label>⚪ 360p Link</label><input id="sp360" placeholder="https://..."></div>
         </div>
-        <button class="submitbtn" onclick="addSeasonPack()">✅ SEASON PACK ADD KARO</button>
+        <button class="submitbtn" onclick="addSeasonPack()">✅ ADD SEASON PACK</button>
       </div>
       <div class="fcard" id="spListCard" style="display:none">
         <h3>📋 EXISTING PACKS</h3>
@@ -334,7 +334,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <strong>Best use:</strong> Google Drive / Mega / TeraBox full season link yahan daalo.
         </div>
         <div class="row full"><div class="fg"><label>Anime Select Karo *</label>
-          <select id="spAnime"><option value="">-- Anime Select Karo --</option></select>
+          <select id="spAnime"><option value="">-- Select Anime --</option></select>
         </div></div>
         <div class="row">
           <div class="fg"><label>Pack Title</label><input id="spTitle" placeholder="e.g. Season 1 Complete"></div>
@@ -344,14 +344,14 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <div class="fg"><label>File Size</label><input id="spSize" placeholder="e.g. 2.7 GB"></div>
           <div class="fg"><label>Quality</label><select id="spQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
         </div>
-        <div class="ul-note" style="margin-top:8px">📥 Download Links (IndianShortener se shorten karke daalo)</div>
+        <div class="ul-note" style="margin-top:8px">📥 Download Links (Use IndianShortener to shorten)</div>
         <div class="qgrid">
           <div class="fg"><label>🔴 1080p Link</label><input id="sp1080" placeholder="https://..."></div>
           <div class="fg"><label>🔵 720p Link</label><input id="sp720" placeholder="https://..."></div>
           <div class="fg"><label>🟢 480p Link</label><input id="sp480" placeholder="https://..."></div>
           <div class="fg"><label>⚪ 360p Link</label><input id="sp360" placeholder="https://..."></div>
         </div>
-        <button class="submitbtn" onclick="addSeasonPack()">✅ SEASON PACK ADD KARO</button>
+        <button class="submitbtn" onclick="addSeasonPack()">✅ ADD SEASON PACK</button>
       </div>
       <div class="fcard" id="spListCard" style="display:none">
         <h3>📋 EXISTING PACKS</h3>
@@ -369,7 +369,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <strong>Best use:</strong> Google Drive / Mega / TeraBox full season link yahan daalo.
         </div>
         <div class="row full"><div class="fg"><label>Anime Select Karo *</label>
-          <select id="spAnime"><option value="">-- Anime Select Karo --</option></select>
+          <select id="spAnime"><option value="">-- Select Anime --</option></select>
         </div></div>
         <div class="row">
           <div class="fg"><label>Pack Title</label><input id="spTitle" placeholder="e.g. Season 1 Complete"></div>
@@ -379,14 +379,14 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <div class="fg"><label>File Size</label><input id="spSize" placeholder="e.g. 2.7 GB"></div>
           <div class="fg"><label>Quality</label><select id="spQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
         </div>
-        <div class="ul-note" style="margin-top:8px">📥 Download Links (IndianShortener se shorten karke daalo)</div>
+        <div class="ul-note" style="margin-top:8px">📥 Download Links (Use IndianShortener to shorten)</div>
         <div class="qgrid">
           <div class="fg"><label>🔴 1080p Link</label><input id="sp1080" placeholder="https://..."></div>
           <div class="fg"><label>🔵 720p Link</label><input id="sp720" placeholder="https://..."></div>
           <div class="fg"><label>🟢 480p Link</label><input id="sp480" placeholder="https://..."></div>
           <div class="fg"><label>⚪ 360p Link</label><input id="sp360" placeholder="https://..."></div>
         </div>
-        <button class="submitbtn" onclick="addSeasonPack()">✅ SEASON PACK ADD KARO</button>
+        <button class="submitbtn" onclick="addSeasonPack()">✅ ADD SEASON PACK</button>
       </div>
       <div class="fcard" id="spListCard" style="display:none">
         <h3>📋 EXISTING PACKS</h3>
@@ -404,7 +404,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <strong>Best use:</strong> Google Drive / Mega / TeraBox full season link yahan daalo.
         </div>
         <div class="row full"><div class="fg"><label>Anime Select Karo *</label>
-          <select id="spAnime"><option value="">-- Anime Select Karo --</option></select>
+          <select id="spAnime"><option value="">-- Select Anime --</option></select>
         </div></div>
         <div class="row">
           <div class="fg"><label>Pack Title</label><input id="spTitle" placeholder="e.g. Season 1 Complete"></div>
@@ -414,14 +414,14 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <div class="fg"><label>File Size</label><input id="spSize" placeholder="e.g. 2.7 GB"></div>
           <div class="fg"><label>Quality</label><select id="spQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
         </div>
-        <div class="ul-note" style="margin-top:8px">📥 Download Links (IndianShortener se shorten karke daalo)</div>
+        <div class="ul-note" style="margin-top:8px">📥 Download Links (Use IndianShortener to shorten)</div>
         <div class="qgrid">
           <div class="fg"><label>🔴 1080p Link</label><input id="sp1080" placeholder="https://..."></div>
           <div class="fg"><label>🔵 720p Link</label><input id="sp720" placeholder="https://..."></div>
           <div class="fg"><label>🟢 480p Link</label><input id="sp480" placeholder="https://..."></div>
           <div class="fg"><label>⚪ 360p Link</label><input id="sp360" placeholder="https://..."></div>
         </div>
-        <button class="submitbtn" onclick="addSeasonPack()">✅ SEASON PACK ADD KARO</button>
+        <button class="submitbtn" onclick="addSeasonPack()">✅ ADD SEASON PACK</button>
       </div>
       <div class="fcard" id="spListCard" style="display:none">
         <h3>📋 EXISTING PACKS</h3>
@@ -448,7 +448,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <strong>Best use:</strong> Google Drive / Mega / TeraBox full season link yahan daalo.
         </div>
         <div class="row full"><div class="fg"><label>Anime Select Karo *</label>
-          <select id="spAnime"><option value="">-- Anime Select Karo --</option></select>
+          <select id="spAnime"><option value="">-- Select Anime --</option></select>
         </div></div>
         <div class="row">
           <div class="fg"><label>Pack Title</label><input id="spTitle" placeholder="e.g. Season 1 Complete"></div>
@@ -458,14 +458,14 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <div class="fg"><label>File Size</label><input id="spSize" placeholder="e.g. 2.7 GB"></div>
           <div class="fg"><label>Quality</label><select id="spQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
         </div>
-        <div class="ul-note" style="margin-top:8px">📥 Download Links (IndianShortener se shorten karke daalo)</div>
+        <div class="ul-note" style="margin-top:8px">📥 Download Links (Use IndianShortener to shorten)</div>
         <div class="qgrid">
           <div class="fg"><label>🔴 1080p Link</label><input id="sp1080" placeholder="https://..."></div>
           <div class="fg"><label>🔵 720p Link</label><input id="sp720" placeholder="https://..."></div>
           <div class="fg"><label>🟢 480p Link</label><input id="sp480" placeholder="https://..."></div>
           <div class="fg"><label>⚪ 360p Link</label><input id="sp360" placeholder="https://..."></div>
         </div>
-        <button class="submitbtn" onclick="addSeasonPack()">✅ SEASON PACK ADD KARO</button>
+        <button class="submitbtn" onclick="addSeasonPack()">✅ ADD SEASON PACK</button>
       </div>
       <div class="fcard" id="spListCard" style="display:none">
         <h3>📋 EXISTING PACKS</h3>
@@ -476,11 +476,11 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
     <!-- ADD EPISODE -->
     <div class="tc" id="tab-addEp">
       <div class="fcard">
-        <h3>📺 ANIME SELECT KARO</h3>
+        <h3>📺 SELECT ANIME</h3>
         <div class="row full">
           <div class="fg"><label>Anime *</label>
             <select id="epAnime" onchange="showExistingEps()">
-              <option value="">-- Anime Select Karo --</option>
+              <option value="">-- Select Anime --</option>
             </select>
           </div>
         </div>
@@ -504,8 +504,8 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
       <div class="fcard">
         <h3>📥 DOWNLOAD LINKS</h3>
         <div class="ul-note">
-          IndianShortener se shorten karo: <a href="https://indianshortener.in" target="_blank">indianshortener.in</a><br>
-          Ek quality ka link daalo ya multiple — jo available ho woh daalo
+          Shorten links via: <a href="https://indianshortener.in" target="_blank">indianshortener.in</a><br>
+          Add one or multiple quality links
         </div>
         <div class="qgrid">
           <div class="fg"><label>🔴 1080p Link</label><input id="l1080" placeholder="https://indianshortener.in/..."></div>
@@ -513,17 +513,17 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <div class="fg"><label>🟢 480p Link</label><input id="l480" placeholder="https://indianshortener.in/..."></div>
           <div class="fg"><label>⚪ 360p Link</label><input id="l360" placeholder="https://indianshortener.in/..."></div>
         </div>
-        <button class="submitbtn" onclick="addEpisode()">✅ EPISODE ADD KARO</button>
+        <button class="submitbtn" onclick="addEpisode()">✅ ADD EPISODE</button>
       </div>
 
       <!-- EPISODE WISE MULTI ADD -->
       <div class="fcard" style="border-color:#f57f17">
-        <h3 style="color:#f57f17">📋 EPISODE-WISE BULK (Title + Link)</h3>
+        <h3 style="color:#f57f17">📋 BULK EPISODE ADD (Title + Link)</h3>
         <div class="ul-note" style="background:#fff9c4;border-color:#ffe082;color:#795548">
-          Har episode ka title + link — format:<br>
+          Format per line:<br>
           <strong>Episode 1 Title | https://link1.com</strong><br>
           <strong>Episode 2 Title | https://link2.com</strong><br>
-          Pipe (|) se title aur link alag karo
+          Separate title and link with | (pipe)
         </div>
         <div class="row full"><div class="fg">
           <label>Anime *</label>
@@ -540,14 +540,14 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <textarea id="ewLinks" style="min-height:180px;font-size:12px;font-family:monospace" 
             placeholder="The Beginning | https://link1.com&#10;The Battle | https://link2.com&#10;The End | https://link3.com"></textarea>
         </div></div>
-        <button class="submitbtn" style="background:#f57f17" onclick="addEpisodeWise()">✅ EPISODE-WISE ADD KARO</button>
+        <button class="submitbtn" style="background:#f57f17" onclick="addEpisodeWise()">✅ ADD EPISODES</button>
       </div>
 
       <!-- SEASON ZIP ADD -->
       <div class="fcard" style="border-color:#6a1b9a">
         <h3 style="color:#6a1b9a">📦 SEASON ZIP FILE</h3>
         <div class="ul-note" style="background:#f3e5f5;border-color:#ce93d8;color:#6a1b9a">
-          Pura season ek ZIP — visitor seedha full season download karega
+          Full season as ZIP — visitor downloads entire season at once
         </div>
         <div class="row full"><div class="fg">
           <label>Anime *</label>
@@ -569,7 +569,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <div class="fg"><label>🟢 480p ZIP Link</label><input id="sz480" placeholder="https://..."></div>
           <div class="fg"><label>⚪ 360p ZIP Link</label><input id="sz360" placeholder="https://..."></div>
         </div>
-        <button class="submitbtn" style="background:#6a1b9a" onclick="addSeasonZip()">✅ SEASON ZIP ADD KARO</button>
+        <button class="submitbtn" style="background:#6a1b9a" onclick="addSeasonZip()">✅ ADD SEASON ZIP</button>
       </div>
     </div>
 
@@ -587,10 +587,10 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
     <!-- SETTINGS -->
     <div class="tc" id="tab-sett">
       <div class="settrow">
-        <h3>🔑 PASSWORD CHANGE</h3>
-        <div class="row full"><div class="fg"><label>New Password</label><input id="newpass" type="password" placeholder="Naya password..."></div></div>
-        <div class="row full"><div class="fg"><label>Confirm Password</label><input id="confpass" type="password" placeholder="Confirm karo..."></div></div>
-        <button class="submitbtn" onclick="changePass()">🔒 Password Change Karo</button>
+        <h3>🔑 CHANGE PASSWORD</h3>
+        <div class="row full"><div class="fg"><label>New Password</label><input id="newpass" type="password" placeholder="New password..."></div></div>
+        <div class="row full"><div class="fg"><label>Confirm Password</label><input id="confpass" type="password" placeholder="Confirm password..."></div></div>
+        <button class="submitbtn" onclick="changePass()">🔒 Change Password</button>
       </div>
       <div class="settrow">
         <h3>💰 MONETAG SETUP</h3>
@@ -662,7 +662,19 @@ function doLogin(){
   if(p===gPass()){
     document.getElementById('ls').style.display='none';
     document.getElementById('ap').style.display='block';
-    refreshAll();
+    // Show loading in stats while Firebase loads
+    ['tAnime','tEp','tLinks','tNew'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el)el.textContent='...';
+    });
+    const alistEl=document.getElementById('alist');
+    if(alistEl)alistEl.innerHTML='<p style="color:#aaa;text-align:center;padding:20px;font-size:13px">⏳ Loading data...</p>';
+    const dashEl=document.getElementById('dashList');
+    if(dashEl)dashEl.innerHTML='<p style="color:#aaa;text-align:center;padding:16px;font-size:13px;background:#f9f9f9;border-radius:8px">⏳ Loading...</p>';
+    refreshAll().catch(e=>{
+      toast('❌ Firebase connection error! Check internet.');
+      console.error(e);
+    });
   }else{
     document.getElementById('lerr').style.display='block';
     document.getElementById('pinput').value='';
@@ -684,7 +696,10 @@ function switchTab(t){
   document.getElementById('tab-'+t).classList.add('active');
   const idx=TAB_IDS.indexOf(t);
   document.querySelectorAll('.tab')[idx]?.classList.add('active');
-  if(t==='manage')renderAnimeList();
+  if(t==='manage'){
+    if(localCache.length>0){renderAnimeList();}
+    else{refreshAll();}
+  }
   if(t==='addEp')updateEpSelect();
 }
 
@@ -703,9 +718,9 @@ async function refreshAll(){
   const epSel=document.getElementById('epAnime');
   const blkSel=document.getElementById('blkAnime');
   const spSel=document.getElementById('spAnime');
-  if(epSel)epSel.innerHTML='<option value="">-- Anime Select Karo --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''} (${a.episodes?.length||0} ep)</option>`).join('');
-  if(blkSel)blkSel.innerHTML='<option value="">-- Anime Select Karo --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
-  if(spSel)spSel.innerHTML='<option value="">-- Anime Select Karo --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
+  if(epSel)epSel.innerHTML='<option value="">-- Select Anime --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''} (${a.episodes?.length||0} ep)</option>`).join('');
+  if(blkSel)blkSel.innerHTML='<option value="">-- Select Anime --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
+  if(spSel)spSel.innerHTML='<option value="">-- Select Anime --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
   renderDashList_fb(db);
   renderAnimeList_fb(db);
 }
@@ -715,7 +730,7 @@ function updateStats(){} // replaced by refreshAll
 function renderDashList_fb(db){
   const el=document.getElementById('dashList');
   if(!el)return;
-  if(!db.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:16px;font-size:13px;background:#f9f9f9;border-radius:8px">No anime yet!</p>';return;}
+  if(!db.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:16px;font-size:13px;background:#f9f9f9;border-radius:8px">No anime yet — add some!</p>';return;}
   el.innerHTML=db.map((a,i)=>`
   <div style="background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:7px">
     <div style="width:42px;height:42px;border-radius:7px;background:#eee;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px">
@@ -726,7 +741,7 @@ function renderDashList_fb(db){
       <div style="font-size:11px;color:#888">${a.genre||'Anime'} · ${a.episodes?.length||0} Ep · ${a.status||'—'}</div>
     </div>
     <div style="display:flex;gap:5px;flex-shrink:0">
-      <button onclick="openEdit('${a.id}')" style="width:32px;height:32px;border-radius:6px;border:1px solid #90caf9;background:#e3f2fd;cursor:pointer;font-size:14px">✏️</button>
+      <button onclick="openEdit('${a.id}')" style="width:32px;height:32px;border-radius:6px;border:1px solid #90caf9;background:#e3f2fd;cursor:pointer;font-size:14px" title="Edit">✏️</button>
       <a href="anime.html?id=${a.id}" target="_blank" style="width:32px;height:32px;border-radius:6px;border:1px solid #e0e0e0;background:#f9f9f9;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px">👁️</a>
       <button onclick="deleteAnime('${a.id}')" style="width:32px;height:32px;border-radius:6px;border:1px solid #ef9a9a;background:#ffebee;cursor:pointer;font-size:14px">🗑️</button>
     </div>
@@ -751,10 +766,10 @@ function renderAnimeList_fb(db){
 // ADD ANIME
 async function addAnime(){
   const name=document.getElementById('aname').value.trim();
-  if(!name){toast('❌ Anime name daalo!');return;}
+  if(!name){toast('❌ Please enter anime name!');return;}
   const ul1=document.getElementById('aul1').value.trim();
   const ul2=document.getElementById('aul2').value.trim();
-  if(!ul1){toast('❌ Kam se kam 1 unlock link daalo!');return;}
+  if(!ul1){toast('❌ At least 1 unlock link required!');return;}
   const db=gDB();
   const a={
     id:Date.now(),
@@ -792,14 +807,14 @@ async function addAnime(){
 // ADD EPISODE
 async function addEpisode(){
   const animeId=document.getElementById('epAnime').value;
-  if(!animeId){toast('❌ Pehle anime select karo!');return;}
+  if(!animeId){toast('❌ Please select an anime first!');return;}
   const epnum=document.getElementById('epnum').value;
-  if(!epnum){toast('❌ Episode number daalo!');return;}
+  if(!epnum){toast('❌ Please enter episode number!');return;}
   const l1080=document.getElementById('l1080').value.trim();
   const l720=document.getElementById('l720').value.trim();
   const l480=document.getElementById('l480').value.trim();
   const l360=document.getElementById('l360').value.trim();
-  if(!l1080&&!l720&&!l480&&!l360){toast('❌ Ek link toh daalo!');return;}
+  if(!l1080&&!l720&&!l480&&!l360){toast('❌ Please add at least one download link!');return;}
   const db=gDB();
   const anime=db.find(a=>a.id===animeId);
   if(!anime)return;
@@ -832,7 +847,7 @@ async function addEpisode(){
 
 function updateEpSelect(){
   const db=gDB(),sel=document.getElementById('epAnime'),prev=sel.value;
-  sel.innerHTML='<option value="">-- Anime Select Karo --</option>'+
+  sel.innerHTML='<option value="">-- Select Anime --</option>'+
     db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''} (${a.episodes?.length||0} ep)</option>`).join('');
   if(prev)sel.value=prev;
 }
@@ -865,39 +880,32 @@ async function deleteEp(animeId,epNum){
 
 // RENDER ANIME LIST
 function renderAnimeList(){
-  const db=gDB(),el=document.getElementById('alist');
-  if(!db.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:20px;font-size:13px">Koi anime nahi. Add Anime tab se add karo!</p>';return;}
-  el.innerHTML=db.map((a,i)=>`
-  <div class="arow" style="animation-delay:${i*.04}s">
-    <div class="athumb">${a.poster?`<img src="${a.poster}" alt="" onerror="this.style.display='none'">`:E(i)}</div>
-    <div class="arinfo">
-      <h4>${a.name}${a.season?' '+a.season:''}</h4>
-      <span>${a.genre||'Anime'} · ${a.episodes?.length||0} Ep · ${a.status||'—'}</span>
-    </div>
-    <div class="aacts">
-      <a href="anime.html?id=${a.id}" target="_blank" class="abtn" title="Preview">👁️</a>
-      <button class="abtn delbtn" onclick="deleteAnime(${a.id})" title="Delete">🗑️</button>
-    </div>
-  </div>`).join('');
+  renderAnimeList_fb(localCache);
 }
 
-function deleteAnime(id){
+async function deleteAnime(id){
   const db=localCache,a=db.find(x=>String(x.id)===String(id));
-  if(!confirm(`"${a?.name}" delete karein? Saare episodes bhi jayenge!`))return;
-  sDB(db.filter(x=>x.id!==id));
-  updateStats();renderAnimeList();updateEpSelect();
-  toast('🗑️ Deleted!');
+  if(!a){toast('❌ Anime not found in cache! Refresh page.');return;}
+  if(!confirm('"'+a.name+'" will be deleted with all episodes. Sure?'))return;
+  try{
+    await fdb.collection('anime').doc(String(id)).delete();
+    toast('🗑️ '+a.name+' deleted!');
+    await refreshAll();
+  }catch(e){
+    toast('❌ Delete failed: '+e.message);
+    console.error(e);
+  }
 }
 
 function changePass(){
   const np=document.getElementById('newpass').value,cp=document.getElementById('confpass').value;
-  if(!np){toast('❌ Password daalo!');return;}
-  if(np!==cp){toast('❌ Passwords match nahi karte!');return;}
-  if(np.length<6){toast('❌ Min 6 characters!');return;}
+  if(!np){toast('❌ Enter password!');return;}
+  if(np!==cp){toast('❌ Passwords do not match!');return;}
+  if(np.length<6){toast('❌ Minimum 6 characters!');return;}
   localStorage.setItem(PASS_KEY,np);
   document.getElementById('newpass').value='';
   document.getElementById('confpass').value='';
-  toast('✅ Password change ho gaya!');
+  toast('✅ Password changed successfully!');
 }
 
 async function exportData(){
@@ -905,19 +913,26 @@ async function exportData(){
   const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download='awiDB-backup.json';a.click();
-  URL.revokeObjectURL(url);toast('📤 Backup download ho gaya!');
+  URL.revokeObjectURL(url);toast('📤 Backup downloaded!');
 }
 function handleImport(input){
   const file=input.files[0];if(!file)return;
   const reader=new FileReader();
-  reader.onload=e=>{
+  reader.onload=async e=>{
     try{
       const data=JSON.parse(e.target.result);
-      if(!Array.isArray(data))throw new Error();
-      if(!confirm(data.length+' anime import karega. Current data replace hoga. Sure?'))return;
-      sDB(data);updateStats();renderAnimeList();updateEpSelect();
-      toast('✅ '+data.length+' anime import ho gaye!');
-    }catch{toast('❌ Invalid JSON file!');}
+      if(!Array.isArray(data))throw new Error('Invalid format');
+      if(!confirm(data.length+' anime will be imported. Current data replaced. Sure?'))return;
+      toast('⏳ Importing to Firebase...');
+      const batch=fdb.batch();
+      data.forEach(a=>{
+        const {id,...rest}=a;
+        batch.set(fdb.collection('anime').doc(String(id||Date.now())),rest);
+      });
+      await batch.commit();
+      await refreshAll();
+      toast('✅ '+data.length+' anime imported successfully!');
+    }catch(e){toast('❌ Import failed: '+e.message);}
   };
   reader.readAsText(file);
   input.value='';
@@ -1014,14 +1029,14 @@ function updateBulkSelect(){
   const db=gDB(),sel=document.getElementById('blkAnime');
   if(!sel)return;
   const prev=sel.value;
-  sel.innerHTML='<option value="">-- Anime Select Karo --</option>'+
+  sel.innerHTML='<option value="">-- Select Anime --</option>'+
     db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''} (${a.episodes?.length||0} ep)</option>`).join('');
   if(prev)sel.value=prev;
 }
 
 function previewBulk(){
   const animeId=parseInt(document.getElementById('blkAnime').value);
-  if(!animeId){toast('❌ Pehle anime select karo!');return;}
+  if(!animeId){toast('❌ Please select an anime first!');return;}
   const raw=document.getElementById('blkLinks').value.trim();
   if(!raw){toast('❌ Links paste karo!');return;}
   const links=raw.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
@@ -1122,7 +1137,7 @@ function previewPoster(url){
 function updateSpSelect(){
   const db=gDB(),sel=document.getElementById('spAnime');
   if(!sel)return;
-  sel.innerHTML='<option value="">-- Anime Select Karo --</option>'+
+  sel.innerHTML='<option value="">-- Select Anime --</option>'+
     db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
 }
 
@@ -1133,7 +1148,7 @@ async function addSeasonPack(){
   const l720=document.getElementById('sp720').value.trim();
   const l480=document.getElementById('sp480').value.trim();
   const l360=document.getElementById('sp360').value.trim();
-  if(!l1080&&!l720&&!l480&&!l360){toast('❌ Kam se kam ek link daalo!');return;}
+  if(!l1080&&!l720&&!l480&&!l360){toast('❌ Add at least one link!');return;}
 
   const db=gDB();
   const anime=db.find(a=>a.id===animeId);
@@ -1181,7 +1196,7 @@ function showSpExisting(animeId){
 }
 
 function deleteSeasonPack(animeId,packId){
-  if(!confirm('This season pack delete karein?'))return;
+  if(!confirm('Delete this season pack?'))return;
   const db=gDB(),anime=db.find(a=>a.id===animeId);
   if(!anime)return;
   anime.seasonPacks=anime.seasonPacks.filter(p=>p.id!==packId);
@@ -1448,7 +1463,7 @@ async function addSeasonZip(){
   const l720=document.getElementById('sz720').value.trim();
   const l480=document.getElementById('sz480').value.trim();
   const l360=document.getElementById('sz360').value.trim();
-  if(!l1080&&!l720&&!l480&&!l360){toast('❌ Kam se kam ek link daalo!');return;}
+  if(!l1080&&!l720&&!l480&&!l360){toast('❌ Add at least one link!');return;}
 
   const anime=localCache.find(a=>String(a.id)===String(animeId));
   if(!anime){toast('❌ Anime not found!');return;}
