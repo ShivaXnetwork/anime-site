@@ -107,6 +107,21 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(70px);background:#1565c0;color:#fff;border-radius:8px;padding:11px 22px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s ease;white-space:nowrap;box-shadow:0 4px 16px rgba(21,101,192,.3)}
 .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk",
+    authDomain: "anime-website-42907.firebaseapp.com",
+    projectId: "anime-website-42907",
+    storageBucket: "anime-website-42907.firebasestorage.app",
+    messagingSenderId: "747833174910",
+    appId: "1:747833174910:web:eefcbf01901ecb58b8a12f"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const fdb = firebase.firestore();
+</script>
 </head>
 <body>
 
@@ -220,7 +235,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
         <div class="row full">
           <div class="fg">
             <label>🖼️ Poster Image URL</label>
-            <input id="aposter" placeholder="https://i.ibb.co/... ya koi bhi direct image URL" oninput="previewPoster(this.value)">
+            <input id="aposter" placeholder="https://i.ibb.co/... (imgbb.com se upload karo)" oninput="previewPoster(this.value)" style="width:100%;background:#f9f9f9;border:1.5px solid #e0e0e0;color:#222;padding:10px 12px;border-radius:8px;font-size:13px;font-family:'Hind',sans-serif;outline:none">
           </div>
         </div>
         <div class="icard" style="margin-bottom:10px;font-size:11px">
@@ -550,11 +565,32 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
 <div class="toast" id="toast">✅ Saved!</div>
 
 <script>
-const DB='awiDB',PASS_KEY='awiPass';
+const PASS_KEY='awiPass';
 const DEFAULT_PASS='animeworld2024';
-const gDB=()=>JSON.parse(localStorage.getItem(DB)||'[]');
-const sDB=d=>localStorage.setItem(DB,JSON.stringify(d));
 const gPass=()=>localStorage.getItem(PASS_KEY)||DEFAULT_PASS;
+
+// Firebase helpers
+let localCache=[];
+
+async function gDB(){
+  const snap=await fdb.collection('anime').orderBy('createdAt','desc').get();
+  localCache=snap.docs.map(d=>({id:d.id,...d.data()}));
+  return localCache;
+}
+
+async function saveAnime(a){
+  const {id,...data}=a;
+  await fdb.collection('anime').doc(String(id)).set(data);
+}
+
+async function deleteAnime_fb(id){
+  await fdb.collection('anime').doc(String(id)).delete();
+}
+
+async function updateAnime_fb(id,data){
+  const {id:_,...rest}=data;
+  await fdb.collection('anime').doc(String(id)).set(rest);
+}
 const EM=['⚔️','🔮','🗡️','🌀','💥','🔥','⚡','🌊','👊','🤖','💀','🌸'];
 const E=i=>EM[i%EM.length];
 const isNew=d=>d&&(Date.now()-new Date(d))<7*864e5;
@@ -571,7 +607,7 @@ function doLogin(){
   if(p===gPass()){
     document.getElementById('ls').style.display='none';
     document.getElementById('ap').style.display='block';
-    updateStats();renderAnimeList();updateEpSelect();renderDashList();
+    refreshAll();
   }else{
     document.getElementById('lerr').style.display='block';
     document.getElementById('pinput').value='';
@@ -598,8 +634,9 @@ function switchTab(t){
 }
 
 // STATS
-function updateStats(){
-  const db=gDB();
+async function refreshAll(){
+  const db=await gDB();
+  // update stats
   const eps=db.reduce((s,a)=>s+(a.episodes?.length||0),0);
   const links=db.reduce((s,a)=>s+(a.episodes||[]).reduce((ss,e)=>ss+Object.values(e.links||{}).filter(l=>l).length,0),0);
   const newA=db.filter(a=>isNew(a.createdAt)).length;
@@ -607,10 +644,57 @@ function updateStats(){
   document.getElementById('tEp').textContent=eps;
   document.getElementById('tLinks').textContent=links;
   document.getElementById('tNew').textContent=newA;
+  // update selects and lists
+  const epSel=document.getElementById('epAnime');
+  const blkSel=document.getElementById('blkAnime');
+  const spSel=document.getElementById('spAnime');
+  if(epSel)epSel.innerHTML='<option value="">-- Anime Select Karo --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''} (${a.episodes?.length||0} ep)</option>`).join('');
+  if(blkSel)blkSel.innerHTML='<option value="">-- Anime Select Karo --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
+  if(spSel)spSel.innerHTML='<option value="">-- Anime Select Karo --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
+  renderDashList_fb(db);
+  renderAnimeList_fb(db);
+}
+
+function updateStats(){} // replaced by refreshAll
+
+function renderDashList_fb(db){
+  const el=document.getElementById('dashList');
+  if(!el)return;
+  if(!db.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:16px;font-size:13px;background:#f9f9f9;border-radius:8px">No anime yet!</p>';return;}
+  el.innerHTML=db.map((a,i)=>`
+  <div style="background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:7px">
+    <div style="width:42px;height:42px;border-radius:7px;background:#eee;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px">
+      ${a.poster?`<img src="${a.poster}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:['⚔️','🔮','🌀','💥','🔥','⚡'][i%6]}
+    </div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.name}${a.season?' '+a.season:''}</div>
+      <div style="font-size:11px;color:#888">${a.genre||'Anime'} · ${a.episodes?.length||0} Ep · ${a.status||'—'}</div>
+    </div>
+    <div style="display:flex;gap:5px;flex-shrink:0">
+      <button onclick="openEdit('${a.id}')" style="width:32px;height:32px;border-radius:6px;border:1px solid #90caf9;background:#e3f2fd;cursor:pointer;font-size:14px">✏️</button>
+      <a href="anime.html?id=${a.id}" target="_blank" style="width:32px;height:32px;border-radius:6px;border:1px solid #e0e0e0;background:#f9f9f9;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px">👁️</a>
+      <button onclick="deleteAnime('${a.id}')" style="width:32px;height:32px;border-radius:6px;border:1px solid #ef9a9a;background:#ffebee;cursor:pointer;font-size:14px">🗑️</button>
+    </div>
+  </div>`).join('');
+}
+
+function renderAnimeList_fb(db){
+  const el=document.getElementById('alist');
+  if(!el)return;
+  if(!db.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:20px;font-size:13px">No anime yet.</p>';return;}
+  el.innerHTML=db.map((a,i)=>`
+  <div class="arow" style="animation-delay:${i*.04}s">
+    <div class="athumb">${a.poster?`<img src="${a.poster}" alt="" onerror="this.style.display='none'">`:['⚔️','🔮','🌀'][i%3]}</div>
+    <div class="arinfo"><h4>${a.name}${a.season?' '+a.season:''}</h4><span>${a.genre||'Anime'} · ${a.episodes?.length||0} Ep</span></div>
+    <div class="aacts">
+      <a href="anime.html?id=${a.id}" target="_blank" class="abtn">👁️</a>
+      <button class="abtn delbtn" onclick="deleteAnime('${a.id}')">🗑️</button>
+    </div>
+  </div>`).join('');
 }
 
 // ADD ANIME
-function addAnime(){
+async function addAnime(){
   const name=document.getElementById('aname').value.trim();
   if(!name){toast('❌ Anime name daalo!');return;}
   const ul1=document.getElementById('aul1').value.trim();
@@ -641,14 +725,18 @@ function addAnime(){
     episodes:[],
     createdAt:new Date().toISOString()
   };
-  db.push(a);sDB(db);updateStats();
-  toast('✅ '+name+' add ho gaya!');
-  ['aname','aseason','ayear','arating','ateps','astudio','aposter','adesc','aul1','aul2'].forEach(id=>document.getElementById(id).value='');
+  try{
+    await fdb.collection('anime').doc(String(a.id)).set(a);
+    toast('✅ '+name+' added!');
+    ['aname','aseason','ayear','arating','ateps','astudio','aposter','adesc','aul1','aul2'].forEach(id=>document.getElementById(id).value='');
+    document.querySelectorAll('#genreBox input[type=checkbox]').forEach(c=>c.checked=false);
+    await refreshAll();
+  }catch(e){toast('❌ Error: '+e.message);}
 }
 
 // ADD EPISODE
-function addEpisode(){
-  const animeId=parseInt(document.getElementById('epAnime').value);
+async function addEpisode(){
+  const animeId=document.getElementById('epAnime').value;
   if(!animeId){toast('❌ Pehle anime select karo!');return;}
   const epnum=document.getElementById('epnum').value;
   if(!epnum){toast('❌ Episode number daalo!');return;}
@@ -679,9 +767,12 @@ function addEpisode(){
   anime.episodes=anime.episodes||[];
   anime.episodes.push(ep);
   anime.episodes.sort((a,b)=>a.num-b.num);
-  sDB(db);updateStats();showExistingEps();
-  toast('✅ Episode '+epnum+' add!');
-  ['epnum','eptit','epdur','l1080','l720','l480','l360'].forEach(id=>document.getElementById(id).value='');
+  try{
+    await fdb.collection('anime').doc(String(animeId)).set(anime);
+    toast('✅ Episode '+epnum+' added!');
+    ['epnum','eptit','epdur','l1080','l720','l480','l360'].forEach(id=>document.getElementById(id).value='');
+    await refreshAll();showExistingEps();
+  }catch(e){toast('❌ Error: '+e.message);}
 }
 
 function updateEpSelect(){
@@ -692,9 +783,9 @@ function updateEpSelect(){
 }
 
 function showExistingEps(){
-  const id=parseInt(document.getElementById('epAnime').value),el=document.getElementById('existingEps');
+  const id=document.getElementById('epAnime').value,el=document.getElementById('existingEps');
   if(!id){el.innerHTML='';return;}
-  const db=gDB(),anime=db.find(a=>a.id===id);
+  const db=localCache,anime=db.find(a=>String(a.id)===String(id));
   if(!anime?.episodes?.length){el.innerHTML='<p style="color:#aaa;font-size:12px;padding:8px 0">Abhi koi episode nahi.</p>';return;}
   const sorted=[...anime.episodes].sort((a,b)=>a.num-b.num);
   el.innerHTML=`<div class="eprows">${sorted.map(ep=>`
@@ -705,13 +796,16 @@ function showExistingEps(){
   </div>`).join('')}</div>`;
 }
 
-function deleteEp(animeId,epNum){
+async function deleteEp(animeId,epNum){
   if(!confirm('Episode '+epNum+' delete karein?'))return;
-  const db=gDB(),a=db.find(x=>x.id===animeId);
+  const db=localCache,a=db.find(x=>String(x.id)===String(animeId));
   if(!a)return;
   a.episodes=a.episodes.filter(e=>e.num!==epNum);
-  sDB(db);updateStats();showExistingEps();updateEpSelect();
-  toast('🗑️ Episode '+epNum+' deleted!');
+  try{
+    await fdb.collection('anime').doc(String(animeId)).update({episodes:a.episodes});
+    toast('🗑️ Episode '+epNum+' deleted!');
+    await refreshAll();showExistingEps();
+  }catch(e){toast('❌ Error: '+e.message);}
 }
 
 // RENDER ANIME LIST
@@ -733,7 +827,7 @@ function renderAnimeList(){
 }
 
 function deleteAnime(id){
-  const db=gDB(),a=db.find(x=>x.id===id);
+  const db=localCache,a=db.find(x=>String(x.id)===String(id));
   if(!confirm(`"${a?.name}" delete karein? Saare episodes bhi jayenge!`))return;
   sDB(db.filter(x=>x.id!==id));
   updateStats();renderAnimeList();updateEpSelect();
@@ -751,8 +845,9 @@ function changePass(){
   toast('✅ Password change ho gaya!');
 }
 
-function exportData(){
-  const blob=new Blob([JSON.stringify(gDB(),null,2)],{type:'application/json'});
+async function exportData(){
+  const d=await gDB();
+  const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download='awiDB-backup.json';a.click();
   URL.revokeObjectURL(url);toast('📤 Backup download ho gaya!');
@@ -792,7 +887,7 @@ function handleImport(input){
       <div class="row"><div class="fg"><label>Year</label><input id="eYear" type="number" placeholder="2024"></div>
       <div class="fg"><label>Rating</label><input id="eRating" type="number" step="0.1" placeholder="8.5"></div></div>
       <div class="row full"><div class="fg"><label>🖼️ Poster URL</label>
-        <input id="ePoster" placeholder="https://i.ibb.co/..." oninput="prevEditPoster(this.value)"></div></div>
+        <input id="ePoster" placeholder="https://i.ibb.co/..." oninput="prevEditPoster(this.value)" style="width:100%;background:#f9f9f9;border:1.5px solid #e0e0e0;color:#222;padding:10px 12px;border-radius:8px;font-size:13px;outline:none"></div></div>
       <div id="editPosterPrev" style="display:none;text-align:center;margin:8px 0">
         <img id="editPosterImg" src="" style="max-height:100px;border-radius:6px;border:2px solid #1565c0">
       </div>
@@ -976,7 +1071,7 @@ function updateSpSelect(){
     db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
 }
 
-function addSeasonPack(){
+async function addSeasonPack(){
   const animeId=parseInt(document.getElementById('spAnime').value);
   if(!animeId){toast('❌ Anime select karo!');return;}
   const l1080=document.getElementById('sp1080').value.trim();
@@ -1005,9 +1100,12 @@ function addSeasonPack(){
   if(l360)pack.links['360p']=l360;
 
   anime.seasonPacks.push(pack);
-  sDB(db);
-  showSpExisting(animeId);
-  toast('✅ Season Pack add ho gaya!');
+  try{
+    await fdb.collection('anime').doc(String(animeId)).update({seasonPacks:anime.seasonPacks});
+    toast('✅ Season Pack added!');
+    showSpExisting(animeId);
+    await refreshAll();
+  }catch(e){toast('❌ Error: '+e.message);}
   ['spTitle','spEps','spSize','sp1080','sp720','sp480','sp360'].forEach(id=>document.getElementById(id).value='');
 }
 
@@ -1076,18 +1174,15 @@ function renderDashList(){
 }
 
 function deleteFromDash(id){
-  const db=gDB(),a=db.find(x=>x.id===id);
-  if(!confirm(`Delete "${a?.name}"? All episodes + packs will be removed!`))return;
-  sDB(db.filter(x=>x.id!==id));
-  updateStats();renderDashList();renderAnimeList();updateEpSelect();
-  toast('🗑️ Deleted!');
+  const db=localCache,a=db.find(x=>String(x.id)===String(id));
+  // handled by deleteAnime
 }
 
 // ============================================================
 // EDIT SYSTEM
 // ============================================================
 function openEdit(id){
-  const db=gDB(),a=db.find(x=>x.id===id);
+  const db=localCache,a=db.find(x=>String(x.id)===String(id));
   if(!a)return;
   document.getElementById('editId').value=id;
   document.getElementById('eName').value=a.name||'';
@@ -1119,12 +1214,12 @@ function prevEditPoster(url){
   p.style.display='block';
 }
 
-function saveEdit(){
+async function saveEdit(){
   const id=parseInt(document.getElementById('editId').value);
   const name=document.getElementById('eName').value.trim();
   if(!name){toast('❌ Anime name required!');return;}
   const db=gDB();
-  const idx=db.findIndex(a=>a.id===id);
+  const idx=db.findIndex(a=>String(a.id)===String(id));
   if(idx===-1){toast('❌ Anime not found!');return;}
   
   // Keep existing episodes + packs
@@ -1148,12 +1243,12 @@ function saveEdit(){
     updatedAt:new Date().toISOString()
   };
 
-  sDB(db);
-  closeEdit();
-  updateStats();
-  renderDashList();
-  renderAnimeList();
-  toast('✅ '+name+' updated!');
+  try{
+    await fdb.collection('anime').doc(String(id)).set(db[idx]);
+    closeEdit();
+    toast('✅ '+name+' updated!');
+    await refreshAll();
+  }catch(e){toast('❌ Error: '+e.message);}
 }
 
 // Close modal on outside click
@@ -1177,4 +1272,65 @@ document.addEventListener('DOMContentLoaded',()=>{
     setTimeout(renderDashList,100);
   };
 });
+</script>
+<script>
+// Poster via imgbb.com (free image hosting)
+
+// ============================================================
+// BULK EPISODES — Firebase version
+// ============================================================
+async function submitBulk(){
+  const animeId=document.getElementById('blkAnime').value;
+  if(!animeId){toast('❌ Anime select karo!');return;}
+  const raw=document.getElementById('blkLinks').value.trim();
+  const links=raw.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
+  if(!links.length){toast('❌ Links nahi hain!');return;}
+  const startEp=parseInt(document.getElementById('blkStart').value)||1;
+  const quality=document.getElementById('blkQuality').value;
+  const dur=document.getElementById('blkDur').value||'24m';
+  
+  const db=localCache;
+  const anime=db.find(a=>String(a.id)===String(animeId));
+  if(!anime){toast('❌ Anime not found!');return;}
+  
+  anime.episodes=anime.episodes||[];
+  links.forEach((link,i)=>{
+    const epNum=startEp+i;
+    anime.episodes=anime.episodes.filter(e=>e.num!==epNum);
+    const ep={num:epNum,title:'Episode '+epNum,duration:dur,language:'Hindi',links:{},addedAt:new Date().toISOString()};
+    ep.links[quality]=link;
+    anime.episodes.push(ep);
+  });
+  anime.episodes.sort((a,b)=>a.num-b.num);
+  
+  try{
+    await fdb.collection('anime').doc(String(animeId)).set(anime);
+    toast('✅ '+links.length+' episodes added!');
+    document.getElementById('blkLinks').value='';
+    document.getElementById('blkPreview').style.display='none';
+    document.getElementById('blkSubmit').style.display='none';
+    await refreshAll();
+  }catch(e){toast('❌ Error: '+e.message);}
+}
+
+// Season pack delete Firebase
+async function deleteSeasonPack(animeId,packId){
+  if(!confirm('Delete this season pack?'))return;
+  const anime=localCache.find(a=>String(a.id)===String(animeId));
+  if(!anime)return;
+  anime.seasonPacks=(anime.seasonPacks||[]).filter(p=>p.id!==packId);
+  try{
+    await fdb.collection('anime').doc(String(animeId)).update({seasonPacks:anime.seasonPacks});
+    showSpExisting(animeId);
+    toast('🗑️ Pack deleted!');
+    await refreshAll();
+  }catch(e){toast('❌ Error!');}
+}
+
+// Override renderDashList to use localCache
+function renderDashList(){renderDashList_fb(localCache);}
+function renderAnimeList(){renderAnimeList_fb(localCache);}
+function updateEpSelect(){} // handled by refreshAll
+function updateBulkSelect(){} // handled by refreshAll
+function updateSpSelect(){} // handled by refreshAll
 </script>

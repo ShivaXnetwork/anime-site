@@ -17,6 +17,40 @@
 <!-- MONETAG POP-UNDER — Zone ID paste karo
 <script src="//ophoacit.com/1?z=YOUR_ZONE_ID" data-cfasync="false" async></script> -->
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk",
+    authDomain: "anime-website-42907.firebaseapp.com",
+    projectId: "anime-website-42907",
+    storageBucket: "anime-website-42907.firebasestorage.app",
+    messagingSenderId: "747833174910",
+    appId: "1:747833174910:web:eefcbf01901ecb58b8a12f"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  
+  // Global anime cache
+  let animeCache = [];
+  let cacheLoaded = false;
+
+  // Load all anime from Firebase
+  async function loadFromFirebase() {
+    try {
+      const snap = await db.collection('anime').orderBy('createdAt','desc').get();
+      animeCache = snap.docs.map(d => ({id: d.id, ...d.data()}));
+      cacheLoaded = true;
+      return animeCache;
+    } catch(e) {
+      console.error('Firebase error:', e);
+      return [];
+    }
+  }
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -261,8 +295,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
 </nav>
 
 <script>
-const DB='awiDB';
-const gDB=()=>JSON.parse(localStorage.getItem(DB)||'[]');
+// Firebase DB — data loads from cloud
 const EM=['⚔️','🔮','🗡️','🌀','💥','🔥','⚡','🌊','👊','🤖','💀','🌸','😤','🐉','🦊'];
 const E=i=>EM[i%EM.length];
 const isNew=d=>d&&(Date.now()-new Date(d))<7*864e5;
@@ -271,7 +304,7 @@ let curG='All';
 
 // ---- GRID ----
 function renderGrid(genre='All'){
-  const db=gDB(),el=document.getElementById('aniGrid'),cnt=document.getElementById('aniCnt');
+  const db=animeCache,el=document.getElementById('aniGrid'),cnt=document.getElementById('aniCnt');
   const list=genre==='All'?db:db.filter(a=>a.genre===genre);
   cnt.textContent=list.length+' Series';
   if(!list.length){
@@ -298,7 +331,7 @@ function renderGrid(genre='All'){
 
 // ---- LATEST ----
 function renderLatest(){
-  const db=gDB(),el=document.getElementById('latestList');
+  const db=animeCache,el=document.getElementById('latestList');
   const eps=[];
   db.forEach(a=>(a.episodes||[]).forEach(ep=>eps.push({a,ep})));
   eps.sort((x,y)=>new Date(y.ep.addedAt||0)-new Date(x.ep.addedAt||0));
@@ -334,7 +367,7 @@ function setGenre(g){
 function openSearch(){document.getElementById('srchOv').classList.add('open');setTimeout(()=>document.getElementById('srchInp').focus(),80);}
 function closeSearch(){document.getElementById('srchOv').classList.remove('open');document.getElementById('srchInp').value='';document.getElementById('srchRes').innerHTML='<div class="s-empty">Type to search...</div>';}
 function doSearch(q){
-  const el=document.getElementById('srchRes'),db=gDB();
+  const el=document.getElementById('srchRes'),db=animeCache;
   if(!q.trim()){el.innerHTML='<div class="s-empty">Type to search...</div>';return;}
   const r=db.filter(a=>a.name.toLowerCase().includes(q.toLowerCase())||(a.genre||'').toLowerCase().includes(q.toLowerCase()));
   if(!r.length){el.innerHTML=`<div class="s-empty">"${q}" not found 😅</div>`;return;}
@@ -349,8 +382,13 @@ function closeMenu(){document.getElementById('sideMenu').classList.remove('open'
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSearch();closeMenu();}});
 
 // ---- INIT ----
-renderGrid();renderLatest();
-setInterval(()=>{renderGrid(curG);renderLatest();},30000);
+// Load from Firebase then render
+loadFromFirebase().then(data => {
+  animeCache = data;
+  renderGrid();
+  renderLatest();
+});
+setInterval(()=>{loadFromFirebase().then(()=>{renderGrid(curG);renderLatest();});},60000);
 </script>
 </body>
 </html>

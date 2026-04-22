@@ -6,6 +6,40 @@
 <title>AnimeWorld India – Anime</title>
 <!-- MONETAG POP-UNDER:
 <script src="//ophoacit.com/1?z=YOUR_ZONE_ID" data-cfasync="false" async></script> -->
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk",
+    authDomain: "anime-website-42907.firebaseapp.com",
+    projectId: "anime-website-42907",
+    storageBucket: "anime-website-42907.firebasestorage.app",
+    messagingSenderId: "747833174910",
+    appId: "1:747833174910:web:eefcbf01901ecb58b8a12f"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  
+  // Global anime cache
+  let animeCache = [];
+  let cacheLoaded = false;
+
+  // Load all anime from Firebase
+  async function loadFromFirebase() {
+    try {
+      const snap = await db.collection('anime').orderBy('createdAt','desc').get();
+      animeCache = snap.docs.map(d => ({id: d.id, ...d.data()}));
+      cacheLoaded = true;
+      return animeCache;
+    } catch(e) {
+      console.error('Firebase error:', e);
+      return [];
+    }
+  }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -232,15 +266,39 @@ function checkBothClicked(animeId){
 // ============================================================
 // MAIN
 // ============================================================
-const DB='awiDB';
 const EM=['⚔️','🔮','🗡️','🌀','💥','🔥','⚡','🌊','👊','🤖','💀','🌸'];
 const E=i=>EM[i%EM.length];
 const GR=['linear-gradient(135deg,#ccc,#eee)'];
 
 const params=new URLSearchParams(window.location.search);
-const animeId=parseInt(params.get('id'));
-const db=JSON.parse(localStorage.getItem(DB)||'[]');
-const anime=db.find(a=>a.id===animeId);
+const animeId=params.get('id');
+let anime=null;
+let db=[];
+
+async function initPage(){
+  try {
+    const doc = await firebase.firestore().collection('anime').doc(animeId).get();
+    if(doc.exists){
+      anime={id:doc.id,...doc.data()};
+      db=[anime];
+    }
+  } catch(e){ console.error(e); }
+  
+  if(!anime){
+    document.getElementById('pageContent').innerHTML=`
+    <div style="text-align:center;padding:80px 20px;color:#aaa">
+      <div style="font-size:60px;margin-bottom:16px">🔍</div>
+      <h2 style="font-family:'Teko',sans-serif;font-size:24px;color:#888;margin-bottom:10px">ANIME NOT FOUND</h2>
+      <a href="index.html" style="color:#1565c0;text-decoration:none;font-weight:600">← Go Back</a>
+    </div>`;
+    document.getElementById('nbTitle').textContent='Not Found';
+  } else {
+    document.title=anime.name+(anime.season?' '+anime.season:'')+' — AnimeWorld India';
+    document.getElementById('nbTitle').textContent=anime.name+(anime.season?' '+anime.season:'');
+    renderAnime(anime);
+  }
+}
+initPage();
 // Auto fix imgbb viewer links → direct image links
 if(anime&&anime.poster){
   // ibb.co/XXXXX → i.ibb.co/XXXXX/img.jpg (best effort)
@@ -249,22 +307,10 @@ if(anime&&anime.poster){
     .replace('http://ibb.co/','https://i.ibb.co/');
 }
 
-if(!anime){
-  document.getElementById('pageContent').innerHTML=`
-  <div style="text-align:center;padding:80px 20px;color:#aaa">
-    <div style="font-size:60px;margin-bottom:16px">🔍</div>
-    <h2 style="font-family:'Teko',sans-serif;font-size:24px;color:#888;margin-bottom:10px">ANIME NOT FOUND</h2>
-    <a href="index.html" style="color:#1565c0;text-decoration:none;font-weight:600">← Go Back</a>
-  </div>`;
-  document.getElementById('nbTitle').textContent='Not Found';
-} else {
-  document.title=anime.name+(anime.season?' '+anime.season:'')+' — AnimeWorld India';
-  document.getElementById('nbTitle').textContent=anime.name+(anime.season?' '+anime.season:'');
-  renderAnime(anime);
-}
+// handled in initPage()
 
 function renderAnime(a){
-  const dbI=db.findIndex(x=>x.id===a.id);
+  const dbI=0;
   const unlocked=isUnlocked();
   const timeLeft=getTimeLeft();
   const eps=a.episodes||[];
