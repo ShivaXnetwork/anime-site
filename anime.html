@@ -277,12 +277,29 @@ let db=[];
 
 async function initPage(){
   try {
-    const doc = await firebase.firestore().collection('anime').doc(animeId).get();
+    // Try direct doc fetch first
+    const doc = await firebase.firestore().collection('anime').doc(String(animeId)).get();
     if(doc.exists){
       anime={id:doc.id,...doc.data()};
       db=[anime];
+    } else {
+      // Fallback: query all and find matching id
+      const snap = await firebase.firestore().collection('anime').get();
+      const all = snap.docs.map(d=>({id:d.id,...d.data()}));
+      anime = all.find(a=>String(a.id)===String(animeId)||d.id===String(animeId));
+      if(anime) db=[anime];
     }
-  } catch(e){ console.error(e); }
+  } catch(e){ 
+    console.error('Firebase error:',e);
+    // Show error
+    document.getElementById('pageContent').innerHTML=`
+    <div style="text-align:center;padding:80px 20px;color:#aaa">
+      <div style="font-size:40px;margin-bottom:12px">⚠️</div>
+      <p style="font-size:13px">Connection error. Please check internet and try again.</p>
+      <a href="index.html" style="color:#1565c0;text-decoration:none;font-weight:600;display:block;margin-top:16px">← Go Back</a>
+    </div>`;
+    return;
+  }
   
   if(!anime){
     document.getElementById('pageContent').innerHTML=`
@@ -293,19 +310,19 @@ async function initPage(){
     </div>`;
     document.getElementById('nbTitle').textContent='Not Found';
   } else {
+    // Fix imgbb poster url
+    if(anime.poster){
+      anime.poster=anime.poster
+        .replace('https://ibb.co/','https://i.ibb.co/')
+        .replace('http://ibb.co/','https://i.ibb.co/');
+    }
     document.title=anime.name+(anime.season?' '+anime.season:'')+' — AnimeWorld India';
     document.getElementById('nbTitle').textContent=anime.name+(anime.season?' '+anime.season:'');
     renderAnime(anime);
   }
 }
 initPage();
-// Auto fix imgbb viewer links → direct image links
-if(anime&&anime.poster){
-  // ibb.co/XXXXX → i.ibb.co/XXXXX/img.jpg (best effort)
-  anime.poster=anime.poster
-    .replace('https://ibb.co/','https://i.ibb.co/')
-    .replace('http://ibb.co/','https://i.ibb.co/');
-}
+
 
 // handled in initPage()
 

@@ -235,13 +235,12 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
         <div class="row full">
           <div class="fg">
             <label>🖼️ Poster Image URL</label>
-            <input id="aposter" placeholder="https://i.ibb.co/... (imgbb.com se upload karo)" oninput="previewPoster(this.value)" style="width:100%;background:#f9f9f9;border:1.5px solid #e0e0e0;color:#222;padding:10px 12px;border-radius:8px;font-size:13px;font-family:'Hind',sans-serif;outline:none">
+            <input id="aposter" placeholder="https://i.ibb.co/... (imgbb.com se Direct link copy karo)" oninput="previewPoster(this.value)" style="width:100%;background:#f9f9f9;border:1.5px solid #e0e0e0;color:#222;padding:10px 12px;border-radius:8px;font-size:13px;font-family:'Hind',sans-serif;outline:none">
+            <div id="posterWarn" style="display:none;background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:8px 10px;font-size:11px;color:#856404;margin-top:6px;line-height:1.6"></div>
           </div>
         </div>
         <div class="icard" style="margin-bottom:10px;font-size:11px">
-          📸 <strong>Free Image Upload karo:</strong> 
-          <a href="https://imgbb.com" target="_blank">imgbb.com</a> pe jao → Image upload karo → "Direct link" copy karo → Yahan paste karo<br>
-          Ya <a href="https://postimages.org" target="_blank">postimages.org</a> use karo — bilkul free!
+          📸 <strong>ImgBB Steps:</strong> <a href="https://imgbb.com" target="_blank">imgbb.com</a> → Upload → "Embed codes" mein <strong>"Direct links"</strong> select karo → <strong>i.ibb.co</strong> wala link copy karo ✅<br>⚠️ "Viewer links" wala link mat copy karna (ibb.co wala kaam nahi karega!)
         </div>
         <div id="posterPreview" style="display:none;margin-bottom:10px;text-align:center">
           <img id="posterImg" src="" style="max-height:120px;border-radius:8px;border:2px solid #1565c0" onerror="this.parentElement.style.display='none'">
@@ -505,8 +504,8 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
       <div class="fcard">
         <h3>📥 DOWNLOAD LINKS</h3>
         <div class="ul-note">
-          IndianShortener se links shorten karo: <a href="https://indianshortener.in" target="_blank">indianshortener.in</a><br>
-          Direct file link (Drive/Mega/TG) paste karo → shortened link milega → yahan paste karo
+          IndianShortener se shorten karo: <a href="https://indianshortener.in" target="_blank">indianshortener.in</a><br>
+          Ek quality ka link daalo ya multiple — jo available ho woh daalo
         </div>
         <div class="qgrid">
           <div class="fg"><label>🔴 1080p Link</label><input id="l1080" placeholder="https://indianshortener.in/..."></div>
@@ -515,6 +514,62 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
           <div class="fg"><label>⚪ 360p Link</label><input id="l360" placeholder="https://indianshortener.in/..."></div>
         </div>
         <button class="submitbtn" onclick="addEpisode()">✅ EPISODE ADD KARO</button>
+      </div>
+
+      <!-- EPISODE WISE MULTI ADD -->
+      <div class="fcard" style="border-color:#f57f17">
+        <h3 style="color:#f57f17">📋 EPISODE-WISE BULK (Title + Link)</h3>
+        <div class="ul-note" style="background:#fff9c4;border-color:#ffe082;color:#795548">
+          Har episode ka title + link — format:<br>
+          <strong>Episode 1 Title | https://link1.com</strong><br>
+          <strong>Episode 2 Title | https://link2.com</strong><br>
+          Pipe (|) se title aur link alag karo
+        </div>
+        <div class="row full"><div class="fg">
+          <label>Anime *</label>
+          <select id="ewAnime"><option value="">-- Select Anime --</option></select>
+        </div></div>
+        <div class="row">
+          <div class="fg"><label>Starting Ep Number</label><input id="ewStart" type="number" placeholder="1" value="1"></div>
+          <div class="fg"><label>Quality</label>
+            <select id="ewQuality"><option>1080p</option><option>720p</option><option>480p</option><option>360p</option></select>
+          </div>
+        </div>
+        <div class="row full"><div class="fg">
+          <label>Episodes (Title | Link)</label>
+          <textarea id="ewLinks" style="min-height:180px;font-size:12px;font-family:monospace" 
+            placeholder="The Beginning | https://link1.com&#10;The Battle | https://link2.com&#10;The End | https://link3.com"></textarea>
+        </div></div>
+        <button class="submitbtn" style="background:#f57f17" onclick="addEpisodeWise()">✅ EPISODE-WISE ADD KARO</button>
+      </div>
+
+      <!-- SEASON ZIP ADD -->
+      <div class="fcard" style="border-color:#6a1b9a">
+        <h3 style="color:#6a1b9a">📦 SEASON ZIP FILE</h3>
+        <div class="ul-note" style="background:#f3e5f5;border-color:#ce93d8;color:#6a1b9a">
+          Pura season ek ZIP — visitor seedha full season download karega
+        </div>
+        <div class="row full"><div class="fg">
+          <label>Anime *</label>
+          <select id="szAnime"><option value="">-- Select Anime --</option></select>
+        </div></div>
+        <div class="row">
+          <div class="fg"><label>Pack Title</label><input id="szTitle" placeholder="Season 1 Complete"></div>
+          <div class="fg"><label>File Size</label><input id="szSize" placeholder="e.g. 2.7 GB"></div>
+        </div>
+        <div class="row">
+          <div class="fg"><label>Episodes Count</label><input id="szEps" type="number" placeholder="24"></div>
+          <div class="fg"><label>Quality</label>
+            <select id="szQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select>
+          </div>
+        </div>
+        <div class="qgrid">
+          <div class="fg"><label>🔴 1080p ZIP Link</label><input id="sz1080" placeholder="https://..."></div>
+          <div class="fg"><label>🔵 720p ZIP Link</label><input id="sz720" placeholder="https://..."></div>
+          <div class="fg"><label>🟢 480p ZIP Link</label><input id="sz480" placeholder="https://..."></div>
+          <div class="fg"><label>⚪ 360p ZIP Link</label><input id="sz360" placeholder="https://..."></div>
+        </div>
+        <button class="submitbtn" style="background:#6a1b9a" onclick="addSeasonZip()">✅ SEASON ZIP ADD KARO</button>
       </div>
     </div>
 
@@ -1209,8 +1264,12 @@ function prevEditPoster(url){
   const p=document.getElementById('editPosterPrev');
   const img=document.getElementById('editPosterImg');
   if(!url.trim()){p.style.display='none';return;}
-  const fixed=url.replace('https://ibb.co/','https://i.ibb.co/').replace('http://ibb.co/','https://i.ibb.co/');
-  img.src=fixed;
+  if(url.match(/^https?:\/\/ibb\.co\/[a-zA-Z0-9]+$/) && !url.includes('i.ibb.co')){
+    p.style.display='none';
+    toast('⚠️ Wrong link! ImgBB pe Direct links copy karo (i.ibb.co wala)');
+    return;
+  }
+  img.src=url;
   p.style.display='block';
 }
 
@@ -1333,4 +1392,100 @@ function renderAnimeList(){renderAnimeList_fb(localCache);}
 function updateEpSelect(){} // handled by refreshAll
 function updateBulkSelect(){} // handled by refreshAll
 function updateSpSelect(){} // handled by refreshAll
+</script>
+<script>
+// ============================================================
+// EPISODE-WISE ADD (Title + Link per episode)
+// ============================================================
+async function addEpisodeWise(){
+  const animeId=document.getElementById('ewAnime').value;
+  if(!animeId){toast('❌ Anime select karo!');return;}
+  const raw=document.getElementById('ewLinks').value.trim();
+  if(!raw){toast('❌ Episodes paste karo!');return;}
+  const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l.includes('|'));
+  if(!lines.length){toast('❌ Format: Title | Link');return;}
+  const startEp=parseInt(document.getElementById('ewStart').value)||1;
+  const quality=document.getElementById('ewQuality').value;
+
+  const anime=localCache.find(a=>String(a.id)===String(animeId));
+  if(!anime){toast('❌ Anime not found!');return;}
+  anime.episodes=anime.episodes||[];
+
+  lines.forEach((line,i)=>{
+    const parts=line.split('|');
+    const title=parts[0].trim();
+    const link=parts.slice(1).join('|').trim();
+    const epNum=startEp+i;
+    anime.episodes=anime.episodes.filter(e=>e.num!==epNum);
+    const ep={
+      num:epNum,
+      title:title||'Episode '+epNum,
+      duration:'24m',
+      language:'Hindi',
+      links:{},
+      addedAt:new Date().toISOString()
+    };
+    ep.links[quality]=link;
+    anime.episodes.push(ep);
+  });
+  anime.episodes.sort((a,b)=>a.num-b.num);
+
+  try{
+    await firebase.firestore().collection('anime').doc(String(animeId)).set(anime);
+    toast('✅ '+lines.length+' episodes added with titles!');
+    document.getElementById('ewLinks').value='';
+    await refreshAll();
+  }catch(e){toast('❌ Error: '+e.message);}
+}
+
+// ============================================================
+// SEASON ZIP ADD
+// ============================================================
+async function addSeasonZip(){
+  const animeId=document.getElementById('szAnime').value;
+  if(!animeId){toast('❌ Anime select karo!');return;}
+  const l1080=document.getElementById('sz1080').value.trim();
+  const l720=document.getElementById('sz720').value.trim();
+  const l480=document.getElementById('sz480').value.trim();
+  const l360=document.getElementById('sz360').value.trim();
+  if(!l1080&&!l720&&!l480&&!l360){toast('❌ Kam se kam ek link daalo!');return;}
+
+  const anime=localCache.find(a=>String(a.id)===String(animeId));
+  if(!anime){toast('❌ Anime not found!');return;}
+  anime.seasonPacks=anime.seasonPacks||[];
+
+  const pack={
+    id:Date.now(),
+    title:document.getElementById('szTitle').value.trim()||'Full Season Pack',
+    episodes:document.getElementById('szEps').value.trim(),
+    size:document.getElementById('szSize').value.trim(),
+    quality:document.getElementById('szQuality').value,
+    links:{},
+    addedAt:new Date().toISOString()
+  };
+  if(l1080)pack.links['1080p']=l1080;
+  if(l720)pack.links['720p']=l720;
+  if(l480)pack.links['480p']=l480;
+  if(l360)pack.links['360p']=l360;
+  anime.seasonPacks.push(pack);
+
+  try{
+    await firebase.firestore().collection('anime').doc(String(animeId)).set(anime);
+    toast('✅ Season ZIP added!');
+    ['szTitle','szSize','szEps','sz1080','sz720','sz480','sz360'].forEach(id=>document.getElementById(id).value='');
+    await refreshAll();
+  }catch(e){toast('❌ Error: '+e.message);}
+}
+
+// Update selects for new fields in refreshAll
+const _origRefresh=window.refreshAll;
+window.refreshAll=async function(){
+  await _origRefresh();
+  const db=localCache;
+  const opts='<option value="">-- Select Anime --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
+  ['ewAnime','szAnime'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.innerHTML=opts;
+  });
+};
 </script>
