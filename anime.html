@@ -160,10 +160,11 @@ body{background:#fff;color:#222;font-family:'Hind',sans-serif;min-height:100vh}
 
 <script>
 // ============================================================
-// ACCESS SYSTEM
+// ACCESS SYSTEM — Anti-bypass blocking modal
 // ============================================================
 const ACCESS_KEY='awi24hr';
 const CLICK_KEY='awiClicks';
+const WAIT_SECS=18;
 
 function isUnlocked(){
   const d=localStorage.getItem(ACCESS_KEY);
@@ -178,35 +179,61 @@ function getTimeLeft(){
 }
 function getClicks(){return JSON.parse(localStorage.getItem(CLICK_KEY)||'{}');}
 
-function markClick(animeId,linkNum){
-  const WAIT=17000;
-  const statusEl=document.getElementById('ul-st-'+linkNum);
-  let remaining=Math.ceil(WAIT/1000);
-  if(statusEl)statusEl.textContent='⏳ '+remaining+'s';
+// Show blocking overlay — user CANNOT dismiss early
+function showCountdown(animeId, linkNum, url){
+  // Open link in new tab
+  window.open(url,'_blank');
+
+  // Create full-screen blocking overlay
+  const overlay=document.createElement('div');
+  overlay.id='cdOverlay';
+  overlay.style.cssText=`position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center`;
+  overlay.innerHTML=`
+    <div style="font-size:50px;margin-bottom:16px">⏳</div>
+    <h2 style="font-family:'Teko',sans-serif;font-size:26px;color:#fff;letter-spacing:1px;margin-bottom:8px">PLEASE WAIT</h2>
+    <p style="color:#aaa;font-size:13px;margin-bottom:24px;line-height:1.6">Ad is loading in the other tab.<br>Please wait for the timer to complete.</p>
+    <div style="width:90px;height:90px;border-radius:50%;background:#1565c0;display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+      <span id="cdNum" style="font-family:'Teko',sans-serif;font-size:44px;color:#fff;font-weight:700">${WAIT_SECS}</span>
+    </div>
+    <p style="color:#666;font-size:11px">Do not close this page</p>`;
+  document.body.appendChild(overlay);
+  document.body.style.overflow='hidden';
+
+  let remaining=WAIT_SECS;
   const ticker=setInterval(()=>{
     remaining--;
-    const el=document.getElementById('ul-st-'+linkNum);
-    const c=getClicks();
-    if(el&&!c[animeId+'_'+linkNum])el.textContent=remaining>0?'⏳ '+remaining+'s':'✔ Done';
-    if(remaining<=0)clearInterval(ticker);
-  },1000);
-  setTimeout(()=>{
-    const c=getClicks();
-    const k=animeId+'_'+linkNum;
-    if(c[k])return;
-    c[k]=Date.now();
-    localStorage.setItem(CLICK_KEY,JSON.stringify(c));
-    const a=currentAnime;
-    const hasTwo=a&&a.unlockLink1&&a.unlockLink2;
-    const done=hasTwo?(c[animeId+'_1']&&c[animeId+'_2']):c[animeId+'_1'];
-    if(done){
-      localStorage.setItem(ACCESS_KEY,Date.now()+24*3600000);
-      renderPage(currentAnime);
-    } else {
-      const el2=document.getElementById('ulink-'+linkNum);
-      if(el2){el2.classList.add('done');const st=el2.querySelector('.ul-st');if(st)st.textContent='✅ Done';}
+    const el=document.getElementById('cdNum');
+    if(el)el.textContent=remaining;
+    if(remaining<=0){
+      clearInterval(ticker);
+      // Count the click
+      const c=getClicks();
+      const k=animeId+'_'+linkNum;
+      c[k]=Date.now();
+      localStorage.setItem(CLICK_KEY,JSON.stringify(c));
+
+      // Check if unlocked
+      const a=currentAnime;
+      const hasTwo=a&&a.unlockLink1&&a.unlockLink2;
+      const done=hasTwo?(c[animeId+'_1']&&c[animeId+'_2']):c[animeId+'_1'];
+
+      document.body.removeChild(overlay);
+      document.body.style.overflow='';
+
+      if(done){
+        localStorage.setItem(ACCESS_KEY,Date.now()+24*3600000);
+        renderPage(currentAnime);
+      } else {
+        // Show link 2 as done, update UI
+        renderPage(currentAnime);
+      }
     }
-  },WAIT);
+  },1000);
+}
+
+function markClick(animeId,linkNum){
+  // Prevent default — handled by showCountdown
+  return false;
 }
 
 // ============================================================
@@ -305,12 +332,12 @@ function renderPage(a){
     <h3>🔐 UNLOCK FREE ACCESS</h3>
     <p>Click the link${a.unlockLink2?'s':''} below to unlock <strong>24-hour free access</strong> to all episodes!</p>
     <div class="ulinks">
-      <a href="${a.unlockLink1||'#'}" target="_blank" rel="noopener" class="ulink" id="ulink-1" onclick="markClick('${a.id}',1)">
+      <a href="#" class="ulink" id="ulink-1" onclick="showCountdown('${a.id}',1,'${a.unlockLink1||'#'}');return false;">
         <div class="ul-icon">🔗</div>
         <div class="ul-text"><h4>Access Link 1</h4><span>Click and wait a few seconds</span></div>
         <div class="ul-st" id="ul-st-1">${clicks[a.id+'_1']?'✅ Done':'Click ▶'}</div>
       </a>
-      ${a.unlockLink2?`<a href="${a.unlockLink2}" target="_blank" rel="noopener" class="ulink" id="ulink-2" onclick="markClick('${a.id}',2)">
+      ${a.unlockLink2?`<a href="#" class="ulink" id="ulink-2" onclick="showCountdown('${a.id}',2,'${a.unlockLink2}');return false;">
         <div class="ul-icon">🔗</div>
         <div class="ul-text"><h4>Access Link 2</h4><span>Click and wait a few seconds</span></div>
         <div class="ul-st" id="ul-st-2">${clicks[a.id+'_2']?'✅ Done':'Click ▶'}</div>
@@ -359,7 +386,7 @@ function renderPage(a){
     ${eps.length?`
     <div class="ep-section">
       <h2>📺 EPISODES (${eps.length})</h2>
-      <div id="epList">${epHtml||'<p style="color:#aaa;font-size:13px;text-align:center;padding:20px">No episodes yet.</p>'}</div>
+      <div id="epList">${epHtml||'<p style="color:#aaa;font-size:13px;text-align:center;padding:24px">No episodes added yet.<br><span style="font-size:11px">Episodes will appear here once added by admin.</span></p>'}</div>
     </div>`:''}
 
   </div>`;
@@ -370,11 +397,22 @@ function renderPage(a){
       const t=document.getElementById('timerTxt');
       if(t)t.textContent=getTimeLeft()||'Expired';
     },60000);
+    // Scroll to episodes
+    setTimeout(()=>{
+      const el=document.getElementById('epList')||document.querySelector('.ep-section')||document.querySelector('.zip-section');
+      if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+    },300);
   }
-  // Mark already-clicked links
+  // Mark already-clicked links as done
   if(!unlocked){
-    if(clicks[a.id+'_1']){const el=document.getElementById('ulink-1');if(el)el.classList.add('done');}
-    if(clicks[a.id+'_2']){const el=document.getElementById('ulink-2');if(el)el.classList.add('done');}
+    if(clicks[String(a.id)+'_1']){
+      const el=document.getElementById('ulink-1');
+      if(el){el.classList.add('done');const st=el.querySelector('.ul-st');if(st)st.textContent='✅ Done';}
+    }
+    if(clicks[String(a.id)+'_2']){
+      const el=document.getElementById('ulink-2');
+      if(el){el.classList.add('done');const st=el.querySelector('.ul-st');if(st)st.textContent='✅ Done';}
+    }
   }
 }
 
