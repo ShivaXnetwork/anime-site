@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unlock Access — AnimeWorld India</title>
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a1a;color:#fff;font-family:'Hind',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.logo{font-family:'Teko',sans-serif;font-size:20px;font-weight:700;margin-bottom:30px;letter-spacing:1px}
+.lr{color:#e63946}.lt{color:#fff}.li{color:#ffd60a}
+.card{background:#12122a;border:1px solid #1e1e3a;border-radius:16px;padding:28px 22px;width:100%;max-width:380px;text-align:center}
+.icon{font-size:52px;margin-bottom:12px}
+h1{font-family:'Teko',sans-serif;font-size:24px;letter-spacing:1px;margin-bottom:6px}
+.sub{font-size:13px;color:#888;line-height:1.6;margin-bottom:24px}
+
+/* Progress */
+.progress-wrap{display:flex;gap:10px;justify-content:center;margin-bottom:20px}
+.pstep{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;max-width:120px}
+.pball{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;font-family:'Teko',sans-serif;transition:all .3s}
+.pball.pending{background:#1e1e3a;border:2px solid #333;color:#555}
+.pball.active{background:#1565c0;border:2px solid #4a90e2;color:#fff;box-shadow:0 0 16px rgba(21,101,192,.5)}
+.pball.done{background:#1b5e20;border:2px solid #2e7d32;color:#fff}
+.plabel{font-size:10px;color:#666;letter-spacing:.5px}
+.pconnect{flex:1;height:2px;background:#1e1e3a;margin-top:22px;border-radius:2px;max-width:40px}
+.pconnect.done{background:#2e7d32}
+
+/* Countdown */
+.countdown-wrap{display:none;margin-bottom:20px}
+.countdown-wrap.show{display:block}
+.cdring{width:100px;height:100px;margin:0 auto 12px;position:relative}
+.cdring svg{transform:rotate(-90deg)}
+.cdring circle{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .95s linear}
+.cdring .bg{stroke:#1e1e3a}
+.cdring .fg{stroke:#1565c0}
+.cdnum{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Teko',sans-serif;font-size:32px;color:#fff;font-weight:700}
+.cdmsg{font-size:12px;color:#888;line-height:1.5}
+
+/* Buttons */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:10px;font-family:'Teko',sans-serif;font-size:18px;letter-spacing:.5px;cursor:pointer;border:none;text-decoration:none;transition:all .2s;margin-bottom:10px}
+.btn-primary{background:linear-gradient(135deg,#1565c0,#0d47a1);color:#fff}
+.btn-primary:hover{opacity:.9;transform:scale(1.02)}
+.btn-success{background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff}
+.btn-disabled{background:#1e1e3a;color:#555;cursor:not-allowed;pointer-events:none}
+.note{font-size:11px;color:#555;line-height:1.6;margin-top:12px}
+.toast-wrap{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:100}
+.toast{background:#1565c0;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;white-space:nowrap;opacity:0;transform:translateY(-10px);transition:all .3s}
+.toast.show{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="logo"><span class="lr">ANIME</span><span class="lt">WORLD</span><span class="li">INDIA</span></div>
+
+<div class="card">
+  <div class="icon" id="cardIcon">🔐</div>
+  <h1 id="cardTitle">UNLOCK FREE ACCESS</h1>
+  <p class="sub" id="cardSub">Click both links below to unlock <strong>24-hour unlimited access</strong> to all anime episodes.</p>
+
+  <!-- Progress Steps -->
+  <div class="progress-wrap">
+    <div class="pstep">
+      <div class="pball pending" id="ball1">1</div>
+      <div class="plabel">LINK 1</div>
+    </div>
+    <div class="pconnect" id="conn"></div>
+    <div class="pstep">
+      <div class="pball pending" id="ball2">2</div>
+      <div class="plabel">LINK 2</div>
+    </div>
+  </div>
+
+  <!-- Countdown Ring -->
+  <div class="countdown-wrap" id="cdWrap">
+    <div class="cdring">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle class="bg" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"/>
+        <circle class="fg" id="cdArc" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"/>
+      </svg>
+      <div class="cdnum" id="cdNum">18</div>
+    </div>
+    <div class="cdmsg">Ad loading in other tab.<br>Please wait — do not close this page.</div>
+  </div>
+
+  <!-- Buttons -->
+  <div id="btnArea">
+    <button class="btn btn-primary" id="link1Btn" onclick="clickLink(1)">🔗 Click Access Link 1</button>
+    <button class="btn btn-disabled" id="link2Btn" onclick="clickLink(2)">🔗 Click Access Link 2</button>
+  </div>
+
+  <div class="note" id="noteText">⏱ Click Link 1 first → wait 18 seconds → then click Link 2 → Access unlocked!</div>
+</div>
+
+<div class="toast-wrap"><div class="toast" id="toast"></div></div>
+
+<script>
+const WAIT=18;
+const ACCESS_KEY='awi24hr';
+const CLICK_KEY='awiClicks';
+const CIRCUMFERENCE=264;
+
+// Get params
+const params=new URLSearchParams(window.location.search);
+const animeId=params.get('aid');
+const link1=params.get('l1');
+const link2=params.get('l2');
+const returnUrl=params.get('ret')||'index.html';
+
+function getClicks(){return JSON.parse(localStorage.getItem(CLICK_KEY)||'{}');}
+function saveClicks(c){localStorage.setItem(CLICK_KEY,JSON.stringify(c));}
+function isUnlocked(){
+  const d=localStorage.getItem(ACCESS_KEY);
+  return d&&Date.now()<parseInt(d);
+}
+
+// If already unlocked, redirect immediately
+if(isUnlocked()){
+  window.location.href=returnUrl;
+}
+
+// If no links configured
+if(!link1&&!link2){
+  // Grant access directly (admin forgot to set links)
+  localStorage.setItem(ACCESS_KEY,Date.now()+24*3600000);
+  window.location.href=returnUrl;
+}
+
+// If only 1 link
+const hasTwo=!!(link1&&link2);
+if(!hasTwo){
+  // Hide link2
+  document.getElementById('link2Btn').style.display='none';
+  document.getElementById('ball2').style.display='none';
+  document.getElementById('conn').style.display='none';
+  document.getElementById('noteText').textContent='⏱ Click the link → wait 18 seconds → Access unlocked!';
+}
+
+// Check already clicked
+const clicks=getClicks();
+let link1Done=!!(clicks[animeId+'_1']);
+let link2Done=!!(clicks[animeId+'_2']);
+
+// Update UI based on state
+function updateUI(){
+  const b1=document.getElementById('ball1');
+  const b2=document.getElementById('ball2');
+  const conn=document.getElementById('conn');
+  const btn1=document.getElementById('link1Btn');
+  const btn2=document.getElementById('link2Btn');
+
+  if(link1Done){
+    b1.classList.remove('pending','active');b1.classList.add('done');b1.textContent='✓';
+    btn1.className='btn btn-success';btn1.textContent='✅ Link 1 Done';
+    btn1.onclick=null;
+    if(conn)conn.classList.add('done');
+  }
+  if(link2Done||!hasTwo){
+    b2.classList.remove('pending','active');b2.classList.add('done');b2.textContent='✓';
+    if(hasTwo){btn2.className='btn btn-success';btn2.textContent='✅ Link 2 Done';btn2.onclick=null;}
+  }
+  // Enable link2 only after link1
+  if(link1Done&&hasTwo&&!link2Done){
+    btn2.className='btn btn-primary';
+    btn2.style.removeProperty('pointer-events');
+  }
+}
+
+updateUI();
+
+// Check if already done
+function checkUnlock(){
+  const done=hasTwo?(link1Done&&link2Done):link1Done;
+  if(done){
+    localStorage.setItem(ACCESS_KEY,Date.now()+24*3600000);
+    document.getElementById('cardIcon').textContent='🔓';
+    document.getElementById('cardTitle').textContent='ACCESS UNLOCKED!';
+    document.getElementById('cardSub').textContent='24 hours of free anime access. Redirecting...';
+    document.getElementById('cdWrap').classList.remove('show');
+    document.getElementById('btnArea').innerHTML='<a class="btn btn-success" href="'+returnUrl+'">▶ Watch Now</a>';
+    toast('🎉 Access Unlocked! Enjoy 24 hours of free anime!');
+    setTimeout(()=>window.location.href=returnUrl,2000);
+  }
+}
+
+checkUnlock();
+
+let timerRunning=false;
+
+function clickLink(num){
+  if(timerRunning)return;
+  if(num===1&&link1Done){toast('Link 1 already done!');return;}
+  if(num===2&&!link1Done&&hasTwo){toast('Click Link 1 first!');return;}
+  if(num===2&&link2Done){toast('Link 2 already done!');return;}
+
+  const url=num===1?link1:link2;
+  if(!url||url==='#'){toast('Link not configured!');return;}
+
+  // Open in new tab
+  window.open(url,'_blank');
+
+  // Start countdown
+  startCountdown(num);
+}
+
+function startCountdown(num){
+  timerRunning=true;
+  const cdWrap=document.getElementById('cdWrap');
+  cdWrap.classList.add('show');
+
+  // Update ball to active
+  const ball=document.getElementById('ball'+num);
+  ball.classList.remove('pending');ball.classList.add('active');
+
+  // Disable buttons during countdown
+  ['link1Btn','link2Btn'].forEach(id=>{
+    const b=document.getElementById(id);
+    if(b&&!b.classList.contains('btn-success'))b.className='btn btn-disabled';
+  });
+
+  let remaining=WAIT;
+  document.getElementById('cdNum').textContent=remaining;
+
+  const arc=document.getElementById('cdArc');
+  arc.style.strokeDashoffset='0';
+
+  const ticker=setInterval(()=>{
+    remaining--;
+    document.getElementById('cdNum').textContent=remaining;
+    // Update arc
+    const offset=CIRCUMFERENCE*(1-(remaining/WAIT));
+    arc.style.strokeDashoffset=String(offset);
+
+    if(remaining<=0){
+      clearInterval(ticker);
+      timerRunning=false;
+      cdWrap.classList.remove('show');
+      arc.style.strokeDashoffset='0';
+
+      // Save click
+      const c=getClicks();
+      if(num===1){c[animeId+'_1']=Date.now();link1Done=true;}
+      else{c[animeId+'_2']=Date.now();link2Done=true;}
+      saveClicks(c);
+
+      updateUI();
+      checkUnlock();
+
+      if(!((hasTwo&&link1Done&&link2Done)||(!hasTwo&&link1Done))){
+        toast('✅ Link '+num+' complete! Now click Link 2.');
+      }
+    }
+  },1000);
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>

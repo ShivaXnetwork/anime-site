@@ -4,784 +4,651 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel — AnimeWorld India</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey:"AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk",
+  authDomain:"anime-website-42907.firebaseapp.com",
+  projectId:"anime-website-42907",
+  storageBucket:"anime-website-42907.firebasestorage.app",
+  messagingSenderId:"747833174910",
+  appId:"1:747833174910:web:eefcbf01901ecb58b8a12f"
+});
+const fdb=firebase.firestore();
+</script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
-body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100vh}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f0f2f5;color:#222;font-family:'Hind',sans-serif;min-height:100vh}
 
 /* LOGIN */
-#ls{position:fixed;inset:0;background:#f4f4f4;z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
-.lbox{background:#fff;border:1px solid #e0e0e0;border-radius:14px;padding:32px 24px;width:100%;max-width:340px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.08)}
-.licon{font-size:52px;margin-bottom:12px}
-.lbox h2{font-family:'Teko',sans-serif;font-size:22px;font-weight:700;color:#1565c0;margin-bottom:4px;letter-spacing:1px}
-.lbox p{font-size:12px;color:#888;margin-bottom:24px}
-.linput{width:100%;background:#f9f9f9;border:1.5px solid #e0e0e0;color:#222;padding:13px 16px;border-radius:8px;font-size:16px;font-family:'Hind',sans-serif;outline:none;margin-bottom:12px;transition:border-color .2s;text-align:center;letter-spacing:4px}
+#ls{position:fixed;inset:0;background:linear-gradient(135deg,#0d1b2a,#1a2f4a);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
+.lbox{background:#fff;border-radius:16px;padding:32px 24px;width:100%;max-width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.l-welcome{font-size:11px;color:#1565c0;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.l-name{font-family:'Teko',sans-serif;font-size:22px;font-weight:700;color:#222;margin-bottom:4px}
+.l-sub{font-size:12px;color:#aaa;margin-bottom:24px}
+.l-icon{font-size:50px;margin-bottom:14px}
+.linput{width:100%;background:#f9f9f9;border:1.5px solid #e0e0e0;color:#222;padding:13px 16px;border-radius:10px;font-size:15px;font-family:'Hind',sans-serif;outline:none;margin-bottom:12px;text-align:center;letter-spacing:4px;transition:border-color .2s}
 .linput:focus{border-color:#1565c0}
-.lbtn{width:100%;background:#1565c0;border:none;color:#fff;padding:13px;border-radius:8px;font-family:'Teko',sans-serif;font-size:20px;letter-spacing:1px;cursor:pointer;transition:background .15s}
-.lbtn:hover{background:#0d47a1}
+.lbtn{width:100%;background:linear-gradient(135deg,#1565c0,#0d47a1);border:none;color:#fff;padding:13px;border-radius:10px;font-family:'Teko',sans-serif;font-size:20px;letter-spacing:1px;cursor:pointer;transition:opacity .15s}
+.lbtn:hover{opacity:.9}
 .lerr{color:#c00;font-size:12px;margin-top:10px;display:none}
+.lattempts{font-size:11px;color:#aaa;margin-top:6px}
 
-/* ADMIN PANEL */
+/* ADMIN */
 #ap{display:none}
 
-/* NAVBAR */
-.navbar{background:#1565c0;padding:0 14px;display:flex;align-items:center;justify-content:space-between;height:50px;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(21,101,192,.3)}
-.nav-logo{font-family:'Teko',sans-serif;font-size:17px;font-weight:700;letter-spacing:1px;color:#fff}
-.nav-logo span{color:#ffd600}
-.lout-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 13px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Hind',sans-serif;font-weight:600;transition:all .15s}
-.lout-btn:hover{background:rgba(255,255,255,.25)}
+/* TOPBAR */
+.topbar{background:linear-gradient(135deg,#1565c0,#0d47a1);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(21,101,192,.4);position:sticky;top:0;z-index:50}
+.tb-left h1{font-family:'Teko',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:1px}
+.tb-left p{font-size:11px;color:rgba(255,255,255,.7)}
+.tb-right{display:flex;gap:8px;align-items:center}
+.site-link{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;transition:background .15s}
+.site-link:hover{background:rgba(255,255,255,.25)}
+.lout-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;transition:all .15s}
+.lout-btn:hover{background:rgba(255,0,0,.3)}
 
 /* BODY */
-.ab{padding:14px;max-width:700px;margin:0 auto;padding-bottom:30px}
-
-/* TABS */
-.tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:6px}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex-shrink:0;padding:7px 14px;border-radius:6px;font-family:'Hind',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:none;border:none;color:#888;transition:all .15s;white-space:nowrap}
-.tab.active{background:#1565c0;color:#fff}
-.tab:hover:not(.active){background:#e3f2fd;color:#1565c0}
-.tc{display:none}.tc.active{display:block}
+.ab{padding:14px;max-width:700px;margin:0 auto;padding-bottom:40px}
 
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
 @media(min-width:400px){.stats{grid-template-columns:repeat(4,1fr)}}
-.sbox{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:14px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.sv{font-family:'Teko',sans-serif;font-size:26px;font-weight:700;color:#1565c0}
-.sk{font-size:10px;color:#aaa;letter-spacing:.5px;text-transform:uppercase;margin-top:2px}
+.sbox{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid #e8e8e8}
+.sv{font-family:'Teko',sans-serif;font-size:28px;font-weight:700;color:#1565c0;line-height:1}
+.sk{font-size:10px;color:#aaa;letter-spacing:.5px;text-transform:uppercase;margin-top:3px}
 
-/* INFO CARD */
-.icard{background:#e3f2fd;border:1px solid #90caf9;border-radius:8px;padding:13px;margin-bottom:14px;font-size:12px;line-height:1.8;color:#555}
+/* TABS */
+.tabs{display:flex;gap:5px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;background:#fff;border-radius:10px;padding:6px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:8px 14px;border-radius:7px;font-family:'Hind',sans-serif;font-size:12px;font-weight:600;cursor:pointer;background:none;border:none;color:#888;transition:all .15s;white-space:nowrap}
+.tab.active{background:#1565c0;color:#fff}
+.tab:hover:not(.active){background:#e3f2fd;color:#1565c0}
+.tc{display:none}.tc.active{display:block}
+
+/* CARDS */
+.fcard{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid #e8e8e8}
+.fcard h3{font-family:'Teko',sans-serif;font-size:17px;font-weight:700;color:#1565c0;margin-bottom:14px;letter-spacing:.5px;border-bottom:2px solid #e3f2fd;padding-bottom:8px}
+.fcard.green h3{color:#2e7d32;border-bottom-color:#e8f5e9}
+.fcard.purple h3{color:#6a1b9a;border-bottom-color:#f3e5f5}
+
+/* INFO BOX */
+.icard{background:#e3f2fd;border:1px solid #90caf9;border-radius:8px;padding:12px 14px;margin-bottom:12px;font-size:12px;line-height:1.8;color:#555}
 .icard strong{color:#1565c0}
 .icard a{color:#1565c0;font-weight:600}
+.warn-card{background:#fff9c4;border:1px solid #ffe082;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:#795548;line-height:1.7}
+.warn-card strong{color:#e65100}
 
-/* FORM CARD */
-.fcard{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.fcard h3{font-family:'Teko',sans-serif;font-size:17px;font-weight:700;color:#1565c0;margin-bottom:14px;letter-spacing:.5px;border-bottom:2px solid #e3f2fd;padding-bottom:8px}
+/* FORM */
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .row.full{grid-template-columns:1fr}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.fg{display:flex;flex-direction:column;gap:4px}
-.fg label{font-size:10px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.fg input,.fg select,.fg textarea{background:#f9f9f9;border:1.5px solid #e0e0e0;color:#222;padding:10px 12px;border-radius:8px;font-size:13px;font-family:'Hind',sans-serif;outline:none;transition:border-color .2s;width:100%}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#1565c0;background:#fff}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg label{font-size:10px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.fg input,.fg select,.fg textarea{background:#f9f9f9;border:1.5px solid #e0e0e0;color:#222;padding:10px 12px;border-radius:9px;font-size:13px;font-family:'Hind',sans-serif;outline:none;transition:border-color .2s;width:100%}
+.fg input:focus,.fg select,.fg textarea:focus{border-color:#1565c0;background:#fff}
 .fg textarea{resize:vertical;min-height:80px;line-height:1.5}
-.submitbtn{width:100%;background:#1565c0;border:none;color:#fff;padding:13px;border-radius:8px;font-family:'Teko',sans-serif;font-size:20px;letter-spacing:1px;cursor:pointer;transition:background .15s;margin-top:4px}
-.submitbtn:hover{background:#0d47a1}
+.fg input[type=checkbox]{width:auto;margin-right:6px}
 
-/* UNLOCK LINK NOTE */
-.ul-note{background:#fff9c4;border:1px solid #ffe082;border-radius:7px;padding:10px 12px;font-size:11px;color:#795548;margin-bottom:10px;line-height:1.7}
-.ul-note a{color:#f57f17;font-weight:600}
-.ul-note strong{color:#e65100}
+/* GENRE CHECKBOXES */
+.genre-grid{display:flex;flex-wrap:wrap;gap:6px;background:#f9f9f9;border:1.5px solid #e0e0e0;border-radius:9px;padding:10px}
+.glabel{display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer;padding:3px 8px;border-radius:5px;border:1px solid #e0e0e0;background:#fff;user-select:none;transition:all .15s}
+.glabel:hover{border-color:#1565c0;color:#1565c0}
+.glabel input:checked+span,.glabel:has(input:checked){background:#e3f2fd;border-color:#1565c0;color:#1565c0}
+
+/* BUTTONS */
+.submitbtn{width:100%;background:linear-gradient(135deg,#1565c0,#0d47a1);border:none;color:#fff;padding:13px;border-radius:10px;font-family:'Teko',sans-serif;font-size:20px;letter-spacing:1px;cursor:pointer;transition:opacity .15s;margin-top:6px}
+.submitbtn:hover{opacity:.9}
+.submitbtn.green{background:linear-gradient(135deg,#2e7d32,#1b5e20)}
+.submitbtn.purple{background:linear-gradient(135deg,#6a1b9a,#4a148c)}
+.submitbtn.orange{background:linear-gradient(135deg,#e65100,#bf360c)}
+.expbtn{width:100%;background:#f9f9f9;border:1.5px solid #e0e0e0;color:#333;padding:11px;border-radius:9px;font-family:'Hind',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:8px}
+.expbtn:hover{border-color:#1565c0;color:#1565c0}
+
+/* POSTER PREVIEW */
+#posterPreview,#editPosterPrev{display:none;text-align:center;margin:8px 0}
+#posterPreview img,#editPosterPrev img{max-height:120px;border-radius:8px;border:2px solid #1565c0}
+.poster-warn{display:none;background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:8px 10px;font-size:11px;color:#856404;margin-top:6px;line-height:1.6}
 
 /* ANIME LIST */
-.alist{display:flex;flex-direction:column;gap:7px}
-.arow{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:11px 13px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 3px rgba(0,0,0,.04);animation:fadeUp .3s ease both}
+.alist{display:flex;flex-direction:column;gap:8px}
+.arow{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 4px rgba(0,0,0,.04);animation:fadeUp .3s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.athumb{width:44px;height:44px;border-radius:6px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:20px;overflow:hidden;flex-shrink:0}
+.athumb{width:44px;height:44px;border-radius:7px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:20px;overflow:hidden;flex-shrink:0}
 .athumb img{width:100%;height:100%;object-fit:cover}
 .arinfo{flex:1;min-width:0}
 .arinfo h4{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .arinfo span{font-size:11px;color:#888}
 .aacts{display:flex;gap:5px;flex-shrink:0}
-.abtn{width:32px;height:32px;border-radius:6px;border:1px solid #e0e0e0;background:#f9f9f9;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s}
+.abtn{width:32px;height:32px;border-radius:7px;border:1px solid #e0e0e0;background:#f9f9f9;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s;text-decoration:none}
 .abtn:hover{border-color:#1565c0}
 .delbtn:hover{border-color:#c00;background:#ffebee}
 
 /* EP ROWS */
-.eprows{display:flex;flex-direction:column;gap:4px;margin-top:8px;max-height:200px;overflow-y:auto}
-.eprow{display:flex;align-items:center;justify-content:space-between;background:#f9f9f9;border:1px solid #eee;border-radius:6px;padding:7px 10px;font-size:12px}
-.eprow .en{font-family:'Teko',sans-serif;font-size:13px;color:#1565c0;font-weight:700;width:26px;flex-shrink:0}
-.eprow .et{flex:1;color:#333}
-.eprow .d2{background:none;border:none;color:#c00;cursor:pointer;font-size:14px;padding:0 3px}
+.eprows{display:flex;flex-direction:column;gap:4px;margin-top:8px;max-height:200px;overflow-y:auto;padding-right:2px}
+.eprow{display:flex;align-items:center;gap:8px;background:#f9f9f9;border:1px solid #eee;border-radius:6px;padding:7px 10px;font-size:12px}
+.eprow-num{font-family:'Teko',sans-serif;font-size:13px;color:#1565c0;font-weight:700;width:26px;flex-shrink:0}
+.eprow-title{flex:1;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eprow-del{background:none;border:none;color:#c00;cursor:pointer;font-size:14px;padding:0 3px;flex-shrink:0}
+
+/* EDIT MODAL */
+#editModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;overflow-y:auto;padding:16px}
+.edit-inner{background:#fff;border-radius:14px;max-width:600px;margin:0 auto;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.edit-head{background:linear-gradient(135deg,#1565c0,#0d47a1);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.edit-head span{font-family:'Teko',sans-serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:.5px}
+.edit-cls{background:rgba(255,255,255,.2);border:none;color:#fff;width:30px;height:30px;border-radius:6px;font-size:18px;cursor:pointer}
+.edit-body{padding:16px}
 
 /* SETTINGS */
-.settrow{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.settrow{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .settrow h3{font-family:'Teko',sans-serif;font-size:16px;font-weight:700;color:#888;margin-bottom:12px;letter-spacing:.5px}
 
-/* EXPORT BTNS */
-.expbtn{width:100%;background:#f9f9f9;border:1.5px solid #e0e0e0;color:#333;padding:12px;border-radius:8px;font-family:'Hind',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:8px}
-.expbtn:hover{border-color:#1565c0;color:#1565c0}
-
 /* TOAST */
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(70px);background:#1565c0;color:#fff;border-radius:8px;padding:11px 22px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s ease;white-space:nowrap;box-shadow:0 4px 16px rgba(21,101,192,.3)}
-.toast.show{transform:translateX(-50%) translateY(0)}
+.toast-fixed{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1565c0;color:#fff;border-radius:10px;padding:11px 22px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(21,101,192,.4)}
+.toast-fixed.show{opacity:1}
+
+/* LOADING overlay */
+.loading-ov{position:fixed;inset:0;background:rgba(255,255,255,.8);z-index:400;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+.loading-ov.show{display:flex}
+.spinner{width:40px;height:40px;border:4px solid #e3f2fd;border-top-color:#1565c0;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk",
-    authDomain: "anime-website-42907.firebaseapp.com",
-    projectId: "anime-website-42907",
-    storageBucket: "anime-website-42907.firebasestorage.app",
-    messagingSenderId: "747833174910",
-    appId: "1:747833174910:web:eefcbf01901ecb58b8a12f"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const fdb = firebase.firestore();
-</script>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div id="ls">
   <div class="lbox">
-    <div class="licon">🔐</div>
-    <h2>ADMIN PANEL</h2>
-    <p>AnimeWorld India — Secret Access</p>
-    <input class="linput" id="pinput" type="password" placeholder="••••••••">
+    <div class="l-icon">👑</div>
+    <div class="l-welcome">Welcome Back, Sir</div>
+    <div class="l-name">Shiva Tiwari</div>
+    <div class="l-sub">AnimeWorld India — Admin Access</div>
+    <input class="linput" id="pinput" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="lbtn" onclick="doLogin()">LOGIN</button>
     <div class="lerr" id="lerr">❌ Wrong password!</div>
+    <div class="lattempts" id="lattempts"></div>
   </div>
+</div>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-ov" id="loadOv">
+  <div class="spinner"></div>
+  <p style="font-size:13px;color:#1565c0;font-weight:600" id="loadMsg">Saving to Firebase...</p>
 </div>
 
 <!-- ADMIN PANEL -->
 <div id="ap">
-  <nav class="navbar">
-    <div class="nav-logo">AWI <span>ADMIN</span></div>
+
+<div class="topbar">
+  <div class="tb-left">
+    <h1>⚙️ ANIMEWORLD ADMIN</h1>
+    <p>Welcome, Sir Shiva Tiwari 👑</p>
+  </div>
+  <div class="tb-right">
+    <a href="index.html" target="_blank" class="site-link">🌐 View Site</a>
     <button class="lout-btn" onclick="logout()">Logout</button>
-  </nav>
-
-  <div class="ab">
-
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('dash')">📊 Dashboard</button>
-      <button class="tab" onclick="switchTab('addAnime')">➕ Add Anime</button>
-      <button class="tab" onclick="switchTab('bulk')">⚡ Bulk Add</button>
-      <button class="tab" onclick="switchTab('addEp')">🎬 Add Episode</button>
-      <button class="tab" onclick="switchTab('season')">📦 Season Pack</button>
-      <button class="tab" onclick="switchTab('manage')">📋 All Anime</button>
-      <button class="tab" onclick="switchTab('sett')">⚙️ Settings</button>
-    </div>
-
-    <!-- DASHBOARD -->
-    <div class="tc active" id="tab-dash">
-      <div class="stats">
-        <div class="sbox"><div class="sv" id="tAnime">0</div><div class="sk">Anime</div></div>
-        <div class="sbox"><div class="sv" id="tEp">0</div><div class="sk">Episodes</div></div>
-        <div class="sbox"><div class="sv" id="tLinks">0</div><div class="sk">Links</div></div>
-        <div class="sbox"><div class="sv" id="tNew">0</div><div class="sk">New (7d)</div></div>
-      </div>
-      <div class="icard">
-        <strong>🎯 Workflow:</strong><br>
-        1. "Add Anime" → Anime create karo (1 unlock link minimum, 2 for double earning)<br>
-        2. "Add Episode" → Episode add karo with IndianShortener links<br>
-        3. Visitor 2 unlock links click karega → 24hr unlimited access milega<br>
-        4. Tumhara IndianShortener earning bhi hogi har click pe 💰<br><br>
-        <strong>🌐 Site:</strong> <a href="index.html" target="_blank">index.html</a> &nbsp;|&nbsp;
-        <strong>💰 Earn:</strong> ~$5-8 per 1000 Indian clicks
-      </div>
-      <button class="expbtn" onclick="exportData()">📤 Export Data (JSON Backup)</button>
-      <button class="expbtn" onclick="document.getElementById('impFile').click()">📥 Import Data (JSON Restore)</button>
-      <input type="file" id="impFile" accept=".json" style="display:none" onchange="handleImport(this)">
-
-      <!-- QUICK ANIME LIST ON DASHBOARD -->
-      <div style="margin-top:16px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-          <h3 style="font-family:'Teko',sans-serif;font-size:18px;font-weight:700;letter-spacing:.5px">📋 YOUR ANIME</h3>
-          <button class="submitbtn" style="width:auto;padding:6px 14px;font-size:13px" onclick="switchTab('addAnime')">+ Add New</button>
-        </div>
-        <div id="dashList"></div>
-      </div>
-    </div>
-
-    <!-- ADD ANIME -->
-    <div class="tc" id="tab-addAnime">
-      <div class="fcard">
-        <h3>📝 ANIME DETAILS</h3>
-        <div class="row">
-          <div class="fg"><label>Anime Name *</label><input id="aname" placeholder="e.g. Jujutsu Kaisen"></div>
-          <div class="fg"><label>Season</label><input id="aseason" placeholder="e.g. Season 3"></div>
-        </div>
-        <div class="row">
-          <div class="fg"><label>Genre *</label>
-<div style="display:flex;flex-wrap:wrap;gap:6px;background:#f9f9f9;border:1.5px solid #e0e0e0;border-radius:8px;padding:10px" id="genreBox">
-              <label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="checkbox" value="Action"> ⚔️ Action</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="checkbox" value="Shonen"> 🔥 Shonen</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="checkbox" value="Isekai"> 🌀 Isekai</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="checkbox" value="Romance"> 💕 Romance</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="checkbox" value="Horror"> 💀 Horror</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="checkbox" value="Sports"> ⚽ Sports</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="checkbox" value="Slice of Life"> 🌸 SoL</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="checkbox" value="Mecha"> 🤖 Mecha</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="checkbox" value="Fantasy"> 🔮 Fantasy</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="checkbox" value="Dark"> 🖤 Dark</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="checkbox" value="Comedy"> 😂 Comedy</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="checkbox" value="Thriller"> 🎭 Thriller</label>
-            </div>
-          </div>
-          <div class="fg"><label>Status</label>
-            <select id="astatus"><option>Ongoing</option><option>Completed</option><option>Upcoming</option></select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="fg"><label>Language</label>
-            <select id="alang"><option>Hindi Dub</option><option>Hindi + English</option><option>English Sub</option></select>
-          </div>
-          <div class="fg"><label>Quality</label>
-            <select id="aquality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="fg"><label>Year</label><input id="ayear" placeholder="2024" type="number"></div>
-          <div class="fg"><label>Rating (out of 10)</label><input id="arating" placeholder="9.2" type="number" step="0.1"></div>
-        </div>
-        <div class="row">
-          <div class="fg"><label>Total Episodes</label><input id="ateps" placeholder="24" type="number"></div>
-          <div class="fg"><label>Studio</label><input id="astudio" placeholder="e.g. MAPPA"></div>
-        </div>
-        <div class="row full">
-          <div class="fg">
-            <label>🖼️ Poster Image URL</label>
-            <input id="aposter" placeholder="https://i.ibb.co/... (imgbb.com se Direct link copy karo)" oninput="previewPoster(this.value)" style="width:100%;background:#f9f9f9;border:1.5px solid #e0e0e0;color:#222;padding:10px 12px;border-radius:8px;font-size:13px;font-family:'Hind',sans-serif;outline:none">
-            <div id="posterWarn" style="display:none;background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:8px 10px;font-size:11px;color:#856404;margin-top:6px;line-height:1.6"></div>
-          </div>
-        </div>
-        <div class="icard" style="margin-bottom:10px;font-size:11px">
-          📸 <strong>ImgBB Steps:</strong> <a href="https://imgbb.com" target="_blank">imgbb.com</a> → Upload → "Embed codes" mein <strong>"Direct links"</strong> select karo → <strong>i.ibb.co</strong> wala link copy karo ✅<br>⚠️ "Viewer links" wala link mat copy karna (ibb.co wala kaam nahi karega!)
-        </div>
-        <div id="posterPreview" style="display:none;margin-bottom:10px;text-align:center">
-          <img id="posterImg" src="" style="max-height:120px;border-radius:8px;border:2px solid #1565c0" onerror="this.parentElement.style.display='none'">
-          <p style="font-size:11px;color:#2e7d32;margin-top:4px">✅ Poster preview</p>
-        </div>
-        <div class="row full">
-          <div class="fg"><label>Description</label>
-            <textarea id="adesc" placeholder="Enter anime story/synopsis..."></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- UNLOCK LINKS -->
-      <div class="fcard">
-        <h3>🔗 24HR UNLOCK LINKS</h3>
-        <div class="ul-note">
-          ⚡ <strong>Yeh links visitor ko dikhenge</strong> — dono click karne par 24hr access milega!<br>
-          👉 <a href="https://indianshortener.in" target="_blank">indianshortener.in</a> pe koi bhi link shorten karo (ya koi bhi URL daal do) → shortened URL yahan paste karo<br>
-          💰 1 link = minimum, 2 links = double earning per visitor!
-        </div>
-        <div class="row full">
-          <div class="fg"><label>🔗 Unlock Link 1 (IndianShortener) *</label>
-            <input id="aul1" placeholder="https://indianshortener.in/xxxxxx">
-          </div>
-        </div>
-        <div class="row full">
-          <div class="fg"><label>🔗 Unlock Link 2 (Optional — for more earning)</label>
-            <input id="aul2" placeholder="https://indianshortener.in/xxxxxx">
-          </div>
-        </div>
-        <div class="fcard" style="margin-top:12px"><h3>📦 SEASON DOWNLOAD LINKS</h3><div class="ul-note">Pura season ka ek link daalo — visitor yahan se poora season download kar sakta hai.<br>Har quality ke liye alag link daalo (jo available ho).</div><div class="qgrid"><div class="fg"><label>🔴 1080p Season Link</label><input id="as1080" placeholder="https://indianshortener.in/..."></div><div class="fg"><label>🔵 720p Season Link</label><input id="as720" placeholder="https://indianshortener.in/..."></div><div class="fg"><label>🟢 480p Season Link</label><input id="as480" placeholder="https://indianshortener.in/..."></div><div class="fg"><label>⚪ 360p Season Link</label><input id="as360" placeholder="https://indianshortener.in/..."></div></div></div><button class="submitbtn" onclick="addAnime()">✅ ADD ANIME</button>
-      </div>
-    </div>
-
-    <!-- BULK EPISODES -->
-    <div class="tc" id="tab-bulk">
-      <div class="fcard">
-        <h3>⚡ BULK EPISODE ADDER</h3>
-        <div class="ul-note">Ek saath pura season add karo! Har line mein ek link paste karo — Episode 1 ka link line 1 pe, Ep 2 ka line 2 pe, aur so on.<br><strong>Format per line:</strong> seedha download link ya already shortened link</div>
-        <div class="row full"><div class="fg"><label>Anime Select Karo *</label><select id="blkAnime"><option value="">-- Select Anime --</option></select></div></div>
-        <div class="row">
-          <div class="fg"><label>Starting Episode Number</label><input id="blkStart" type="number" placeholder="1" value="1"></div>
-          <div class="fg"><label>Quality (all same)</label><select id="blkQuality"><option value="1080p">1080p</option><option value="720p">720p</option><option value="480p">480p</option><option value="360p">360p</option></select></div>
-        </div>
-        <div class="row full"><div class="fg"><label>Episode Duration (all same)</label><input id="blkDur" placeholder="24m" value="24m"></div></div>
-        <div class="row full">
-          <div class="fg">
-            <label>All Links Paste Karo (Ek line = Ek Episode)</label>
-            <textarea id="blkLinks" style="min-height:200px;font-size:12px;letter-spacing:0;font-family:monospace" placeholder="https://yourlink.com/ep1
-    <!-- SEASON PACK -->
-    <div class="tc" id="tab-season">
-      <div class="fcard">
-        <h3>📦 ADD SEASON PACK</h3>
-        <div class="ul-note">
-          Pura season ek ZIP/folder link — user download karega toh pura season milega.<br>
-          <strong>Best use:</strong> Google Drive / Mega / TeraBox full season link yahan daalo.
-        </div>
-        <div class="row full"><div class="fg"><label>Anime Select Karo *</label>
-          <select id="spAnime"><option value="">-- Select Anime --</option></select>
-        </div></div>
-        <div class="row">
-          <div class="fg"><label>Pack Title</label><input id="spTitle" placeholder="e.g. Season 1 Complete"></div>
-          <div class="fg"><label>Total Episodes in Pack</label><input id="spEps" placeholder="e.g. 24" type="number"></div>
-        </div>
-        <div class="row">
-          <div class="fg"><label>File Size</label><input id="spSize" placeholder="e.g. 2.7 GB"></div>
-          <div class="fg"><label>Quality</label><select id="spQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
-        </div>
-        <div class="ul-note" style="margin-top:8px">📥 Download Links (Use IndianShortener to shorten)</div>
-        <div class="qgrid">
-          <div class="fg"><label>🔴 1080p Link</label><input id="sp1080" placeholder="https://..."></div>
-          <div class="fg"><label>🔵 720p Link</label><input id="sp720" placeholder="https://..."></div>
-          <div class="fg"><label>🟢 480p Link</label><input id="sp480" placeholder="https://..."></div>
-          <div class="fg"><label>⚪ 360p Link</label><input id="sp360" placeholder="https://..."></div>
-        </div>
-        <button class="submitbtn" onclick="addSeasonPack()">✅ ADD SEASON PACK</button>
-      </div>
-      <div class="fcard" id="spListCard" style="display:none">
-        <h3>📋 EXISTING PACKS</h3>
-        <div id="spExisting"></div>
-      </div>
-    </div>
-
-    <!-- ADD EPISODE -->#10;https://yourlink.com/ep2
-    <!-- SEASON PACK -->
-    <div class="tc" id="tab-season">
-      <div class="fcard">
-        <h3>📦 ADD SEASON PACK</h3>
-        <div class="ul-note">
-          Pura season ek ZIP/folder link — user download karega toh pura season milega.<br>
-          <strong>Best use:</strong> Google Drive / Mega / TeraBox full season link yahan daalo.
-        </div>
-        <div class="row full"><div class="fg"><label>Anime Select Karo *</label>
-          <select id="spAnime"><option value="">-- Select Anime --</option></select>
-        </div></div>
-        <div class="row">
-          <div class="fg"><label>Pack Title</label><input id="spTitle" placeholder="e.g. Season 1 Complete"></div>
-          <div class="fg"><label>Total Episodes in Pack</label><input id="spEps" placeholder="e.g. 24" type="number"></div>
-        </div>
-        <div class="row">
-          <div class="fg"><label>File Size</label><input id="spSize" placeholder="e.g. 2.7 GB"></div>
-          <div class="fg"><label>Quality</label><select id="spQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
-        </div>
-        <div class="ul-note" style="margin-top:8px">📥 Download Links (Use IndianShortener to shorten)</div>
-        <div class="qgrid">
-          <div class="fg"><label>🔴 1080p Link</label><input id="sp1080" placeholder="https://..."></div>
-          <div class="fg"><label>🔵 720p Link</label><input id="sp720" placeholder="https://..."></div>
-          <div class="fg"><label>🟢 480p Link</label><input id="sp480" placeholder="https://..."></div>
-          <div class="fg"><label>⚪ 360p Link</label><input id="sp360" placeholder="https://..."></div>
-        </div>
-        <button class="submitbtn" onclick="addSeasonPack()">✅ ADD SEASON PACK</button>
-      </div>
-      <div class="fcard" id="spListCard" style="display:none">
-        <h3>📋 EXISTING PACKS</h3>
-        <div id="spExisting"></div>
-      </div>
-    </div>
-
-    <!-- ADD EPISODE -->#10;https://yourlink.com/ep3
-    <!-- SEASON PACK -->
-    <div class="tc" id="tab-season">
-      <div class="fcard">
-        <h3>📦 ADD SEASON PACK</h3>
-        <div class="ul-note">
-          Pura season ek ZIP/folder link — user download karega toh pura season milega.<br>
-          <strong>Best use:</strong> Google Drive / Mega / TeraBox full season link yahan daalo.
-        </div>
-        <div class="row full"><div class="fg"><label>Anime Select Karo *</label>
-          <select id="spAnime"><option value="">-- Select Anime --</option></select>
-        </div></div>
-        <div class="row">
-          <div class="fg"><label>Pack Title</label><input id="spTitle" placeholder="e.g. Season 1 Complete"></div>
-          <div class="fg"><label>Total Episodes in Pack</label><input id="spEps" placeholder="e.g. 24" type="number"></div>
-        </div>
-        <div class="row">
-          <div class="fg"><label>File Size</label><input id="spSize" placeholder="e.g. 2.7 GB"></div>
-          <div class="fg"><label>Quality</label><select id="spQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
-        </div>
-        <div class="ul-note" style="margin-top:8px">📥 Download Links (Use IndianShortener to shorten)</div>
-        <div class="qgrid">
-          <div class="fg"><label>🔴 1080p Link</label><input id="sp1080" placeholder="https://..."></div>
-          <div class="fg"><label>🔵 720p Link</label><input id="sp720" placeholder="https://..."></div>
-          <div class="fg"><label>🟢 480p Link</label><input id="sp480" placeholder="https://..."></div>
-          <div class="fg"><label>⚪ 360p Link</label><input id="sp360" placeholder="https://..."></div>
-        </div>
-        <button class="submitbtn" onclick="addSeasonPack()">✅ ADD SEASON PACK</button>
-      </div>
-      <div class="fcard" id="spListCard" style="display:none">
-        <h3>📋 EXISTING PACKS</h3>
-        <div id="spExisting"></div>
-      </div>
-    </div>
-
-    <!-- ADD EPISODE -->#10;https://yourlink.com/ep4
-    <!-- SEASON PACK -->
-    <div class="tc" id="tab-season">
-      <div class="fcard">
-        <h3>📦 ADD SEASON PACK</h3>
-        <div class="ul-note">
-          Pura season ek ZIP/folder link — user download karega toh pura season milega.<br>
-          <strong>Best use:</strong> Google Drive / Mega / TeraBox full season link yahan daalo.
-        </div>
-        <div class="row full"><div class="fg"><label>Anime Select Karo *</label>
-          <select id="spAnime"><option value="">-- Select Anime --</option></select>
-        </div></div>
-        <div class="row">
-          <div class="fg"><label>Pack Title</label><input id="spTitle" placeholder="e.g. Season 1 Complete"></div>
-          <div class="fg"><label>Total Episodes in Pack</label><input id="spEps" placeholder="e.g. 24" type="number"></div>
-        </div>
-        <div class="row">
-          <div class="fg"><label>File Size</label><input id="spSize" placeholder="e.g. 2.7 GB"></div>
-          <div class="fg"><label>Quality</label><select id="spQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
-        </div>
-        <div class="ul-note" style="margin-top:8px">📥 Download Links (Use IndianShortener to shorten)</div>
-        <div class="qgrid">
-          <div class="fg"><label>🔴 1080p Link</label><input id="sp1080" placeholder="https://..."></div>
-          <div class="fg"><label>🔵 720p Link</label><input id="sp720" placeholder="https://..."></div>
-          <div class="fg"><label>🟢 480p Link</label><input id="sp480" placeholder="https://..."></div>
-          <div class="fg"><label>⚪ 360p Link</label><input id="sp360" placeholder="https://..."></div>
-        </div>
-        <button class="submitbtn" onclick="addSeasonPack()">✅ ADD SEASON PACK</button>
-      </div>
-      <div class="fcard" id="spListCard" style="display:none">
-        <h3>📋 EXISTING PACKS</h3>
-        <div id="spExisting"></div>
-      </div>
-    </div>
-
-    <!-- ADD EPISODE -->#10;...aur baaki sab"></textarea>
-          </div>
-        </div>
-        <div id="blkPreview" style="display:none;margin-bottom:10px"></div>
-        <button class="submitbtn" style="background:#f57f17;margin-bottom:8px" onclick="previewBulk()">👁️ PREVIEW KARO</button>
-        <button class="submitbtn" id="blkSubmit" style="display:none" onclick="submitBulk()">✅ SAB EPISODES ADD KARO</button>
-      </div>
-    </div>
-
-
-    <!-- SEASON PACK -->
-    <div class="tc" id="tab-season">
-      <div class="fcard">
-        <h3>📦 ADD SEASON PACK</h3>
-        <div class="ul-note">
-          Pura season ek ZIP/folder link — user download karega toh pura season milega.<br>
-          <strong>Best use:</strong> Google Drive / Mega / TeraBox full season link yahan daalo.
-        </div>
-        <div class="row full"><div class="fg"><label>Anime Select Karo *</label>
-          <select id="spAnime"><option value="">-- Select Anime --</option></select>
-        </div></div>
-        <div class="row">
-          <div class="fg"><label>Pack Title</label><input id="spTitle" placeholder="e.g. Season 1 Complete"></div>
-          <div class="fg"><label>Total Episodes in Pack</label><input id="spEps" placeholder="e.g. 24" type="number"></div>
-        </div>
-        <div class="row">
-          <div class="fg"><label>File Size</label><input id="spSize" placeholder="e.g. 2.7 GB"></div>
-          <div class="fg"><label>Quality</label><select id="spQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
-        </div>
-        <div class="ul-note" style="margin-top:8px">📥 Download Links (Use IndianShortener to shorten)</div>
-        <div class="qgrid">
-          <div class="fg"><label>🔴 1080p Link</label><input id="sp1080" placeholder="https://..."></div>
-          <div class="fg"><label>🔵 720p Link</label><input id="sp720" placeholder="https://..."></div>
-          <div class="fg"><label>🟢 480p Link</label><input id="sp480" placeholder="https://..."></div>
-          <div class="fg"><label>⚪ 360p Link</label><input id="sp360" placeholder="https://..."></div>
-        </div>
-        <button class="submitbtn" onclick="addSeasonPack()">✅ ADD SEASON PACK</button>
-      </div>
-      <div class="fcard" id="spListCard" style="display:none">
-        <h3>📋 EXISTING PACKS</h3>
-        <div id="spExisting"></div>
-      </div>
-    </div>
-
-    <!-- ADD EPISODE -->
-    <div class="tc" id="tab-addEp">
-      <div class="fcard">
-        <h3>📺 SELECT ANIME</h3>
-        <div class="row full">
-          <div class="fg"><label>Anime *</label>
-            <select id="epAnime" onchange="showExistingEps()">
-              <option value="">-- Select Anime --</option>
-            </select>
-          </div>
-        </div>
-        <div id="existingEps"></div>
-      </div>
-
-      <div class="fcard">
-        <h3>📋 EPISODE DETAILS</h3>
-        <div class="row">
-          <div class="fg"><label>Episode Number *</label><input id="epnum" placeholder="1" type="number"></div>
-          <div class="fg"><label>Episode Title</label><input id="eptit" placeholder="e.g. The Beginning"></div>
-        </div>
-        <div class="row">
-          <div class="fg"><label>Duration</label><input id="epdur" placeholder="24m"></div>
-          <div class="fg"><label>Language</label>
-            <select id="eplang"><option>Hindi</option><option>Hindi + English</option><option>English Sub</option></select>
-          </div>
-        </div>
-      </div>
-
-      <div class="fcard">
-        <h3>📥 DOWNLOAD LINKS</h3>
-        <div class="ul-note">
-          Shorten links via: <a href="https://indianshortener.in" target="_blank">indianshortener.in</a><br>
-          Add one or multiple quality links
-        </div>
-        <div class="qgrid">
-          <div class="fg"><label>🔴 1080p Link</label><input id="l1080" placeholder="https://indianshortener.in/..."></div>
-          <div class="fg"><label>🔵 720p Link</label><input id="l720" placeholder="https://indianshortener.in/..."></div>
-          <div class="fg"><label>🟢 480p Link</label><input id="l480" placeholder="https://indianshortener.in/..."></div>
-          <div class="fg"><label>⚪ 360p Link</label><input id="l360" placeholder="https://indianshortener.in/..."></div>
-        </div>
-        <button class="submitbtn" onclick="addEpisode()">✅ ADD EPISODE</button>
-      </div>
-
-      <!-- EPISODE WISE MULTI ADD -->
-      <div class="fcard" style="border-color:#f57f17">
-        <h3 style="color:#f57f17">📋 BULK EPISODE ADD (Title + Link)</h3>
-        <div class="ul-note" style="background:#fff9c4;border-color:#ffe082;color:#795548">
-          Format per line:<br>
-          <strong>Episode 1 Title | https://link1.com</strong><br>
-          <strong>Episode 2 Title | https://link2.com</strong><br>
-          Separate title and link with | (pipe)
-        </div>
-        <div class="row full"><div class="fg">
-          <label>Anime *</label>
-          <select id="ewAnime"><option value="">-- Select Anime --</option></select>
-        </div></div>
-        <div class="row">
-          <div class="fg"><label>Starting Ep Number</label><input id="ewStart" type="number" placeholder="1" value="1"></div>
-          <div class="fg"><label>Quality</label>
-            <select id="ewQuality"><option>1080p</option><option>720p</option><option>480p</option><option>360p</option></select>
-          </div>
-        </div>
-        <div class="row full"><div class="fg">
-          <label>Episodes (Title | Link)</label>
-          <textarea id="ewLinks" style="min-height:180px;font-size:12px;font-family:monospace" 
-            placeholder="The Beginning | https://link1.com&#10;The Battle | https://link2.com&#10;The End | https://link3.com"></textarea>
-        </div></div>
-        <button class="submitbtn" style="background:#f57f17" onclick="addEpisodeWise()">✅ ADD EPISODES</button>
-      </div>
-
-      <!-- SEASON ZIP ADD -->
-      <div class="fcard" style="border-color:#6a1b9a">
-        <h3 style="color:#6a1b9a">📦 SEASON ZIP FILE</h3>
-        <div class="ul-note" style="background:#f3e5f5;border-color:#ce93d8;color:#6a1b9a">
-          Full season as ZIP — visitor downloads entire season at once
-        </div>
-        <div class="row full"><div class="fg">
-          <label>Anime *</label>
-          <select id="szAnime"><option value="">-- Select Anime --</option></select>
-        </div></div>
-        <div class="row">
-          <div class="fg"><label>Pack Title</label><input id="szTitle" placeholder="Season 1 Complete"></div>
-          <div class="fg"><label>File Size</label><input id="szSize" placeholder="e.g. 2.7 GB"></div>
-        </div>
-        <div class="row">
-          <div class="fg"><label>Episodes Count</label><input id="szEps" type="number" placeholder="24"></div>
-          <div class="fg"><label>Quality</label>
-            <select id="szQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select>
-          </div>
-        </div>
-        <div class="qgrid">
-          <div class="fg"><label>🔴 1080p ZIP Link</label><input id="sz1080" placeholder="https://..."></div>
-          <div class="fg"><label>🔵 720p ZIP Link</label><input id="sz720" placeholder="https://..."></div>
-          <div class="fg"><label>🟢 480p ZIP Link</label><input id="sz480" placeholder="https://..."></div>
-          <div class="fg"><label>⚪ 360p ZIP Link</label><input id="sz360" placeholder="https://..."></div>
-        </div>
-        <button class="submitbtn" style="background:#6a1b9a" onclick="addSeasonZip()">✅ ADD SEASON ZIP</button>
-      </div>
-    </div>
-
-    <!-- ALL ANIME -->
-    <div class="tc" id="tab-manage">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-        <h2 style="font-family:'Teko',sans-serif;font-size:20px;font-weight:700;letter-spacing:.5px">📋 ALL ANIME</h2>
-        <button class="submitbtn" style="width:auto;padding:8px 16px;font-size:14px" onclick="switchTab('addAnime')">+ Add New</button>
-      </div>
-      <div class="alist" id="alist">
-        <p style="color:#aaa;text-align:center;padding:20px;font-size:13px">Koi anime nahi hai.</p>
-      </div>
-    </div>
-
-    <!-- SETTINGS -->
-    <div class="tc" id="tab-sett">
-      <div class="settrow">
-        <h3>🔑 CHANGE PASSWORD</h3>
-        <div class="row full"><div class="fg"><label>New Password</label><input id="newpass" type="password" placeholder="New password..."></div></div>
-        <div class="row full"><div class="fg"><label>Confirm Password</label><input id="confpass" type="password" placeholder="Confirm password..."></div></div>
-        <button class="submitbtn" onclick="changePass()">🔒 Change Password</button>
-      </div>
-      <div class="settrow">
-        <h3>💰 MONETAG SETUP</h3>
-        <div class="icard">
-          <strong>Steps:</strong><br>
-          1. <a href="https://monetag.com" target="_blank">monetag.com</a> pe register karo<br>
-          2. Dashboard → New Zone → Pop-Under → Zone ID copy karo<br>
-          3. Teeno HTML files mein pop-under script uncomment karo<br>
-          4. Banner ads: 728x90 (top) + 300x250 (mid) — zones banao aur code paste karo
-        </div>
-      </div>
-      <div class="settrow">
-        <h3>🌐 GITHUB PAGES GUIDE</h3>
-        <div class="icard">
-          1. GitHub pe repo banao (public)<br>
-          2. Teeno files upload karo<br>
-          3. Settings → Pages → main branch → Save<br>
-          4. Live URL: <strong>username.github.io/repo-name/</strong><br>
-          5. Custom domain ke liye: GoDaddy se .in lo (~₹500/yr)
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 
-<div class="toast" id="toast">✅ Saved!</div>
+<div class="ab">
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('dash')">📊 Dashboard</button>
+  <button class="tab" onclick="switchTab('addAnime')">➕ Add Anime</button>
+  <button class="tab" onclick="switchTab('addEp')">🎬 Episodes</button>
+  <button class="tab" onclick="switchTab('season')">📦 Season Pack</button>
+  <button class="tab" onclick="switchTab('settings')">🔗 Unlock Links</button>
+  <button class="tab" onclick="switchTab('manage')">📋 All Anime</button>
+  <button class="tab" onclick="switchTab('sett')">⚙️ Settings</button>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div class="tc active" id="tab-dash">
+  <div class="stats">
+    <div class="sbox"><div class="sv" id="tAnime">...</div><div class="sk">Anime</div></div>
+    <div class="sbox"><div class="sv" id="tEp">...</div><div class="sk">Episodes</div></div>
+    <div class="sbox"><div class="sv" id="tLinks">...</div><div class="sk">Links</div></div>
+    <div class="sbox"><div class="sv" id="tNew">...</div><div class="sk">New (7d)</div></div>
+  </div>
+  <div class="icard">
+    <strong>🎯 Quick Guide:</strong><br>
+    1. Set Global Unlock Links in "🔗 Unlock Links" tab first<br>
+    2. Add Anime with poster URL (imgbb.com Direct Link)<br>
+    3. Add Episodes — single or bulk<br>
+    4. All devices will see updated data automatically ✅
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <h3 style="font-family:'Teko',sans-serif;font-size:18px;letter-spacing:.5px">📋 YOUR ANIME</h3>
+    <button class="submitbtn" style="width:auto;padding:7px 16px;font-size:14px" onclick="switchTab('addAnime')">+ Add New</button>
+  </div>
+  <div id="dashList"><p style="color:#aaa;text-align:center;padding:20px;font-size:13px">⏳ Loading...</p></div>
+  <button class="expbtn" onclick="exportData()" style="margin-top:12px">📤 Export Backup (JSON)</button>
+  <button class="expbtn" onclick="document.getElementById('impFile').click()">📥 Import Data (JSON)</button>
+  <input type="file" id="impFile" accept=".json" style="display:none" onchange="handleImport(this)">
+</div>
+
+<!-- ===== ADD ANIME ===== -->
+<div class="tc" id="tab-addAnime">
+  <div class="fcard">
+    <h3>📝 ANIME DETAILS</h3>
+    <div class="row">
+      <div class="fg"><label>Anime Name *</label><input id="aname" placeholder="e.g. Jujutsu Kaisen"></div>
+      <div class="fg"><label>Season</label><input id="aseason" placeholder="e.g. Season 3"></div>
+    </div>
+    <div class="fg" style="margin-bottom:10px">
+      <label>Genre (Select Multiple)</label>
+      <div class="genre-grid" id="genreBox">
+        ${['Action','Shonen','Isekai','Romance','Horror','Sports','Slice of Life','Mecha','Fantasy','Dark','Comedy','Thriller','Supernatural'].map(g=>`
+        <label class="glabel"><input type="checkbox" value="${g}"><span>${g}</span></label>`).join('')}
+      </div>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Status</label>
+        <select id="astatus"><option>Ongoing</option><option>Completed</option><option>Upcoming</option></select>
+      </div>
+      <div class="fg"><label>Language</label>
+        <select id="alang"><option>Hindi Dub</option><option>Hindi + English</option><option>English Sub</option></select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Quality</label>
+        <select id="aquality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select>
+      </div>
+      <div class="fg"><label>Year</label><input id="ayear" placeholder="2024" type="number"></div>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Rating (out of 10)</label><input id="arating" placeholder="8.5" type="number" step="0.1"></div>
+      <div class="fg"><label>Total Episodes</label><input id="ateps" placeholder="24" type="number"></div>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Studio</label><input id="astudio" placeholder="e.g. MAPPA"></div>
+      <div class="fg"><label>Runtime</label><input id="aruntime" placeholder="e.g. 24min"></div>
+    </div>
+  </div>
+  <div class="fcard">
+    <h3>🖼️ POSTER IMAGE</h3>
+    <div class="icard">
+      <strong>ImgBB Steps:</strong> <a href="https://imgbb.com" target="_blank">imgbb.com</a> → Upload → Embed codes → Select <strong>"Direct links"</strong> → Copy link starting with <strong>i.ibb.co</strong>
+    </div>
+    <div class="fg">
+      <label>Poster URL (Direct Link)</label>
+      <input id="aposter" placeholder="https://i.ibb.co/xxxxx/poster.jpg" oninput="previewPoster(this.value)">
+    </div>
+    <div class="poster-warn" id="posterWarn"></div>
+    <div id="posterPreview"><img id="posterImg" src="" alt="Preview"><p style="font-size:11px;color:#2e7d32;margin-top:4px">✅ Poster preview</p></div>
+    <div class="row full" style="margin-top:10px">
+      <div class="fg"><label>Synopsis / Description</label>
+        <textarea id="adesc" placeholder="Enter anime story/description..."></textarea>
+      </div>
+    </div>
+    <button class="submitbtn" onclick="addAnime()">✅ ADD ANIME</button>
+  </div>
+</div>
+
+<!-- ===== ADD EPISODES ===== -->
+<div class="tc" id="tab-addEp">
+
+  <!-- SELECT ANIME -->
+  <div class="fcard">
+    <h3>📺 SELECT ANIME</h3>
+    <div class="row full"><div class="fg">
+      <label>Anime *</label>
+      <select id="epAnime" onchange="showExistingEps()"><option value="">-- Select Anime --</option></select>
+    </div></div>
+    <div id="existingEps"></div>
+  </div>
+
+  <!-- SINGLE EPISODE -->
+  <div class="fcard">
+    <h3>🎬 ADD SINGLE EPISODE</h3>
+    <div class="row">
+      <div class="fg"><label>Episode Number *</label><input id="epnum" placeholder="1" type="number"></div>
+      <div class="fg"><label>Episode Title</label><input id="eptit" placeholder="e.g. The Beginning"></div>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Duration</label><input id="epdur" placeholder="24m"></div>
+      <div class="fg"><label>Language</label>
+        <select id="eplang"><option>Hindi</option><option>Hindi + English</option><option>English Sub</option></select>
+      </div>
+    </div>
+    <div class="qgrid">
+      <div class="fg"><label>🔴 1080p Link</label><input id="l1080" placeholder="https://..."></div>
+      <div class="fg"><label>🔵 720p Link</label><input id="l720" placeholder="https://..."></div>
+      <div class="fg"><label>🟢 480p Link</label><input id="l480" placeholder="https://..."></div>
+      <div class="fg"><label>⚪ 360p Link</label><input id="l360" placeholder="https://..."></div>
+    </div>
+    <button class="submitbtn" onclick="addEpisode()">✅ ADD EPISODE</button>
+  </div>
+
+  <!-- BULK EPISODES -->
+  <div class="fcard purple">
+    <h3>⚡ BULK EPISODE ADD (Title | Link)</h3>
+    <div class="warn-card">
+      Format per line: <strong>Episode Title | https://link.com</strong><br>
+      Example: <code>The Beginning | https://indianshortener.in/abc</code>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Starting Episode Number</label><input id="blkStart" type="number" placeholder="1" value="1"></div>
+      <div class="fg"><label>Quality</label>
+        <select id="blkQuality"><option>1080p</option><option>720p</option><option>480p</option><option>360p</option></select>
+      </div>
+    </div>
+    <div class="fg" style="margin-bottom:10px">
+      <label>Paste Episodes (Title | Link) — One per line</label>
+      <textarea id="blkLinks" style="min-height:180px;font-size:12px;font-family:monospace"
+        placeholder="The Beginning | https://link1.com&#10;The Battle | https://link2.com&#10;The End | https://link3.com"></textarea>
+    </div>
+    <div id="blkPreview" style="display:none;margin-bottom:10px"></div>
+    <button class="submitbtn" style="background:linear-gradient(135deg,#e65100,#bf360c);margin-bottom:8px" onclick="previewBulk()">👁️ PREVIEW FIRST</button>
+    <button class="submitbtn purple" id="blkSubmit" style="display:none" onclick="submitBulk()">✅ ADD ALL EPISODES</button>
+  </div>
+
+  <!-- QUICK BULK (links only) -->
+  <div class="fcard">
+    <h3>📋 QUICK BULK (Links Only)</h3>
+    <div class="warn-card">One link per line — auto numbered from starting episode</div>
+    <div class="row">
+      <div class="fg"><label>Starting Episode Number</label><input id="qlkStart" type="number" placeholder="1" value="1"></div>
+      <div class="fg"><label>Quality</label>
+        <select id="qlkQuality"><option>1080p</option><option>720p</option><option>480p</option><option>360p</option></select>
+      </div>
+    </div>
+    <div class="fg" style="margin-bottom:10px">
+      <label>All Links (One per line)</label>
+      <textarea id="qlkLinks" style="min-height:150px;font-size:12px;font-family:monospace"
+        placeholder="https://link1.com&#10;https://link2.com&#10;https://link3.com"></textarea>
+    </div>
+    <button class="submitbtn green" onclick="quickBulk()">✅ QUICK ADD ALL</button>
+  </div>
+</div>
+
+<!-- ===== SEASON PACK ===== -->
+<div class="tc" id="tab-season">
+  <div class="fcard green">
+    <h3>📦 ADD SEASON PACK</h3>
+    <div class="icard">Season ZIP/Batch file — visitor downloads entire season at once</div>
+    <div class="row full"><div class="fg">
+      <label>Select Anime *</label>
+      <select id="spAnime" onchange="showSpExisting()"><option value="">-- Select Anime --</option></select>
+    </div></div>
+    <div class="row">
+      <div class="fg"><label>Pack Title</label><input id="spTitle" placeholder="Season 1 Complete"></div>
+      <div class="fg"><label>File Size</label><input id="spSize" placeholder="e.g. 2.7 GB"></div>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Episodes Count</label><input id="spEps" type="number" placeholder="24"></div>
+      <div class="fg"><label>Quality</label>
+        <select id="spQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select>
+      </div>
+    </div>
+    <div class="qgrid">
+      <div class="fg"><label>🔴 1080p ZIP Link</label><input id="sp1080" placeholder="https://..."></div>
+      <div class="fg"><label>🔵 720p ZIP Link</label><input id="sp720" placeholder="https://..."></div>
+      <div class="fg"><label>🟢 480p ZIP Link</label><input id="sp480" placeholder="https://..."></div>
+      <div class="fg"><label>⚪ 360p ZIP Link</label><input id="sp360" placeholder="https://..."></div>
+    </div>
+    <button class="submitbtn green" onclick="addSeasonPack()">✅ ADD SEASON PACK</button>
+  </div>
+  <div class="fcard" id="spExistingCard" style="display:none">
+    <h3>📋 EXISTING PACKS</h3>
+    <div id="spExisting"></div>
+  </div>
+</div>
+
+<!-- ===== GLOBAL UNLOCK LINKS ===== -->
+<div class="tc" id="tab-settings">
+  <div class="fcard">
+    <h3>🔗 GLOBAL UNLOCK LINKS</h3>
+    <div class="icard">
+      <strong>How it works:</strong><br>
+      1. Shorten <strong>continue.html</strong> URL via IndianShortener<br>
+      <code style="font-size:11px">https://yoursite.github.io/animeworld-india/continue.html</code><br>
+      2. Create 2 different shortened versions<br>
+      3. Paste them below — used for ALL anime globally<br>
+      💰 Every visitor clicks both → double earning!
+    </div>
+    <div class="row full"><div class="fg">
+      <label>🔗 Unlock Link 1 (IndianShortener) *</label>
+      <input id="gul1" placeholder="https://indianshortener.in/xxxxx">
+    </div></div>
+    <div class="row full"><div class="fg">
+      <label>🔗 Unlock Link 2 (Optional — Double Earning)</label>
+      <input id="gul2" placeholder="https://indianshortener.in/xxxxx">
+    </div></div>
+    <button class="submitbtn" onclick="saveGlobalLinks()">💾 SAVE GLOBAL LINKS</button>
+  </div>
+  <div class="fcard" style="border-color:#ffd600">
+    <h3 style="color:#f57f17">💡 INDIANSHORTENER SETUP</h3>
+    <div class="icard">
+      1. <a href="https://indianshortener.in" target="_blank">indianshortener.in</a> pe account banao<br>
+      2. Paste your <strong>continue.html</strong> URL → Shorten → Copy link<br>
+      3. Do it again for Link 2 (different shortened URL)<br>
+      4. Paste both above and save<br>
+      💰 Rate: ~$5-8 per 1000 Indian clicks
+    </div>
+  </div>
+</div>
+
+<!-- ===== ALL ANIME ===== -->
+<div class="tc" id="tab-manage">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <h2 style="font-family:'Teko',sans-serif;font-size:20px;font-weight:700;letter-spacing:.5px">📋 ALL ANIME</h2>
+    <button class="submitbtn" style="width:auto;padding:7px 16px;font-size:14px" onclick="switchTab('addAnime')">+ Add New</button>
+  </div>
+  <div class="alist" id="alist">
+    <p style="color:#aaa;text-align:center;padding:20px;font-size:13px">Loading...</p>
+  </div>
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div class="tc" id="tab-sett">
+  <div class="settrow">
+    <h3>🔑 CHANGE PASSWORD</h3>
+    <div class="row full"><div class="fg"><label>New Password</label><input id="newpass" type="password" placeholder="New password..."></div></div>
+    <div class="row full"><div class="fg"><label>Confirm Password</label><input id="confpass" type="password" placeholder="Confirm password..."></div></div>
+    <button class="submitbtn" onclick="changePass()">🔒 Change Password</button>
+  </div>
+  <div class="settrow">
+    <h3>🌐 GITHUB PAGES GUIDE</h3>
+    <div class="icard">
+      1. Upload all 4 files: index.html, anime.html, continue.html, awi-panel-x9k2.html<br>
+      2. Settings → Pages → main branch → Save<br>
+      3. Live: <strong>username.github.io/animeworld-india/</strong><br>
+      4. Admin: <strong>/awi-panel-x9k2.html</strong>
+    </div>
+  </div>
+  <div class="settrow">
+    <h3>💰 MONETAG SETUP</h3>
+    <div class="icard">
+      1. <a href="https://monetag.com" target="_blank">monetag.com</a> → Register<br>
+      2. Dashboard → New Zone → Pop-Under → Copy Zone ID<br>
+      3. Add script to index.html and anime.html
+    </div>
+  </div>
+</div>
+
+</div><!-- /ab -->
+</div><!-- /ap -->
+
+<!-- EDIT MODAL -->
+<div id="editModal">
+  <div class="edit-inner">
+    <div class="edit-head">
+      <span>✏️ EDIT ANIME</span>
+      <button class="edit-cls" onclick="closeEdit()">✕</button>
+    </div>
+    <div class="edit-body">
+      <input type="hidden" id="editId">
+      <div class="row">
+        <div class="fg"><label>Name *</label><input id="eName" placeholder="Anime name"></div>
+        <div class="fg"><label>Season</label><input id="eSeason" placeholder="Season 1"></div>
+      </div>
+      <div class="row">
+        <div class="fg"><label>Status</label><select id="eStatus"><option>Ongoing</option><option>Completed</option><option>Upcoming</option></select></div>
+        <div class="fg"><label>Quality</label><select id="eQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
+      </div>
+      <div class="row">
+        <div class="fg"><label>Year</label><input id="eYear" type="number" placeholder="2024"></div>
+        <div class="fg"><label>Rating</label><input id="eRating" type="number" step="0.1" placeholder="8.5"></div>
+      </div>
+      <div class="row full"><div class="fg"><label>Poster URL (i.ibb.co/...)</label>
+        <input id="ePoster" placeholder="https://i.ibb.co/..." oninput="prevEditPoster(this.value)">
+      </div></div>
+      <div id="editPosterPrev"><img id="editPosterImg" src="" alt="Preview"></div>
+      <div class="row full"><div class="fg"><label>Description</label><textarea id="eDesc" placeholder="Synopsis..."></textarea></div></div>
+      <button class="submitbtn" onclick="saveEdit()">💾 SAVE CHANGES</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-fixed" id="toastEl"></div>
 
 <script>
+// ============================================================
+// SECURITY + AUTH
+// ============================================================
 const PASS_KEY='awiPass';
+const LOCK_KEY='awiLock';
+const ATT_KEY='awiAtt';
 const DEFAULT_PASS='animeworld2024';
-const gPass=()=>localStorage.getItem(PASS_KEY)||DEFAULT_PASS;
+const MAX_ATT=5;
+const LOCK_DUR=30*60*1000;
 
-// Firebase helpers
-let localCache=[];
+function gPass(){return localStorage.getItem(PASS_KEY)||DEFAULT_PASS;}
 
-async function gDB(){
-  const snap=await fdb.collection('anime').orderBy('createdAt','desc').get();
-  localCache=snap.docs.map(d=>({id:d.id,...d.data()}));
-  return localCache;
-}
-
-async function saveAnime(a){
-  const {id,...data}=a;
-  await fdb.collection('anime').doc(String(id)).set(data);
-}
-
-async function deleteAnime_fb(id){
-  await fdb.collection('anime').doc(String(id)).delete();
-}
-
-async function updateAnime_fb(id,data){
-  const {id:_,...rest}=data;
-  await fdb.collection('anime').doc(String(id)).set(rest);
-}
-const EM=['⚔️','🔮','🗡️','🌀','💥','🔥','⚡','🌊','👊','🤖','💀','🌸'];
-const E=i=>EM[i%EM.length];
-const isNew=d=>d&&(Date.now()-new Date(d))<7*864e5;
-
-function toast(msg='✅ Done!'){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
-}
-
-// LOGIN
 function doLogin(){
+  // Check lockout
+  const lock=JSON.parse(localStorage.getItem(LOCK_KEY)||'{}');
+  if(lock.until&&Date.now()<lock.until){
+    const mins=Math.ceil((lock.until-Date.now())/60000);
+    document.getElementById('lerr').textContent='🚫 Locked for '+mins+' more minutes';
+    document.getElementById('lerr').style.display='block';
+    return;
+  }
   const p=document.getElementById('pinput').value;
   if(p===gPass()){
+    localStorage.removeItem(ATT_KEY);
+    localStorage.removeItem(LOCK_KEY);
     document.getElementById('ls').style.display='none';
     document.getElementById('ap').style.display='block';
-    // Show loading in stats while Firebase loads
-    ['tAnime','tEp','tLinks','tNew'].forEach(id=>{
-      const el=document.getElementById(id);
-      if(el)el.textContent='...';
-    });
-    const alistEl=document.getElementById('alist');
-    if(alistEl)alistEl.innerHTML='<p style="color:#aaa;text-align:center;padding:20px;font-size:13px">⏳ Loading data...</p>';
-    const dashEl=document.getElementById('dashList');
-    if(dashEl)dashEl.innerHTML='<p style="color:#aaa;text-align:center;padding:16px;font-size:13px;background:#f9f9f9;border-radius:8px">⏳ Loading...</p>';
-    refreshAll().catch(e=>{
-      toast('❌ Firebase connection error! Check internet.');
-      console.error(e);
-    });
+    showLoading('Loading data...');
+    refreshAll().finally(hideLoading);
+    loadGlobalLinks();
   }else{
+    let att=parseInt(localStorage.getItem(ATT_KEY)||'0')+1;
+    localStorage.setItem(ATT_KEY,att);
+    const rem=MAX_ATT-att;
+    if(rem<=0){
+      localStorage.setItem(LOCK_KEY,JSON.stringify({until:Date.now()+LOCK_DUR}));
+      document.getElementById('lerr').textContent='🚫 Too many attempts! Locked for 30 minutes.';
+    }else{
+      document.getElementById('lerr').textContent='❌ Wrong password! '+rem+' attempts left.';
+    }
     document.getElementById('lerr').style.display='block';
     document.getElementById('pinput').value='';
-    setTimeout(()=>document.getElementById('lerr').style.display='none',2000);
+    setTimeout(()=>document.getElementById('lerr').style.display='none',3000);
   }
 }
+
 function logout(){
   document.getElementById('ap').style.display='none';
   document.getElementById('ls').style.display='flex';
   document.getElementById('pinput').value='';
 }
+
 document.getElementById('pinput').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
+// ============================================================
+// UTILITIES
+// ============================================================
+let localCache=[];
+
+function toast(msg){
+  const t=document.getElementById('toastEl');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+function showLoading(msg='Saving...'){
+  document.getElementById('loadOv').classList.add('show');
+  document.getElementById('loadMsg').textContent=msg;
+}
+function hideLoading(){document.getElementById('loadOv').classList.remove('show');}
+
+function fixPoster(url){
+  if(!url)return '';
+  return url.replace('https://ibb.co/','https://i.ibb.co/').replace('http://ibb.co/','https://i.ibb.co/');
+}
+const isNew=d=>d&&(Date.now()-new Date(d))<7*864e5;
+const EM=['⚔️','🔮','🌀','💥','🔥','⚡','🌊','👊','🤖','💀','🌸','😤'];
+const E=i=>EM[i%EM.length];
+
+// ============================================================
+// FIREBASE
+// ============================================================
+async function refreshAll(){
+  try{
+    const snap=await fdb.collection('anime').orderBy('createdAt','desc').get();
+    localCache=snap.docs.map(d=>({id:d.id,...d.data()}));
+    updateStats();
+    renderDashList();
+    renderAnimeList();
+    updateAllSelects();
+  }catch(e){
+    toast('❌ Firebase error: '+e.message);
+    console.error(e);
+  }
+}
+
+function updateStats(){
+  const db=localCache;
+  const eps=db.reduce((s,a)=>s+(a.episodes?.length||0),0);
+  const links=db.reduce((s,a)=>s+(a.episodes||[]).reduce((ss,e)=>ss+Object.values(e.links||{}).filter(l=>l).length,0),0);
+  const nw=db.filter(a=>isNew(a.createdAt)).length;
+  document.getElementById('tAnime').textContent=db.length;
+  document.getElementById('tEp').textContent=eps;
+  document.getElementById('tLinks').textContent=links;
+  document.getElementById('tNew').textContent=nw;
+}
+
+function updateAllSelects(){
+  const opts='<option value="">-- Select Anime --</option>'+
+    localCache.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''} (${a.episodes?.length||0} ep)</option>`).join('');
+  ['epAnime','spAnime'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){const prev=el.value;el.innerHTML=opts;if(prev)el.value=prev;}
+  });
+}
+
+// ============================================================
 // TABS
-const TAB_IDS=['dash','addAnime','bulk','addEp','season','manage','sett'];
+// ============================================================
+const TAB_IDS=['dash','addAnime','addEp','season','settings','manage','sett'];
 function switchTab(t){
   document.querySelectorAll('.tc').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');
-  const idx=TAB_IDS.indexOf(t);
-  document.querySelectorAll('.tab')[idx]?.classList.add('active');
-  if(t==='manage'){
-    if(localCache.length>0){renderAnimeList();}
-    else{refreshAll();}
-  }
-  if(t==='addEp')updateEpSelect();
+  document.querySelectorAll('.tab')[TAB_IDS.indexOf(t)]?.classList.add('active');
+  if(t==='manage')renderAnimeList();
+  if(t==='addEp'||t==='season')updateAllSelects();
 }
 
-// STATS
-async function refreshAll(){
-  const db=await gDB();
-  // update stats
-  const eps=db.reduce((s,a)=>s+(a.episodes?.length||0),0);
-  const links=db.reduce((s,a)=>s+(a.episodes||[]).reduce((ss,e)=>ss+Object.values(e.links||{}).filter(l=>l).length,0),0);
-  const newA=db.filter(a=>isNew(a.createdAt)).length;
-  document.getElementById('tAnime').textContent=db.length;
-  document.getElementById('tEp').textContent=eps;
-  document.getElementById('tLinks').textContent=links;
-  document.getElementById('tNew').textContent=newA;
-  // update selects and lists
-  const epSel=document.getElementById('epAnime');
-  const blkSel=document.getElementById('blkAnime');
-  const spSel=document.getElementById('spAnime');
-  if(epSel)epSel.innerHTML='<option value="">-- Select Anime --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''} (${a.episodes?.length||0} ep)</option>`).join('');
-  if(blkSel)blkSel.innerHTML='<option value="">-- Select Anime --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
-  if(spSel)spSel.innerHTML='<option value="">-- Select Anime --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
-  renderDashList_fb(db);
-  renderAnimeList_fb(db);
-}
-
-function updateStats(){} // replaced by refreshAll
-
-function renderDashList_fb(db){
-  const el=document.getElementById('dashList');
-  if(!el)return;
-  if(!db.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:16px;font-size:13px;background:#f9f9f9;border-radius:8px">No anime yet — add some!</p>';return;}
-  el.innerHTML=db.map((a,i)=>`
-  <div style="background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:7px">
-    <div style="width:42px;height:42px;border-radius:7px;background:#eee;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px">
-      ${a.poster?`<img src="${a.poster}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:['⚔️','🔮','🌀','💥','🔥','⚡'][i%6]}
-    </div>
-    <div style="flex:1;min-width:0">
-      <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.name}${a.season?' '+a.season:''}</div>
-      <div style="font-size:11px;color:#888">${a.genre||'Anime'} · ${a.episodes?.length||0} Ep · ${a.status||'—'}</div>
-    </div>
-    <div style="display:flex;gap:5px;flex-shrink:0">
-      <button onclick="openEdit('${a.id}')" style="width:32px;height:32px;border-radius:6px;border:1px solid #90caf9;background:#e3f2fd;cursor:pointer;font-size:14px" title="Edit">✏️</button>
-      <a href="anime.html?id=${a.id}" target="_blank" style="width:32px;height:32px;border-radius:6px;border:1px solid #e0e0e0;background:#f9f9f9;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px">👁️</a>
-      <button onclick="deleteAnime('${a.id}')" style="width:32px;height:32px;border-radius:6px;border:1px solid #ef9a9a;background:#ffebee;cursor:pointer;font-size:14px">🗑️</button>
-    </div>
-  </div>`).join('');
-}
-
-function renderAnimeList_fb(db){
-  const el=document.getElementById('alist');
-  if(!el)return;
-  if(!db.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:20px;font-size:13px">No anime yet. Use "Add Anime" tab!</p>';return;}
-  el.innerHTML=db.map((a,i)=>`
-  <div class="arow" style="animation-delay:${i*.04}s">
-    <div class="athumb" style="width:44px;height:44px;border-radius:6px;background:#eee;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px">
-      ${a.poster?`<img src="${a.poster}" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:['⚔️','🔮','🌀','💥','🔥','⚡'][i%6]}
-    </div>
-    <div class="arinfo" style="flex:1;min-width:0">
-      <h4 style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.name}${a.season?' '+a.season:''}</h4>
-      <span style="font-size:11px;color:#888">${a.genre||'Anime'} · ${a.episodes?.length||0} Ep · ${a.status||'—'}</span>
-    </div>
-    <div class="aacts" style="display:flex;gap:5px;flex-shrink:0">
-      <button onclick="openEdit('${a.id}')" class="abtn" style="border-color:#90caf9;background:#e3f2fd" title="Edit">✏️</button>
-      <a href="anime.html?id=${a.id}" target="_blank" class="abtn" title="Preview">👁️</a>
-      <button class="abtn delbtn" onclick="deleteAnime('${a.id}')" title="Delete">🗑️</button>
-    </div>
-  </div>`).join('');
-}
-
+// ============================================================
 // ADD ANIME
+// ============================================================
 async function addAnime(){
   const name=document.getElementById('aname').value.trim();
   if(!name){toast('❌ Please enter anime name!');return;}
-  const ul1=document.getElementById('aul1').value.trim();
-  const ul2=document.getElementById('aul2').value.trim();
-  if(!ul1){toast('❌ At least 1 unlock link required!');return;}
-  const db=gDB();
+  const genres=Array.from(document.querySelectorAll('#genreBox input:checked')).map(c=>c.value);
+  
+  showLoading('Adding anime...');
+  const poster=fixPoster(document.getElementById('aposter').value.trim());
   const a={
-    id:Date.now(),
     name,
     season:document.getElementById('aseason').value.trim(),
-    genre:Array.from(document.querySelectorAll('#genreBox input:checked')).map(c=>c.value).join(', ')||'Anime',
+    genre:genres.join(', ')||'Anime',
     status:document.getElementById('astatus').value,
     language:document.getElementById('alang').value,
     quality:document.getElementById('aquality').value,
@@ -789,47 +656,50 @@ async function addAnime(){
     rating:document.getElementById('arating').value,
     totalEps:document.getElementById('ateps').value,
     studio:document.getElementById('astudio').value.trim(),
-    poster:(()=>{
-      let p=document.getElementById('aposter').value.trim();
-      // Auto fix imgbb viewer link to direct link
-      p=p.replace('https://ibb.co/','https://i.ibb.co/').replace('http://ibb.co/','https://i.ibb.co/');
-      return p;
-    })(),
+    runtime:document.getElementById('aruntime').value.trim(),
+    poster,
     description:document.getElementById('adesc').value.trim(),
-    unlockLink1:ul1,
-    unlockLink2:ul2,
     episodes:[],
+    seasonPacks:[],
     createdAt:new Date().toISOString()
   };
+  // Remove empty fields
+  Object.keys(a).forEach(k=>{if(a[k]===''||a[k]==='0')delete a[k];});
+  a.episodes=a.episodes||[];
+  a.seasonPacks=a.seasonPacks||[];
+
   try{
-    await fdb.collection('anime').doc(String(a.id)).set(a);
-    toast('✅ '+name+' added!');
-    ['aname','aseason','ayear','arating','ateps','astudio','aposter','adesc','aul1','aul2'].forEach(id=>document.getElementById(id).value='');
+    const ref=await fdb.collection('anime').add(a);
+    toast('✅ '+name+' added! ID: '+ref.id);
+    ['aname','aseason','ayear','arating','ateps','astudio','aruntime','aposter','adesc'].forEach(id=>document.getElementById(id).value='');
     document.querySelectorAll('#genreBox input[type=checkbox]').forEach(c=>c.checked=false);
+    document.getElementById('posterPreview').style.display='none';
     await refreshAll();
-  }catch(e){toast('❌ Error: '+e.message);}
+  }catch(e){toast('❌ Failed: '+e.message);console.error(e);}
+  hideLoading();
 }
 
-// ADD EPISODE
+// ============================================================
+// ADD SINGLE EPISODE — FIXED
+// ============================================================
 async function addEpisode(){
   const animeId=document.getElementById('epAnime').value;
-  if(!animeId){toast('❌ Please select an anime first!');return;}
-  const epnum=document.getElementById('epnum').value;
-  if(!epnum){toast('❌ Please enter episode number!');return;}
+  if(!animeId){toast('❌ Select anime first!');return;}
+  const epnum=parseInt(document.getElementById('epnum').value);
+  if(!epnum){toast('❌ Enter episode number!');return;}
   const l1080=document.getElementById('l1080').value.trim();
   const l720=document.getElementById('l720').value.trim();
   const l480=document.getElementById('l480').value.trim();
   const l360=document.getElementById('l360').value.trim();
-  if(!l1080&&!l720&&!l480&&!l360){toast('❌ Please add at least one download link!');return;}
-  const db=gDB();
-  const anime=db.find(a=>a.id===animeId);
-  if(!anime)return;
-  if(anime.episodes?.find(e=>e.num===parseInt(epnum))){
-    if(!confirm('Ep '+epnum+' already hai! Replace karein?'))return;
-    anime.episodes=anime.episodes.filter(e=>e.num!==parseInt(epnum));
-  }
+  if(!l1080&&!l720&&!l480&&!l360){toast('❌ Add at least one download link!');return;}
+
+  const anime=localCache.find(a=>a.id===animeId);
+  if(!anime){toast('❌ Anime not found! Refresh page.');return;}
+
+  // Remove duplicate ep if exists
+  const eps=(anime.episodes||[]).filter(e=>e.num!==epnum);
   const ep={
-    num:parseInt(epnum),
+    num:epnum,
     title:document.getElementById('eptit').value.trim()||'Episode '+epnum,
     duration:document.getElementById('epdur').value.trim()||'24m',
     language:document.getElementById('eplang').value,
@@ -840,426 +710,292 @@ async function addEpisode(){
   if(l720)ep.links['720p']=l720;
   if(l480)ep.links['480p']=l480;
   if(l360)ep.links['360p']=l360;
-  anime.episodes=anime.episodes||[];
-  anime.episodes.push(ep);
-  anime.episodes.sort((a,b)=>a.num-b.num);
+  eps.push(ep);
+  eps.sort((a,b)=>a.num-b.num);
+
+  showLoading('Saving episode '+epnum+'...');
   try{
-    await fdb.collection('anime').doc(String(animeId)).set(anime);
+    await fdb.collection('anime').doc(animeId).update({episodes:eps});
+    anime.episodes=eps;
     toast('✅ Episode '+epnum+' added!');
     ['epnum','eptit','epdur','l1080','l720','l480','l360'].forEach(id=>document.getElementById(id).value='');
-    await refreshAll();showExistingEps();
-  }catch(e){toast('❌ Error: '+e.message);}
+    showExistingEps();
+    updateStats();
+  }catch(e){toast('❌ Failed: '+e.message);console.error(e);}
+  hideLoading();
 }
 
-function updateEpSelect(){
-  const db=gDB(),sel=document.getElementById('epAnime'),prev=sel.value;
-  sel.innerHTML='<option value="">-- Select Anime --</option>'+
-    db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''} (${a.episodes?.length||0} ep)</option>`).join('');
-  if(prev)sel.value=prev;
+// ============================================================
+// BULK EPISODES (Title | Link)
+// ============================================================
+function previewBulk(){
+  const animeId=document.getElementById('epAnime').value;
+  if(!animeId){toast('❌ Select anime first!');return;}
+  const raw=document.getElementById('blkLinks').value.trim();
+  if(!raw){toast('❌ Paste episode links!');return;}
+  const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l.includes('|'));
+  if(!lines.length){toast('❌ Format: Title | Link');return;}
+  const start=parseInt(document.getElementById('blkStart').value)||1;
+  const quality=document.getElementById('blkQuality').value;
+  const prev=document.getElementById('blkPreview');
+  prev.style.display='block';
+  prev.innerHTML=`<div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:12px;font-size:12px">
+    <strong style="color:#2e7d32;font-size:13px">✅ ${lines.length} Episodes Ready to Add!</strong><br><br>
+    ${lines.slice(0,4).map((l,i)=>{const [title,link]=[l.split('|')[0].trim(),l.split('|').slice(1).join('|').trim()];return`<div style="padding:3px 0;color:#333">Ep ${start+i}: <b>${title}</b></div>`}).join('')}
+    ${lines.length>4?`<div style="color:#888">...and ${lines.length-4} more</div>`:''}
+    <br><strong>Quality:</strong> ${quality} · <strong>Ep Range:</strong> ${start}–${start+lines.length-1}
+  </div>`;
+  document.getElementById('blkSubmit').style.display='block';
 }
 
+async function submitBulk(){
+  const animeId=document.getElementById('epAnime').value;
+  if(!animeId){toast('❌ Select anime!');return;}
+  const raw=document.getElementById('blkLinks').value.trim();
+  const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l.includes('|'));
+  if(!lines.length){toast('❌ No valid lines found!');return;}
+  const start=parseInt(document.getElementById('blkStart').value)||1;
+  const quality=document.getElementById('blkQuality').value;
+
+  const anime=localCache.find(a=>a.id===animeId);
+  if(!anime)return;
+  let eps=[...(anime.episodes||[])];
+  lines.forEach((line,i)=>{
+    const parts=line.split('|');
+    const title=parts[0].trim();
+    const link=parts.slice(1).join('|').trim();
+    const epNum=start+i;
+    eps=eps.filter(e=>e.num!==epNum);
+    const ep={num:epNum,title:title||'Episode '+epNum,duration:'24m',language:'Hindi',links:{},addedAt:new Date().toISOString()};
+    ep.links[quality]=link;
+    eps.push(ep);
+  });
+  eps.sort((a,b)=>a.num-b.num);
+
+  showLoading('Adding '+lines.length+' episodes...');
+  try{
+    await fdb.collection('anime').doc(animeId).update({episodes:eps});
+    anime.episodes=eps;
+    toast('✅ '+lines.length+' episodes added!');
+    document.getElementById('blkLinks').value='';
+    document.getElementById('blkPreview').style.display='none';
+    document.getElementById('blkSubmit').style.display='none';
+    showExistingEps();updateStats();
+  }catch(e){toast('❌ Failed: '+e.message);console.error(e);}
+  hideLoading();
+}
+
+// ============================================================
+// QUICK BULK (Links Only)
+// ============================================================
+async function quickBulk(){
+  const animeId=document.getElementById('epAnime').value;
+  if(!animeId){toast('❌ Select anime!');return;}
+  const raw=document.getElementById('qlkLinks').value.trim();
+  const links=raw.split('\n').map(l=>l.trim()).filter(l=>l.length>5);
+  if(!links.length){toast('❌ Paste links!');return;}
+  const start=parseInt(document.getElementById('qlkStart').value)||1;
+  const quality=document.getElementById('qlkQuality').value;
+
+  const anime=localCache.find(a=>a.id===animeId);
+  if(!anime)return;
+  let eps=[...(anime.episodes||[])];
+  links.forEach((link,i)=>{
+    const epNum=start+i;
+    eps=eps.filter(e=>e.num!==epNum);
+    const ep={num:epNum,title:'Episode '+epNum,duration:'24m',language:'Hindi',links:{},addedAt:new Date().toISOString()};
+    ep.links[quality]=link;
+    eps.push(ep);
+  });
+  eps.sort((a,b)=>a.num-b.num);
+
+  showLoading('Adding '+links.length+' episodes...');
+  try{
+    await fdb.collection('anime').doc(animeId).update({episodes:eps});
+    anime.episodes=eps;
+    toast('✅ '+links.length+' episodes added!');
+    document.getElementById('qlkLinks').value='';
+    showExistingEps();updateStats();
+  }catch(e){toast('❌ Failed: '+e.message);console.error(e);}
+  hideLoading();
+}
+
+// ============================================================
+// SHOW EXISTING EPISODES
+// ============================================================
 function showExistingEps(){
-  const id=document.getElementById('epAnime').value,el=document.getElementById('existingEps');
-  if(!id){el.innerHTML='';return;}
-  const db=localCache,anime=db.find(a=>String(a.id)===String(id));
-  if(!anime?.episodes?.length){el.innerHTML='<p style="color:#aaa;font-size:12px;padding:8px 0">Abhi koi episode nahi.</p>';return;}
+  const animeId=document.getElementById('epAnime').value;
+  const el=document.getElementById('existingEps');
+  if(!animeId){el.innerHTML='';return;}
+  const anime=localCache.find(a=>a.id===animeId);
+  if(!anime?.episodes?.length){el.innerHTML='<p style="color:#aaa;font-size:12px;padding:8px 0">No episodes yet.</p>';return;}
   const sorted=[...anime.episodes].sort((a,b)=>a.num-b.num);
   el.innerHTML=`<div class="eprows">${sorted.map(ep=>`
   <div class="eprow">
-    <span class="en">${String(ep.num).padStart(2,'0')}</span>
-    <span class="et">${ep.title}</span>
-    <button class="d2" onclick="deleteEp(${id},${ep.num})">🗑️</button>
+    <span class="eprow-num">${String(ep.num).padStart(2,'0')}</span>
+    <span class="eprow-title">${ep.title}</span>
+    <button class="eprow-del" onclick="deleteEp('${anime.id}',${ep.num})">🗑️</button>
   </div>`).join('')}</div>`;
 }
 
 async function deleteEp(animeId,epNum){
-  if(!confirm('Episode '+epNum+' delete karein?'))return;
-  const db=localCache,a=db.find(x=>String(x.id)===String(animeId));
-  if(!a)return;
-  a.episodes=a.episodes.filter(e=>e.num!==epNum);
+  if(!confirm('Delete Episode '+epNum+'?'))return;
+  const anime=localCache.find(a=>a.id===animeId);
+  if(!anime)return;
+  anime.episodes=(anime.episodes||[]).filter(e=>e.num!==epNum);
+  showLoading('Deleting...');
   try{
-    await fdb.collection('anime').doc(String(animeId)).update({episodes:a.episodes});
+    await fdb.collection('anime').doc(animeId).update({episodes:anime.episodes});
     toast('🗑️ Episode '+epNum+' deleted!');
-    await refreshAll();showExistingEps();
-  }catch(e){toast('❌ Error: '+e.message);}
-}
-
-// RENDER ANIME LIST
-function renderAnimeList(){
-  renderAnimeList_fb(localCache);
-}
-
-async function deleteAnime(id){
-  const db=localCache,a=db.find(x=>String(x.id)===String(id));
-  if(!a){toast('❌ Anime not found in cache! Refresh page.');return;}
-  if(!confirm('"'+a.name+'" will be deleted with all episodes. Sure?'))return;
-  try{
-    await fdb.collection('anime').doc(String(id)).delete();
-    toast('🗑️ '+a.name+' deleted!');
-    await refreshAll();
-  }catch(e){
-    toast('❌ Delete failed: '+e.message);
-    console.error(e);
-  }
-}
-
-function changePass(){
-  const np=document.getElementById('newpass').value,cp=document.getElementById('confpass').value;
-  if(!np){toast('❌ Enter password!');return;}
-  if(np!==cp){toast('❌ Passwords do not match!');return;}
-  if(np.length<6){toast('❌ Minimum 6 characters!');return;}
-  localStorage.setItem(PASS_KEY,np);
-  document.getElementById('newpass').value='';
-  document.getElementById('confpass').value='';
-  toast('✅ Password changed successfully!');
-}
-
-async function exportData(){
-  const d=await gDB();
-  const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='awiDB-backup.json';a.click();
-  URL.revokeObjectURL(url);toast('📤 Backup downloaded!');
-}
-function handleImport(input){
-  const file=input.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=async e=>{
-    try{
-      const data=JSON.parse(e.target.result);
-      if(!Array.isArray(data))throw new Error('Invalid format');
-      if(!confirm(data.length+' anime will be imported. Current data replaced. Sure?'))return;
-      toast('⏳ Importing to Firebase...');
-      const batch=fdb.batch();
-      data.forEach(a=>{
-        const {id,...rest}=a;
-        batch.set(fdb.collection('anime').doc(String(id||Date.now())),rest);
-      });
-      await batch.commit();
-      await refreshAll();
-      toast('✅ '+data.length+' anime imported successfully!');
-    }catch(e){toast('❌ Import failed: '+e.message);}
-  };
-  reader.readAsText(file);
-  input.value='';
-}
-</script>
-
-<!-- EDIT MODAL -->
-<div id="editModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;overflow-y:auto;padding:16px">
-  <div style="background:#fff;border-radius:14px;max-width:600px;margin:0 auto;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.2)">
-    <div style="background:#1565c0;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
-      <span style="font-family:'Teko',sans-serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:.5px">✏️ EDIT ANIME</span>
-      <button onclick="closeEdit()" style="background:rgba(255,255,255,.2);border:none;color:#fff;width:30px;height:30px;border-radius:6px;font-size:18px;cursor:pointer">✕</button>
-    </div>
-    <div style="padding:16px">
-      <input type="hidden" id="editId">
-      <div class="row"><div class="fg"><label>Anime Name *</label><input id="eName" placeholder="Anime name"></div>
-      <div class="fg"><label>Season</label><input id="eSeason" placeholder="e.g. Season 1"></div></div>
-      <div class="row"><div class="fg"><label>Status</label>
-        <select id="eStatus"><option>Ongoing</option><option>Completed</option><option>Upcoming</option></select></div>
-      <div class="fg"><label>Quality</label>
-        <select id="eQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div></div>
-      <div class="row"><div class="fg"><label>Year</label><input id="eYear" type="number" placeholder="2024"></div>
-      <div class="fg"><label>Rating</label><input id="eRating" type="number" step="0.1" placeholder="8.5"></div></div>
-      <div class="row full"><div class="fg"><label>🖼️ Poster URL</label>
-        <input id="ePoster" placeholder="https://i.ibb.co/..." oninput="prevEditPoster(this.value)" style="width:100%;background:#f9f9f9;border:1.5px solid #e0e0e0;color:#222;padding:10px 12px;border-radius:8px;font-size:13px;outline:none"></div></div>
-      <div id="editPosterPrev" style="display:none;text-align:center;margin:8px 0">
-        <img id="editPosterImg" src="" style="max-height:100px;border-radius:6px;border:2px solid #1565c0">
-      </div>
-      <div class="row full"><div class="fg"><label>Unlock Link 1 *</label><input id="eUL1" placeholder="https://..."></div></div>
-      <div class="row full"><div class="fg"><label>Unlock Link 2 (Optional)</label><input id="eUL2" placeholder="https://..."></div></div>
-      <div class="row full"><div class="fg"><label>Description</label>
-        <textarea id="eDesc" style="min-height:80px" placeholder="Story..."></textarea></div></div>
-      <button class="submitbtn" onclick="saveEdit()" style="margin-top:4px">💾 SAVE CHANGES</button>
-    </div>
-  </div>
-</div>
-</body>
-</html>
-<script>
-// EXTRA SECURITY — Brute force protection
-(function(){
-  const LOCK_KEY='awi_lock';
-  const ATTEMPT_KEY='awi_attempts';
-  const MAX_ATTEMPTS=5;
-  const LOCK_DURATION=30*60*1000; // 30 minutes
-
-  const lockData=JSON.parse(localStorage.getItem(LOCK_KEY)||'{}');
-  if(lockData.until && Date.now()<lockData.until){
-    const mins=Math.ceil((lockData.until-Date.now())/60000);
-    document.getElementById('ls').innerHTML=`
-      <div style="text-align:center;padding:40px 20px;font-family:'Hind',sans-serif">
-        <div style="font-size:60px;margin-bottom:16px">🚫</div>
-        <h2 style="color:#c00;font-family:'Teko',sans-serif;font-size:22px;margin-bottom:10px">ACCESS LOCKED</h2>
-        <p style="color:#888;font-size:13px">Too many failed attempts.<br>Try again in <strong>${mins} minutes</strong>.</p>
-      </div>`;
-  }
-
-  const origLogin=window.doLogin;
-  window.doLogin=function(){
-    const lockData=JSON.parse(localStorage.getItem(LOCK_KEY)||'{}');
-    if(lockData.until && Date.now()<lockData.until) return;
-
-    const p=document.getElementById('pinput').value;
-    const gPass=()=>localStorage.getItem('awiPass')||'animeworld2024';
-
-    if(p===gPass()){
-      localStorage.removeItem(ATTEMPT_KEY);
-      localStorage.removeItem(LOCK_KEY);
-      document.getElementById('ls').style.display='none';
-      document.getElementById('ap').style.display='block';
-      updateStats();renderAnimeList();updateEpSelect();
-    } else {
-      let attempts=parseInt(localStorage.getItem(ATTEMPT_KEY)||'0')+1;
-      localStorage.setItem(ATTEMPT_KEY,attempts);
-      const remaining=MAX_ATTEMPTS-attempts;
-      if(remaining<=0){
-        localStorage.setItem(LOCK_KEY,JSON.stringify({until:Date.now()+LOCK_DURATION}));
-        document.getElementById('lerr').textContent='🚫 Too many attempts! Locked for 30 minutes.';
-      } else {
-        document.getElementById('lerr').textContent=`❌ Wrong password! ${remaining} attempts left.`;
-      }
-      document.getElementById('lerr').style.display='block';
-      document.getElementById('pinput').value='';
-      setTimeout(()=>document.getElementById('lerr').style.display='none',3000);
-    }
-  };
-})();
-</script>
-<script>
-// ============================================================
-// BULK EPISODE SYSTEM
-// ============================================================
-function updateBulkSelect(){
-  const db=gDB(),sel=document.getElementById('blkAnime');
-  if(!sel)return;
-  const prev=sel.value;
-  sel.innerHTML='<option value="">-- Select Anime --</option>'+
-    db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''} (${a.episodes?.length||0} ep)</option>`).join('');
-  if(prev)sel.value=prev;
-}
-
-function previewBulk(){
-  const animeId=parseInt(document.getElementById('blkAnime').value);
-  if(!animeId){toast('❌ Please select an anime first!');return;}
-  const raw=document.getElementById('blkLinks').value.trim();
-  if(!raw){toast('❌ Links paste karo!');return;}
-  const links=raw.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
-  if(!links.length){toast('❌ Valid links nahi hain!');return;}
-  const startEp=parseInt(document.getElementById('blkStart').value)||1;
-  const quality=document.getElementById('blkQuality').value;
-  const dur=document.getElementById('blkDur').value||'24m';
-
-  // Show preview
-  const prev=document.getElementById('blkPreview');
-  prev.style.display='block';
-  prev.innerHTML=`
-  <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:12px;font-size:12px">
-    <strong style="color:#2e7d32;font-size:13px">✅ ${links.length} Episodes Ready!</strong><br><br>
-    ${links.slice(0,5).map((l,i)=>`<div style="padding:4px 0;border-bottom:1px solid #c8e6c9;color:#333">
-      <strong>Ep ${startEp+i}:</strong> <span style="color:#1565c0;word-break:break-all">${l.substring(0,60)}${l.length>60?'...':''}</span>
-    </div>`).join('')}
-    ${links.length>5?`<div style="color:#888;padding:4px 0">...aur ${links.length-5} aur episodes</div>`:''}
-    <br>
-    <strong>Quality:</strong> ${quality} &nbsp;|&nbsp; <strong>Duration:</strong> ${dur} &nbsp;|&nbsp; <strong>Ep Range:</strong> ${startEp} to ${startEp+links.length-1}
-  </div>`;
-  document.getElementById('blkSubmit').style.display='block';
-  toast('👁️ Preview ready — check karo phir submit karo!');
-}
-
-function submitBulk(){
-  const animeId=parseInt(document.getElementById('blkAnime').value);
-  if(!animeId){toast('❌ Anime select karo!');return;}
-  const raw=document.getElementById('blkLinks').value.trim();
-  const links=raw.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
-  if(!links.length){toast('❌ Links nahi hain!');return;}
-  const startEp=parseInt(document.getElementById('blkStart').value)||1;
-  const quality=document.getElementById('blkQuality').value;
-  const dur=document.getElementById('blkDur').value||'24m';
-  const db=gDB();
-  const anime=db.find(a=>a.id===animeId);
-  if(!anime){toast('❌ Anime nahi mila!');return;}
-  anime.episodes=anime.episodes||[];
-
-  let added=0,skipped=0;
-  links.forEach((link,i)=>{
-    const epNum=startEp+i;
-    // Check duplicate
-    if(anime.episodes.find(e=>e.num===epNum)){
-      // Replace existing
-      anime.episodes=anime.episodes.filter(e=>e.num!==epNum);
-      skipped++;
-    }
-    const ep={
-      num:epNum,
-      title:'Episode '+epNum,
-      duration:dur,
-      language:'Hindi',
-      links:{},
-      addedAt:new Date().toISOString()
-    };
-    ep.links[quality]=link;
-    anime.episodes.push(ep);
-    added++;
-  });
-
-  anime.episodes.sort((a,b)=>a.num-b.num);
-  sDB(db);
-  updateStats();
-  updateEpSelect();
-  updateBulkSelect();
-
-  // Reset form
-  document.getElementById('blkLinks').value='';
-  document.getElementById('blkPreview').style.display='none';
-  document.getElementById('blkSubmit').style.display='none';
-
-  toast(`✅ ${added} episodes add ho gaye! (${skipped} replaced)`);
-}
-
-// Hook into existing switchTab to update bulk select
-const _origSwitch=switchTab;
-window.switchTab=function(t){
-  _origSwitch(t);
-  if(t==='bulk')updateBulkSelect();
-};
-</script>
-<script>
-// ============================================================
-// POSTER PREVIEW
-// ============================================================
-function previewPoster(url){
-  const p=document.getElementById('posterPreview');
-  const img=document.getElementById('posterImg');
-  if(!url.trim()){p.style.display='none';return;}
-  img.src=url;
-  p.style.display='block';
+    showExistingEps();updateStats();
+  }catch(e){toast('❌ Failed: '+e.message);}
+  hideLoading();
 }
 
 // ============================================================
-// SEASON PACK SYSTEM
+// SEASON PACK
 // ============================================================
-function updateSpSelect(){
-  const db=gDB(),sel=document.getElementById('spAnime');
-  if(!sel)return;
-  sel.innerHTML='<option value="">-- Select Anime --</option>'+
-    db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
-}
-
 async function addSeasonPack(){
-  const animeId=parseInt(document.getElementById('spAnime').value);
-  if(!animeId){toast('❌ Anime select karo!');return;}
+  const animeId=document.getElementById('spAnime').value;
+  if(!animeId){toast('❌ Select anime!');return;}
   const l1080=document.getElementById('sp1080').value.trim();
   const l720=document.getElementById('sp720').value.trim();
   const l480=document.getElementById('sp480').value.trim();
   const l360=document.getElementById('sp360').value.trim();
   if(!l1080&&!l720&&!l480&&!l360){toast('❌ Add at least one link!');return;}
 
-  const db=gDB();
-  const anime=db.find(a=>a.id===animeId);
+  const anime=localCache.find(a=>a.id===animeId);
   if(!anime)return;
-  anime.seasonPacks=anime.seasonPacks||[];
-
+  const packs=[...(anime.seasonPacks||[])];
   const pack={
     id:Date.now(),
     title:document.getElementById('spTitle').value.trim()||'Full Season Pack',
     episodes:document.getElementById('spEps').value.trim(),
     size:document.getElementById('spSize').value.trim(),
     quality:document.getElementById('spQuality').value,
-    links:{},
-    addedAt:new Date().toISOString()
+    links:{},addedAt:new Date().toISOString()
   };
   if(l1080)pack.links['1080p']=l1080;
   if(l720)pack.links['720p']=l720;
   if(l480)pack.links['480p']=l480;
   if(l360)pack.links['360p']=l360;
+  packs.push(pack);
 
-  anime.seasonPacks.push(pack);
+  showLoading('Adding season pack...');
   try{
-    await fdb.collection('anime').doc(String(animeId)).update({seasonPacks:anime.seasonPacks});
+    await fdb.collection('anime').doc(animeId).update({seasonPacks:packs});
+    anime.seasonPacks=packs;
     toast('✅ Season Pack added!');
-    showSpExisting(animeId);
-    await refreshAll();
-  }catch(e){toast('❌ Error: '+e.message);}
-  ['spTitle','spEps','spSize','sp1080','sp720','sp480','sp360'].forEach(id=>document.getElementById(id).value='');
+    ['spTitle','spSize','spEps','sp1080','sp720','sp480','sp360'].forEach(id=>document.getElementById(id).value='');
+    showSpExisting();
+  }catch(e){toast('❌ Failed: '+e.message);}
+  hideLoading();
 }
 
-function showSpExisting(animeId){
-  const db=gDB(),anime=db.find(a=>a.id===animeId);
-  const card=document.getElementById('spListCard');
+function showSpExisting(){
+  const animeId=document.getElementById('spAnime').value;
+  const card=document.getElementById('spExistingCard');
   const el=document.getElementById('spExisting');
+  if(!animeId){card.style.display='none';return;}
+  const anime=localCache.find(a=>a.id===animeId);
   if(!anime?.seasonPacks?.length){card.style.display='none';return;}
   card.style.display='block';
   el.innerHTML=anime.seasonPacks.map(sp=>`
-  <div style="background:#f9f9f9;border:1px solid #e0e0e0;border-radius:8px;padding:10px 12px;margin-bottom:7px;display:flex;align-items:center;justify-content:space-between;gap:10px">
-    <div>
-      <div style="font-weight:600;font-size:13px">📦 ${sp.title}</div>
-      <div style="font-size:11px;color:#888">${sp.episodes||'?'} Eps · ${sp.size||''} · ${sp.quality}</div>
-    </div>
-    <button onclick="deleteSeasonPack(${animeId},${sp.id})" style="background:none;border:none;color:#c00;font-size:18px;cursor:pointer">🗑️</button>
+  <div style="background:#f9f9f9;border:1px solid #e0e0e0;border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:7px">
+    <div style="flex:1"><div style="font-weight:600;font-size:13px">📦 ${sp.title}</div><div style="font-size:11px;color:#888">${sp.episodes||'?'} Eps · ${sp.size||''} · ${sp.quality}</div></div>
+    <button onclick="deleteSeasonPack('${animeId}',${sp.id})" style="background:none;border:none;color:#c00;font-size:18px;cursor:pointer">🗑️</button>
   </div>`).join('');
 }
 
-function deleteSeasonPack(animeId,packId){
+async function deleteSeasonPack(animeId,packId){
   if(!confirm('Delete this season pack?'))return;
-  const db=gDB(),anime=db.find(a=>a.id===animeId);
+  const anime=localCache.find(a=>a.id===animeId);
   if(!anime)return;
-  anime.seasonPacks=anime.seasonPacks.filter(p=>p.id!==packId);
-  sDB(db);showSpExisting(animeId);
-  toast('🗑️ Pack deleted!');
+  anime.seasonPacks=(anime.seasonPacks||[]).filter(p=>p.id!==packId);
+  showLoading('Deleting...');
+  try{
+    await fdb.collection('anime').doc(animeId).update({seasonPacks:anime.seasonPacks});
+    toast('🗑️ Pack deleted!');showSpExisting();
+  }catch(e){toast('❌ Failed: '+e.message);}
+  hideLoading();
 }
 
-// Hook season tab into switchTab
-const _origSwitchSp=window.switchTab;
-window.switchTab=function(t){
-  _origSwitchSp(t);
-  if(t==='season'){updateSpSelect();}
-};
+// ============================================================
+// GLOBAL UNLOCK LINKS
+// ============================================================
+async function saveGlobalLinks(){
+  const l1=document.getElementById('gul1').value.trim();
+  const l2=document.getElementById('gul2').value.trim();
+  if(!l1){toast('❌ Link 1 required!');return;}
+  showLoading('Saving links...');
+  try{
+    await fdb.collection('settings').doc('unlock').set({link1:l1,link2:l2,updatedAt:new Date().toISOString()});
+    toast('✅ Global unlock links saved!');
+    // Also save locally for continue.html use
+    localStorage.setItem('awiGUL1',l1);
+    localStorage.setItem('awiGUL2',l2);
+  }catch(e){toast('❌ Failed: '+e.message);}
+  hideLoading();
+}
 
-document.getElementById('spAnime')?.addEventListener('change',function(){
-  showSpExisting(parseInt(this.value));
-});
-</script>
-<script>
+async function loadGlobalLinks(){
+  try{
+    const doc=await fdb.collection('settings').doc('unlock').get();
+    if(doc.exists){
+      const d=doc.data();
+      document.getElementById('gul1').value=d.link1||'';
+      document.getElementById('gul2').value=d.link2||'';
+    }
+  }catch(e){console.log('No global links yet');}
+}
+
 // ============================================================
-// DASHBOARD ANIME LIST
+// ANIME LIST RENDER
 // ============================================================
-function renderDashList(){
-  const db=gDB(),el=document.getElementById('dashList');
+function renderDashList(){renderAnimeListTo('dashList');}
+function renderAnimeList(){renderAnimeListTo('alist');}
+
+function renderAnimeListTo(elId){
+  const el=document.getElementById(elId);
   if(!el)return;
-  if(!db.length){
-    el.innerHTML='<p style="color:#aaa;text-align:center;padding:16px;font-size:13px;background:#f9f9f9;border-radius:8px">No anime yet — click "Add New" above!</p>';
-    return;
-  }
-  el.innerHTML=db.map((a,i)=>`
-  <div style="background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:7px;box-shadow:0 1px 3px rgba(0,0,0,.04);animation:fadeUp .3s ease both;animation-delay:${i*.04}s">
-    <div style="width:42px;height:42px;border-radius:7px;background:#eee;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px">
-      ${a.poster?`<img src="${a.poster.replace('https://ibb.co/','https://i.ibb.co/').replace('http://ibb.co/','https://i.ibb.co/')}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:['⚔️','🔮','🌀','💥','🔥','⚡'][i%6]}
+  const db=localCache;
+  if(!db.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:20px;font-size:13px">No anime yet. Use Add Anime!</p>';return;}
+  el.innerHTML='<div class="alist">'+db.map((a,i)=>`
+  <div class="arow" style="animation-delay:${i*.04}s">
+    <div class="athumb">${a.poster?`<img src="${fixPoster(a.poster)}" onerror="this.style.display='none'">`:E(i)}</div>
+    <div class="arinfo">
+      <h4>${a.name}${a.season?' '+a.season:''}</h4>
+      <span>${a.genre||'Anime'} · ${a.episodes?.length||0} Ep · ${a.status||'—'}</span>
     </div>
-    <div style="flex:1;min-width:0">
-      <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.name}${a.season?' '+a.season:''}</div>
-      <div style="font-size:11px;color:#888">${a.genre||'Anime'} · ${a.episodes?.length||0} Ep · ${a.seasonPacks?.length||0} Packs · ${a.status||'—'}</div>
+    <div class="aacts">
+      <button class="abtn" onclick="openEdit('${a.id}')" title="Edit" style="border-color:#90caf9;background:#e3f2fd">✏️</button>
+      <a href="anime.html?id=${a.id}" target="_blank" class="abtn" title="Preview">👁️</a>
+      <button class="abtn delbtn" onclick="deleteAnime('${a.id}')" title="Delete">🗑️</button>
     </div>
-    <div style="display:flex;gap:5px;flex-shrink:0">
-      <button onclick="openEdit(${a.id})" style="width:32px;height:32px;border-radius:6px;border:1px solid #90caf9;background:#e3f2fd;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center">✏️</button>
-      <a href="anime.html?id=${a.id}" target="_blank" style="width:32px;height:32px;border-radius:6px;border:1px solid #e0e0e0;background:#f9f9f9;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;text-decoration:none">👁️</a>
-      <button onclick="deleteFromDash(${a.id})" style="width:32px;height:32px;border-radius:6px;border:1px solid #ef9a9a;background:#ffebee;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center">🗑️</button>
-    </div>
-  </div>`).join('');
-}
-
-function deleteFromDash(id){
-  const db=localCache,a=db.find(x=>String(x.id)===String(id));
-  // handled by deleteAnime
+  </div>`).join('')+'</div>';
 }
 
 // ============================================================
-// EDIT SYSTEM
+// DELETE ANIME
+// ============================================================
+async function deleteAnime(id){
+  const a=localCache.find(x=>x.id===id);
+  if(!confirm('"'+a?.name+'" and all episodes will be deleted. Sure?'))return;
+  showLoading('Deleting...');
+  try{
+    await fdb.collection('anime').doc(id).delete();
+    toast('🗑️ '+a?.name+' deleted!');
+    await refreshAll();
+  }catch(e){toast('❌ Failed: '+e.message);}
+  hideLoading();
+}
+
+// ============================================================
+// EDIT ANIME
 // ============================================================
 function openEdit(id){
-  const db=localCache,a=db.find(x=>String(x.id)===String(id));
-  if(!a)return;
+  const a=localCache.find(x=>x.id===id);
+  if(!a){toast('❌ Not found! Refresh.');return;}
   document.getElementById('editId').value=id;
   document.getElementById('eName').value=a.name||'';
   document.getElementById('eSeason').value=a.season||'';
@@ -1268,8 +1004,6 @@ function openEdit(id){
   document.getElementById('eYear').value=a.year||'';
   document.getElementById('eRating').value=a.rating||'';
   document.getElementById('ePoster').value=a.poster||'';
-  document.getElementById('eUL1').value=a.unlockLink1||'';
-  document.getElementById('eUL2').value=a.unlockLink2||'';
   document.getElementById('eDesc').value=a.description||'';
   prevEditPoster(a.poster||'');
   document.getElementById('editModal').style.display='block';
@@ -1281,35 +1015,14 @@ function closeEdit(){
   document.body.style.overflow='';
 }
 
-function prevEditPoster(url){
-  const p=document.getElementById('editPosterPrev');
-  const img=document.getElementById('editPosterImg');
-  if(!url.trim()){p.style.display='none';return;}
-  if(url.match(/^https?:\/\/ibb\.co\/[a-zA-Z0-9]+$/) && !url.includes('i.ibb.co')){
-    p.style.display='none';
-    toast('⚠️ Wrong link! ImgBB pe Direct links copy karo (i.ibb.co wala)');
-    return;
-  }
-  img.src=url;
-  p.style.display='block';
-}
-
 async function saveEdit(){
-  const id=parseInt(document.getElementById('editId').value);
+  const id=document.getElementById('editId').value;
   const name=document.getElementById('eName').value.trim();
-  if(!name){toast('❌ Anime name required!');return;}
-  const db=gDB();
-  const idx=db.findIndex(a=>String(a.id)===String(id));
-  if(idx===-1){toast('❌ Anime not found!');return;}
-  
-  // Keep existing episodes + packs
-  const existing=db[idx];
-  const poster=(document.getElementById('ePoster').value.trim())
-    .replace('https://ibb.co/','https://i.ibb.co/')
-    .replace('http://ibb.co/','https://i.ibb.co/');
-
-  db[idx]={
-    ...existing,
+  if(!name){toast('❌ Name required!');return;}
+  const a=localCache.find(x=>x.id===id);
+  if(!a){toast('❌ Not found!');return;}
+  const poster=fixPoster(document.getElementById('ePoster').value.trim());
+  const updated={...a,
     name,
     season:document.getElementById('eSeason').value.trim(),
     status:document.getElementById('eStatus').value,
@@ -1317,196 +1030,93 @@ async function saveEdit(){
     year:document.getElementById('eYear').value,
     rating:document.getElementById('eRating').value,
     poster,
-    unlockLink1:document.getElementById('eUL1').value.trim(),
-    unlockLink2:document.getElementById('eUL2').value.trim(),
     description:document.getElementById('eDesc').value.trim(),
     updatedAt:new Date().toISOString()
   };
-
+  delete updated.id;
+  showLoading('Saving changes...');
   try{
-    await fdb.collection('anime').doc(String(id)).set(db[idx]);
+    await fdb.collection('anime').doc(id).set(updated);
     closeEdit();
     toast('✅ '+name+' updated!');
     await refreshAll();
-  }catch(e){toast('❌ Error: '+e.message);}
+  }catch(e){toast('❌ Failed: '+e.message);}
+  hideLoading();
 }
 
-// Close modal on outside click
-document.getElementById('editModal').addEventListener('click',function(e){
-  if(e.target===this)closeEdit();
-});
+document.getElementById('editModal').addEventListener('click',function(e){if(e.target===this)closeEdit();});
 
-// Hook into switchTab to render dash list
-const _origSw3=window.switchTab;
-window.switchTab=function(t){
-  _origSw3(t);
-  if(t==='dash')renderDashList();
-};
+// ============================================================
+// POSTER PREVIEW
+// ============================================================
+function previewPoster(url){
+  const p=document.getElementById('posterPreview');
+  const img=document.getElementById('posterImg');
+  const warn=document.getElementById('posterWarn');
+  if(!url.trim()){p.style.display='none';warn.style.display='none';return;}
+  // Detect wrong imgbb link
+  if(/^https?:\/\/ibb\.co\/[a-zA-Z0-9]+$/.test(url)&&!url.includes('i.ibb.co')){
+    warn.style.display='block';
+    warn.textContent='⚠️ This is a VIEWER link! On ImgBB, select "Direct links" from the dropdown — paste the link starting with i.ibb.co';
+    p.style.display='none';return;
+  }
+  warn.style.display='none';
+  img.src=url;p.style.display='block';
+}
 
-// Init dash list on load
-document.addEventListener('DOMContentLoaded',()=>{
-  // Login success hook - re-init dash
-  const origLogin=window.doLogin;
-  window.doLogin=function(){
-    origLogin();
-    setTimeout(renderDashList,100);
+function prevEditPoster(url){
+  const p=document.getElementById('editPosterPrev');
+  const img=document.getElementById('editPosterImg');
+  if(!url.trim()){p.style.display='none';return;}
+  img.src=fixPoster(url);p.style.display='block';
+}
+
+// ============================================================
+// EXPORT / IMPORT
+// ============================================================
+async function exportData(){
+  const blob=new Blob([JSON.stringify(localCache,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='awi-backup-'+Date.now()+'.json';a.click();
+  URL.revokeObjectURL(url);
+  toast('📤 Backup downloaded!');
+}
+
+function handleImport(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!Array.isArray(data))throw new Error('Invalid format');
+      if(!confirm(data.length+' anime will be imported. Sure?'))return;
+      showLoading('Importing...');
+      for(const a of data){
+        const {id,...rest}=a;
+        await fdb.collection('anime').add({...rest,importedAt:new Date().toISOString()});
+      }
+      await refreshAll();
+      toast('✅ '+data.length+' anime imported!');
+    }catch(e){toast('❌ Import failed: '+e.message);}
+    hideLoading();
   };
-});
+  reader.readAsText(file);input.value='';
+}
+
+// ============================================================
+// PASSWORD
+// ============================================================
+function changePass(){
+  const np=document.getElementById('newpass').value;
+  const cp=document.getElementById('confpass').value;
+  if(!np){toast('❌ Enter new password!');return;}
+  if(np!==cp){toast('❌ Passwords do not match!');return;}
+  if(np.length<6){toast('❌ Minimum 6 characters!');return;}
+  localStorage.setItem(PASS_KEY,np);
+  document.getElementById('newpass').value='';
+  document.getElementById('confpass').value='';
+  toast('✅ Password changed successfully!');
+}
 </script>
-<script>
-// Poster via imgbb.com (free image hosting)
-
-// ============================================================
-// BULK EPISODES — Firebase version
-// ============================================================
-async function submitBulk(){
-  const animeId=document.getElementById('blkAnime').value;
-  if(!animeId){toast('❌ Anime select karo!');return;}
-  const raw=document.getElementById('blkLinks').value.trim();
-  const links=raw.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
-  if(!links.length){toast('❌ Links nahi hain!');return;}
-  const startEp=parseInt(document.getElementById('blkStart').value)||1;
-  const quality=document.getElementById('blkQuality').value;
-  const dur=document.getElementById('blkDur').value||'24m';
-  
-  const db=localCache;
-  const anime=db.find(a=>String(a.id)===String(animeId));
-  if(!anime){toast('❌ Anime not found!');return;}
-  
-  anime.episodes=anime.episodes||[];
-  links.forEach((link,i)=>{
-    const epNum=startEp+i;
-    anime.episodes=anime.episodes.filter(e=>e.num!==epNum);
-    const ep={num:epNum,title:'Episode '+epNum,duration:dur,language:'Hindi',links:{},addedAt:new Date().toISOString()};
-    ep.links[quality]=link;
-    anime.episodes.push(ep);
-  });
-  anime.episodes.sort((a,b)=>a.num-b.num);
-  
-  try{
-    await fdb.collection('anime').doc(String(animeId)).set(anime);
-    toast('✅ '+links.length+' episodes added!');
-    document.getElementById('blkLinks').value='';
-    document.getElementById('blkPreview').style.display='none';
-    document.getElementById('blkSubmit').style.display='none';
-    await refreshAll();
-  }catch(e){toast('❌ Error: '+e.message);}
-}
-
-// Season pack delete Firebase
-async function deleteSeasonPack(animeId,packId){
-  if(!confirm('Delete this season pack?'))return;
-  const anime=localCache.find(a=>String(a.id)===String(animeId));
-  if(!anime)return;
-  anime.seasonPacks=(anime.seasonPacks||[]).filter(p=>p.id!==packId);
-  try{
-    await fdb.collection('anime').doc(String(animeId)).update({seasonPacks:anime.seasonPacks});
-    showSpExisting(animeId);
-    toast('🗑️ Pack deleted!');
-    await refreshAll();
-  }catch(e){toast('❌ Error!');}
-}
-
-// Override renderDashList to use localCache
-function renderDashList(){renderDashList_fb(localCache);}
-function renderAnimeList(){renderAnimeList_fb(localCache);}
-function updateEpSelect(){} // handled by refreshAll
-function updateBulkSelect(){} // handled by refreshAll
-function updateSpSelect(){} // handled by refreshAll
-</script>
-<script>
-// ============================================================
-// EPISODE-WISE ADD (Title + Link per episode)
-// ============================================================
-async function addEpisodeWise(){
-  const animeId=document.getElementById('ewAnime').value;
-  if(!animeId){toast('❌ Anime select karo!');return;}
-  const raw=document.getElementById('ewLinks').value.trim();
-  if(!raw){toast('❌ Episodes paste karo!');return;}
-  const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l.includes('|'));
-  if(!lines.length){toast('❌ Format: Title | Link');return;}
-  const startEp=parseInt(document.getElementById('ewStart').value)||1;
-  const quality=document.getElementById('ewQuality').value;
-
-  const anime=localCache.find(a=>String(a.id)===String(animeId));
-  if(!anime){toast('❌ Anime not found!');return;}
-  anime.episodes=anime.episodes||[];
-
-  lines.forEach((line,i)=>{
-    const parts=line.split('|');
-    const title=parts[0].trim();
-    const link=parts.slice(1).join('|').trim();
-    const epNum=startEp+i;
-    anime.episodes=anime.episodes.filter(e=>e.num!==epNum);
-    const ep={
-      num:epNum,
-      title:title||'Episode '+epNum,
-      duration:'24m',
-      language:'Hindi',
-      links:{},
-      addedAt:new Date().toISOString()
-    };
-    ep.links[quality]=link;
-    anime.episodes.push(ep);
-  });
-  anime.episodes.sort((a,b)=>a.num-b.num);
-
-  try{
-    await firebase.firestore().collection('anime').doc(String(animeId)).set(anime);
-    toast('✅ '+lines.length+' episodes added with titles!');
-    document.getElementById('ewLinks').value='';
-    await refreshAll();
-  }catch(e){toast('❌ Error: '+e.message);}
-}
-
-// ============================================================
-// SEASON ZIP ADD
-// ============================================================
-async function addSeasonZip(){
-  const animeId=document.getElementById('szAnime').value;
-  if(!animeId){toast('❌ Anime select karo!');return;}
-  const l1080=document.getElementById('sz1080').value.trim();
-  const l720=document.getElementById('sz720').value.trim();
-  const l480=document.getElementById('sz480').value.trim();
-  const l360=document.getElementById('sz360').value.trim();
-  if(!l1080&&!l720&&!l480&&!l360){toast('❌ Add at least one link!');return;}
-
-  const anime=localCache.find(a=>String(a.id)===String(animeId));
-  if(!anime){toast('❌ Anime not found!');return;}
-  anime.seasonPacks=anime.seasonPacks||[];
-
-  const pack={
-    id:Date.now(),
-    title:document.getElementById('szTitle').value.trim()||'Full Season Pack',
-    episodes:document.getElementById('szEps').value.trim(),
-    size:document.getElementById('szSize').value.trim(),
-    quality:document.getElementById('szQuality').value,
-    links:{},
-    addedAt:new Date().toISOString()
-  };
-  if(l1080)pack.links['1080p']=l1080;
-  if(l720)pack.links['720p']=l720;
-  if(l480)pack.links['480p']=l480;
-  if(l360)pack.links['360p']=l360;
-  anime.seasonPacks.push(pack);
-
-  try{
-    await firebase.firestore().collection('anime').doc(String(animeId)).set(anime);
-    toast('✅ Season ZIP added!');
-    ['szTitle','szSize','szEps','sz1080','sz720','sz480','sz360'].forEach(id=>document.getElementById(id).value='');
-    await refreshAll();
-  }catch(e){toast('❌ Error: '+e.message);}
-}
-
-// Update selects for new fields in refreshAll
-const _origRefresh=window.refreshAll;
-window.refreshAll=async function(){
-  await _origRefresh();
-  const db=localCache;
-  const opts='<option value="">-- Select Anime --</option>'+db.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''}</option>`).join('');
-  ['ewAnime','szAnime'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el)el.innerHTML=opts;
-  });
-};
-</script>
+</body>
+</html>
