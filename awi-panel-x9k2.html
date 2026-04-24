@@ -7,17 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script>
-firebase.initializeApp({
-  apiKey:"AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk",
-  authDomain:"anime-website-42907.firebaseapp.com",
-  projectId:"anime-website-42907",
-  storageBucket:"anime-website-42907.firebasestorage.app",
-  messagingSenderId:"747833174910",
-  appId:"1:747833174910:web:eefcbf01901ecb58b8a12f"
-});
-const fdb=firebase.firestore();
-</script>
+<script src="firebase.js"></script>
 <style>
 :root{--blue:#1565c0;--blue-dk:#0d47a1;--green:#2e7d32;--red:#c62828;--gold:#f57f17;--purple:#6a1b9a;--bg:#f0f2f5;--card:#fff;--border:#e8e8e8;--muted:#888;--text:#222}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -162,7 +152,6 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
 </head>
 <body>
 
-<!-- ══════════════════ LOGIN ══════════════════ -->
 <div id="ls">
   <div class="lbox">
     <span class="l-crown">👑</span>
@@ -176,13 +165,11 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
   </div>
 </div>
 
-<!-- ══════════════════ LOADING ══════════════════ -->
 <div class="load-ov" id="loadOv">
   <div class="spinner"></div>
   <div class="load-msg" id="loadMsg">Saving to Firebase...</div>
 </div>
 
-<!-- ══════════════════ ADMIN ══════════════════ -->
 <div id="ap">
 
 <div class="topbar">
@@ -198,7 +185,6 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
 
 <div class="ab">
 
-<!-- STATS -->
 <div class="stats">
   <div class="sbox"><div class="sv" id="tAnime">…</div><div class="sk">Anime</div></div>
   <div class="sbox"><div class="sv" id="tEp">…</div><div class="sk">Episodes</div></div>
@@ -206,24 +192,22 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
   <div class="sbox"><div class="sv" id="tNew">…</div><div class="sk">New 7d</div></div>
 </div>
 
-<!-- TABS -->
 <div class="tabs">
   <button class="tab active" onclick="ST('dash')">📊 Dashboard</button>
   <button class="tab" onclick="ST('addAnime')">➕ Add Anime</button>
   <button class="tab" onclick="ST('addEp')">🎬 Episodes</button>
   <button class="tab" onclick="ST('season')">📦 Season Pack</button>
-  <button class="tab" onclick="ST('unlock')">🔗 Unlock Setup</button>
+  <button class="tab" onclick="ST('unlock')">🔗 API Settings</button>
   <button class="tab" onclick="ST('manage')">📋 All Anime</button>
   <button class="tab" onclick="ST('siteSettings')">🌐 Site Settings</button>
   <button class="tab" onclick="ST('analytics')">📈 Analytics</button>
   <button class="tab" onclick="ST('sett')">⚙️ Settings</button>
 </div>
 
-<!-- ════ DASHBOARD ════ -->
 <div class="tc active" id="tab-dash">
   <div class="icard">
     <strong>🚀 Quick Guide — Manage your anime empire efficiently ⚡</strong><br>
-    1. <strong>Unlock Setup</strong> → Set global shortener links first<br>
+    1. <strong>API Settings</strong> → Set global shortener links first<br>
     2. <strong>Add Anime</strong> → Poster via imgbb.com (Direct Link)<br>
     3. <strong>Episodes</strong> → Add single/bulk with direct + short links<br>
     4. All devices get live data instantly via Firebase ✅
@@ -241,7 +225,6 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
   <input type="file" id="impFile" accept=".json" style="display:none" onchange="handleImport(this)">
 </div>
 
-<!-- ════ ADD ANIME ════ -->
 <div class="tc" id="tab-addAnime">
   <div class="fcard">
     <div class="fcard-head">📝 ANIME DETAILS</div>
@@ -305,7 +288,6 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
   </div>
 </div>
 
-<!-- ════ EPISODES ════ -->
 <div class="tc" id="tab-addEp">
 
   <div class="fcard">
@@ -316,7 +298,6 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
     <div id="existingEps"></div>
   </div>
 
-  <!-- SINGLE EP -->
   <div class="fcard">
     <div class="fcard-head">🎬 ADD SINGLE EPISODE</div>
     <div class="row">
@@ -344,7 +325,6 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
     <button class="btn btn-blue" onclick="addEpisode()">✅ ADD EPISODE</button>
   </div>
 
-  <!-- BULK (Title | Link) -->
   <div class="fcard">
     <div class="fcard-head purple">⚡ BULK ADD — Title | ShortLink</div>
     <div class="wcard">Format: <strong>Episode Title | short_link</strong><br>One per line · Auto-numbered from start ep</div>
@@ -361,7 +341,6 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
     <button class="btn btn-purple" id="blkSubmit" style="display:none" onclick="submitBulk()">✅ ADD ALL EPISODES</button>
   </div>
 
-  <!-- QUICK BULK (links only) -->
   <div class="fcard">
     <div class="fcard-head">📋 QUICK BULK — Links Only</div>
     <div class="wcard">One link per line — auto-numbered</div>
@@ -377,7 +356,6 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
   </div>
 </div>
 
-<!-- ════ SEASON PACK ════ -->
 <div class="tc" id="tab-season">
   <div class="fcard">
     <div class="fcard-head green">📦 ADD SEASON PACK</div>
@@ -407,10 +385,9 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
   </div>
 </div>
 
-<!-- ════ UNLOCK SETUP ════ -->
 <div class="tc" id="tab-unlock">
   <div class="fcard">
-    <div class="fcard-head">🔗 GLOBAL UNLOCK LINKS</div>
+    <div class="fcard-head">🔗 API / GLOBAL UNLOCK LINKS</div>
     <div class="icard">
       <strong>How it works:</strong><br>
       1. Shorten <code>continue.html?token=TOKEN&...</code> on IndianShortener<br>
@@ -419,14 +396,14 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
       4. These are used globally for ALL anime · Visitor clicks both = double earning 💰
     </div>
     <div class="row full"><div class="fg">
-      <label>🔗 Unlock Link 1 (IndianShortener) *</label>
+      <label>🔗 API Unlock Link 1 (IndianShortener) *</label>
       <input id="gul1" placeholder="https://indianshortener.in/xxxxx">
     </div></div>
     <div class="row full"><div class="fg">
-      <label>🔗 Unlock Link 2 (Optional — Double Earning)</label>
+      <label>🔗 API Unlock Link 2 (Optional — Double Earning)</label>
       <input id="gul2" placeholder="https://indianshortener.in/xxxxx">
     </div></div>
-    <button class="btn btn-blue" onclick="saveGlobalLinks()">💾 SAVE UNLOCK LINKS</button>
+    <button class="btn btn-blue" onclick="saveGlobalLinks()">💾 SAVE API LINKS</button>
   </div>
 
   <div class="fcard">
@@ -440,7 +417,6 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
   </div>
 </div>
 
-<!-- ════ ALL ANIME ════ -->
 <div class="tc" id="tab-manage">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
     <div class="fcard-head" style="margin:0;border:none;padding:0">📋 ALL ANIME</div>
@@ -449,7 +425,6 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
   <div id="alist"><p style="color:#aaa;text-align:center;padding:20px;font-size:13px">Loading...</p></div>
 </div>
 
-<!-- ════ SETTINGS ════ -->
 <div class="tc" id="tab-sett">
   <div class="fcard">
     <div class="fcard-head">🔑 CHANGE PASSWORD</div>
@@ -460,8 +435,8 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
   <div class="fcard">
     <div class="fcard-head orange">⚙️ SITE GUIDE</div>
     <div class="icard">
-      <strong>Files needed (upload all 4):</strong><br>
-      • index.html · anime.html · continue.html · awi-panel-x9k2.html<br><br>
+      <strong>Files needed (upload all 5):</strong><br>
+      • index.html · anime.html · continue.html · awi-panel-x9k2.html · firebase.js<br><br>
       <strong>Firebase Firestore rules needed:</strong><br>
       <code>match /{document=**} { allow read, write: if true; }</code><br>
       Also add <code>match /settings/{doc}</code> rule<br><br>
@@ -478,13 +453,11 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
 
 </div>
 
-<!-- ════ SITE SETTINGS ════ -->
 <div class="tc" id="tab-siteSettings">
   <div class="fcard">
     <div class="fcard-head">🌐 SOCIAL LINKS</div>
     <div class="icard">Toggle channels ON/OFF and set links. Saved to Firebase instantly.</div>
     <div id="socialRows">
-      <!-- Rendered by JS -->
       <p style="color:#aaa;font-size:12px;text-align:center;padding:16px">⏳ Loading...</p>
     </div>
     <button class="btn btn-blue" onclick="saveSocialLinks()">💾 SAVE SOCIAL SETTINGS</button>
@@ -499,7 +472,6 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
   </div>
 </div>
 
-<!-- ════ ANALYTICS ════ -->
 <div class="tc" id="tab-analytics">
   <div class="stats" id="analyticsStats">
     <div class="sbox"><div class="sv" id="aVisits">…</div><div class="sk">Total Visits</div></div>
@@ -518,11 +490,7 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
   </div>
 </div>
 
-</div><!-- /ab -->
-</div><!-- /ap -->
-
-<!-- ════ EDIT MODAL ════ -->
-<div id="editModal">
+</div></div><div id="editModal">
   <div class="em-inner">
     <div class="em-head">
       <span>✏️ EDIT ANIME</span>
@@ -586,6 +554,7 @@ document.getElementById('pinput').addEventListener('keydown',e=>{if(e.key==='Ent
 // UTILS
 // ════════════════════════════════════════════
 let localCache=[];
+let localEps=[]; // Array to store episodes decoupled from anime
 const isNew=d=>d&&(Date.now()-new Date(d))<7*864e5;
 const EM=['⚔️','🔮','🌀','💥','🔥','⚡','🌊','👊','🤖','💀','🌸','😤'];
 const E=i=>EM[i%EM.length];
@@ -602,14 +571,23 @@ async function refreshAll(){
   try{
     const snap=await fdb.collection('anime').orderBy('createdAt','desc').get();
     localCache=snap.docs.map(d=>({id:d.id,...d.data()}));
+
+    const epSnap = await fdb.collection('episodes').get();
+    localEps = epSnap.docs.map(d=>({id:d.id,...d.data()}));
+    
+    // Attaching for UI displays/counting logic locally
+    localCache.forEach(a => {
+        a.episodes = localEps.filter(e => e.animeId === a.id);
+    });
+
     updateStats();renderDashList();renderAnimeList();updateSelects();
   }catch(e){toast('❌ Firebase: '+e.message);console.error(e);}
 }
 
 function updateStats(){
   const db=localCache;
-  const eps=db.reduce((s,a)=>s+(a.episodes?.length||0),0);
-  const links=db.reduce((s,a)=>s+(a.episodes||[]).reduce((ss,e)=>ss+Object.keys(e.links||{}).filter(k=>e.links[k]).length,0),0);
+  const eps=localEps.length;
+  const links=localEps.reduce((s,e)=>s+Object.keys(e.links||{}).filter(k=>e.links[k]).length,0);
   const nw=db.filter(a=>isNew(a.createdAt)).length;
   ['tAnime','tEp','tLinks','tNew'].forEach((id,i)=>{
     const el=document.getElementById(id);if(el)el.textContent=[db.length,eps,links,nw][i];
@@ -622,9 +600,8 @@ function updateSelects(){
   ['epAnime','spAnime'].forEach(id=>{
     const el=document.getElementById(id);
     if(!el)return;
-    const prev=el.value; // save current selection
+    const prev=el.value; 
     el.innerHTML=opts;
-    // Restore previous selection after DOM update
     if(prev && el.querySelector(`option[value="${prev}"]`)){
       el.value=prev;
     }
@@ -643,7 +620,6 @@ function ST(t){
   document.querySelectorAll('.tab').forEach(b=>{
     if(b.getAttribute('onclick')==="ST('"+t+"')")b.classList.add('active');
   });
-  // Trigger tab-specific refresh actions
   if(t==='manage')renderAnimeList();
   if(t==='addEp'||t==='season')updateSelects();
   if(t==='siteSettings')loadSocialLinks();
@@ -672,12 +648,11 @@ async function addAnime(){
     runtime:document.getElementById('aruntime').value.trim()||null,
     poster:poster||null,
     description:document.getElementById('adesc').value.trim()||null,
-    episodes:[],seasonPacks:[],
+    seasonPacks:[],
     createdAt:new Date().toISOString()
   };
-  // Remove nulls
   Object.keys(a).forEach(k=>{if(a[k]===null||a[k]==='')delete a[k];});
-  a.episodes=a.episodes||[];a.seasonPacks=a.seasonPacks||[];
+  a.seasonPacks=a.seasonPacks||[];
 
   showLoad('Adding '+name+'...');
   try{
@@ -692,7 +667,7 @@ async function addAnime(){
 }
 
 // ════════════════════════════════════════════
-// ADD SINGLE EPISODE (FIXED)
+// ADD SINGLE EPISODE (Fixed to write to episodes collection)
 // ════════════════════════════════════════════
 async function addEpisode(){
   const animeId=document.getElementById('epAnime').value;
@@ -700,7 +675,6 @@ async function addEpisode(){
   const epnum=parseInt(document.getElementById('epnum').value);
   if(!epnum||epnum<1){toast('❌ Enter a valid episode number!');return;}
 
-  // Get direct + short links for each quality
   const quals=['1080','720','480','360'];
   const links={};let hasLink=false;
   quals.forEach(q=>{
@@ -710,72 +684,64 @@ async function addEpisode(){
   });
   if(!hasLink){toast('❌ Add at least one download link!');return;}
 
-  const anime=localCache.find(a=>a.id===animeId);
-  if(!anime){toast('❌ Anime not found — try refreshing.');return;}
-
-  // Build flat links map (short link shown before unlock)
-  const flatLinks={};
-  Object.entries(links).forEach(([q,{direct,short}])=>{flatLinks[q]=short||direct;});
-
   const ep={
+    animeId: animeId,
     num:epnum,
     title:document.getElementById('eptit').value.trim()||'Episode '+epnum,
     duration:document.getElementById('epdur').value.trim()||'24m',
     language:document.getElementById('eplang').value,
-    links:links,        // full {direct,short} objects — used by anime.html unlock logic
+    links:links,
     directLinks:Object.fromEntries(Object.entries(links).map(([q,{direct}])=>[q,direct])),
     addedAt:new Date().toISOString()
   };
 
-  // Replace if same ep number exists, otherwise append
-  let eps=[...(anime.episodes||[])].filter(e=>e.num!==epnum);
-  eps.push(ep);
-  eps.sort((a,b)=>a.num-b.num);
-
   showLoad('Saving Episode '+epnum+'...');
   try{
-    await fdb.collection('anime').doc(animeId).update({episodes:eps});
-    anime.episodes=eps; // update local cache immediately
+    // Search localEps to check if replacing is needed
+    const existing = localEps.find(e => e.animeId === animeId && e.num === epnum);
+    if(existing) {
+        await fdb.collection('episodes').doc(existing.id).update(ep);
+    } else {
+        await fdb.collection('episodes').add(ep);
+    }
+    
     toast('✅ Episode '+epnum+' saved!');
-    // Clear fields but keep anime selection
     ['epnum','eptit','epdur','d1080','s1080','d720','s720','d480','s480','d360','s360'].forEach(id=>{
       const el=document.getElementById(id);if(el)el.value='';
     });
+    await refreshAll();
     showExistingEps();
-    updateStats();
-    updateSelects(); // refresh dropdown — selected value preserved by updateSelects fix
   }catch(e){toast('❌ Failed: '+e.message);console.error(e);}
   hideLoad();
 }
 
 // ════════════════════════════════════════════
-// SHOW EXISTING EPS
+// SHOW EXISTING EPS (from Collection logic)
 // ════════════════════════════════════════════
 function showExistingEps(){
   const animeId=document.getElementById('epAnime').value;
   const el=document.getElementById('existingEps');
   if(!animeId){el.innerHTML='';return;}
-  const anime=localCache.find(a=>a.id===animeId);
-  if(!anime?.episodes?.length){el.innerHTML='<p style="color:#aaa;font-size:12px;padding:8px 0">No episodes yet.</p>';return;}
-  const sorted=[...anime.episodes].sort((a,b)=>a.num-b.num);
+  const eps = localEps.filter(e => e.animeId === animeId);
+  
+  if(!eps.length){el.innerHTML='<p style="color:#aaa;font-size:12px;padding:8px 0">No episodes yet.</p>';return;}
+  const sorted=[...eps].sort((a,b)=>a.num-b.num);
   el.innerHTML='<div class="eprows">'+sorted.map(ep=>`
   <div class="eprow">
     <span class="epr-num">${String(ep.num).padStart(2,'0')}</span>
     <span class="epr-title">${ep.title}</span>
-    <button class="epr-del" onclick="deleteEp('${anime.id}',${ep.num})">🗑️</button>
+    <button class="epr-del" onclick="deleteEp('${ep.id}',${ep.num})">🗑️</button>
   </div>`).join('')+'</div>';
 }
 
-async function deleteEp(animeId,epNum){
+async function deleteEp(epId,epNum){
   if(!confirm('Delete Episode '+epNum+'?'))return;
-  const anime=localCache.find(a=>a.id===animeId);
-  if(!anime)return;
-  anime.episodes=(anime.episodes||[]).filter(e=>e.num!==epNum);
   showLoad('Deleting Ep '+epNum+'...');
   try{
-    await fdb.collection('anime').doc(animeId).update({episodes:anime.episodes});
+    await fdb.collection('episodes').doc(epId).delete();
     toast('🗑️ Episode '+epNum+' deleted!');
-    showExistingEps();updateStats();
+    await refreshAll();
+    showExistingEps();
   }catch(e){toast('❌ Failed: '+e.message);}
   hideLoad();
 }
@@ -808,28 +774,41 @@ async function submitBulk(){
   if(!lines.length)return;
   const start=parseInt(document.getElementById('blkStart').value)||1;
   const quality=document.getElementById('blkQ').value;
-  const anime=localCache.find(a=>a.id===animeId);
-  if(!anime)return;
-  let eps=[...(anime.episodes||[])];
-  lines.forEach((line,i)=>{
-    const parts=line.split('|');
-    const title=parts[0].trim();
-    const link=parts.slice(1).join('|').trim();
-    const num=start+i;
-    eps=eps.filter(e=>e.num!==num);
-    // Store short link in {direct, short} format so unlock logic resolves correctly
-    eps.push({num,title:title||'Episode '+num,duration:'24m',language:'Hindi',links:{[quality]:{direct:'',short:link}},addedAt:new Date().toISOString()});
-  });
-  eps.sort((a,b)=>a.num-b.num);
+
   showLoad('Adding '+lines.length+' episodes...');
   try{
-    await fdb.collection('anime').doc(animeId).update({episodes:eps});
-    anime.episodes=eps;
+    const batch = fdb.batch();
+    lines.forEach((line,i)=>{
+      const parts=line.split('|');
+      const title=parts[0].trim();
+      const link=parts.slice(1).join('|').trim();
+      const num=start+i;
+      
+      const epData = {
+          animeId: animeId,
+          num, 
+          title:title||'Episode '+num, 
+          duration:'24m', 
+          language:'Hindi', 
+          links:{[quality]:{direct:'',short:link}}, 
+          addedAt:new Date().toISOString()
+      };
+      
+      const existing = localEps.find(e => e.animeId === animeId && e.num === num);
+      if(existing) {
+          batch.update(fdb.collection('episodes').doc(existing.id), epData);
+      } else {
+          batch.set(fdb.collection('episodes').doc(), epData);
+      }
+    });
+    
+    await batch.commit();
     toast('✅ '+lines.length+' episodes added!');
     document.getElementById('blkLinks').value='';
     document.getElementById('blkPreview').style.display='none';
     document.getElementById('blkSubmit').style.display='none';
-    showExistingEps();updateStats();
+    await refreshAll();
+    showExistingEps();
   }catch(e){toast('❌ Failed: '+e.message);}
   hideLoad();
 }
@@ -842,23 +821,33 @@ async function quickBulk(){
   if(!links.length){toast('❌ Paste links!');return;}
   const start=parseInt(document.getElementById('qlkStart').value)||1;
   const quality=document.getElementById('qlkQ').value;
-  const anime=localCache.find(a=>a.id===animeId);
-  if(!anime)return;
-  let eps=[...(anime.episodes||[])];
-  links.forEach((link,i)=>{
-    const num=start+i;
-    eps=eps.filter(e=>e.num!==num);
-    // Store short link in {direct, short} format so unlock logic resolves correctly
-    eps.push({num,title:'Episode '+num,duration:'24m',language:'Hindi',links:{[quality]:{direct:'',short:link}},addedAt:new Date().toISOString()});
-  });
-  eps.sort((a,b)=>a.num-b.num);
+
   showLoad('Adding '+links.length+' episodes...');
   try{
-    await fdb.collection('anime').doc(animeId).update({episodes:eps});
-    anime.episodes=eps;
+    const batch = fdb.batch();
+    links.forEach((link,i)=>{
+      const num=start+i;
+      const epData = {
+          animeId: animeId,
+          num, 
+          title:'Episode '+num, 
+          duration:'24m', 
+          language:'Hindi', 
+          links:{[quality]:{direct:'',short:link}}, 
+          addedAt:new Date().toISOString()
+      };
+      const existing = localEps.find(e => e.animeId === animeId && e.num === num);
+      if(existing) {
+          batch.update(fdb.collection('episodes').doc(existing.id), epData);
+      } else {
+          batch.set(fdb.collection('episodes').doc(), epData);
+      }
+    });
+    await batch.commit();
     toast('✅ '+links.length+' episodes added!');
     document.getElementById('qlkLinks').value='';
-    showExistingEps();updateStats();
+    await refreshAll();
+    showExistingEps();
   }catch(e){toast('❌ Failed: '+e.message);}
   hideLoad();
 }
@@ -929,7 +918,7 @@ async function delSP(animeId,packId){
 }
 
 // ════════════════════════════════════════════
-// GLOBAL UNLOCK LINKS
+// API GLOBAL UNLOCK LINKS -> SETTINGS
 // ════════════════════════════════════════════
 async function saveGlobalLinks(){
   const l1=document.getElementById('gul1').value.trim();
@@ -938,7 +927,7 @@ async function saveGlobalLinks(){
   showLoad('Saving unlock links...');
   try{
     await fdb.collection('settings').doc('unlock').set({link1:l1,link2:l2||null,updatedAt:new Date().toISOString()});
-    toast('✅ Global unlock links saved!');
+    toast('✅ Global API unlock links saved!');
   }catch(e){toast('❌ Failed: '+e.message);}
   hideLoad();
 }
@@ -957,7 +946,6 @@ async function loadGlobalLinks(){
 // ════════════════════════════════════════════
 // RENDER LISTS
 // ════════════════════════════════════════════
-// Shared list renderer — used by both dashboard and All Anime tab
 function renderList(elId, emptyMsg) {
   const el = document.getElementById(elId);
   if (!el) return;
@@ -989,6 +977,15 @@ async function deleteAnime(id){
   showLoad('Deleting...');
   try{
     await fdb.collection('anime').doc(id).delete();
+    
+    // Also delete tied episodes in batch
+    const epsToDelete = localEps.filter(e => e.animeId === id);
+    if (epsToDelete.length > 0) {
+      const batch = fdb.batch();
+      epsToDelete.forEach(e => batch.delete(fdb.collection('episodes').doc(e.id)));
+      await batch.commit();
+    }
+    
     toast('🗑️ Deleted: '+a?.name);
     await refreshAll();
   }catch(e){toast('❌ Failed: '+e.message);}
@@ -1031,9 +1028,10 @@ async function saveEdit(){
     updatedAt:new Date().toISOString()
   };
   delete updated.id;
+  delete updated.episodes; // remove attached local cache list
   showLoad('Saving...');
   try{
-    await fdb.collection('anime').doc(id).set(updated);
+    await fdb.collection('anime').doc(id).update(updated);
     closeEdit();toast('✅ '+name+' updated!');
     await refreshAll();
   }catch(e){toast('❌ Failed: '+e.message);}
@@ -1065,7 +1063,8 @@ function prevEditPoster(url){
 // EXPORT / IMPORT
 // ════════════════════════════════════════════
 async function exportData(){
-  const blob=new Blob([JSON.stringify(localCache,null,2)],{type:'application/json'});
+  const dump = { anime: localCache, episodes: localEps };
+  const blob=new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download='awi-backup-'+Date.now()+'.json';a.click();
   URL.revokeObjectURL(url);
@@ -1078,15 +1077,26 @@ function handleImport(input){
   reader.onload=async e=>{
     try{
       const data=JSON.parse(e.target.result);
-      if(!Array.isArray(data))throw new Error('Invalid format');
-      if(!confirm(data.length+' anime will be imported. Continue?'))return;
-      showLoad('Importing '+data.length+' anime...');
-      for(const a of data){
-        const{id,...rest}=a;
+      // Support dual format
+      let animesToImport = data.anime || data;
+      
+      if(!confirm(animesToImport.length+' anime will be imported. Continue?'))return;
+      showLoad('Importing...');
+      
+      for(const a of animesToImport){
+        const{id, episodes, ...rest}=a;
         await fdb.collection('anime').add({...rest,importedAt:new Date().toISOString()});
       }
+      
+      if(data.episodes) {
+          for(const ep of data.episodes) {
+              const {id, ...restEp} = ep;
+              await fdb.collection('episodes').add({...restEp});
+          }
+      }
+      
       await refreshAll();
-      toast('✅ '+data.length+' anime imported!');
+      toast('✅ Data imported!');
     }catch(e){toast('❌ Import failed: '+e.message);}
     hideLoad();
   };
@@ -1107,7 +1117,7 @@ function changePass(){
 }
 
 // ════════════════════════════════════════════
-// SITE SETTINGS (Phase 5) — social links + announcement
+// SITE SETTINGS — social links + announcement
 // ════════════════════════════════════════════
 const SOCIAL_DEFAULTS=[
   {key:'telegram', label:'Telegram', icon:'✈️', placeholder:'https://t.me/yourchannel'},
@@ -1171,7 +1181,7 @@ async function saveAnnouncement(){
 }
 
 // ════════════════════════════════════════════
-// ANALYTICS (Phase 8)
+// ANALYTICS
 // ════════════════════════════════════════════
 async function loadAnalytics(){
   try{
@@ -1185,8 +1195,8 @@ async function loadAnalytics(){
     if(el('aVisits'))el('aVisits').textContent=visits;
     if(el('aUnlocks'))el('aUnlocks').textContent=unlocks;
     if(el('aAnime'))el('aAnime').textContent=localCache.length;
-    if(el('aEps'))el('aEps').textContent=localCache.reduce((s,a)=>s+(a.episodes?.length||0),0);
-    // Popular anime by episode count
+    if(el('aEps'))el('aEps').textContent=localEps.length;
+
     const sorted=[...localCache].sort((a,b)=>(b.episodes?.length||0)-(a.episodes?.length||0)).slice(0,8);
     const pl=document.getElementById('popularList');
     if(pl){

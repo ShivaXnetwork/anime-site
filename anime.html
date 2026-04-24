@@ -7,17 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script>
-firebase.initializeApp({
-  apiKey:"AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk",
-  authDomain:"anime-website-42907.firebaseapp.com",
-  projectId:"anime-website-42907",
-  storageBucket:"anime-website-42907.firebasestorage.app",
-  messagingSenderId:"747833174910",
-  appId:"1:747833174910:web:eefcbf01901ecb58b8a12f"
-});
-const fdb=firebase.firestore();
-</script>
+<script src="firebase.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100vh}
@@ -126,7 +116,7 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
 </head>
 <body>
 
-<div class="ad-bar"><div class="ad-ph"><!-- Monetag 728x90 -->Advertisement</div></div>
+<div class="ad-bar"><div class="ad-ph">Advertisement</div></div>
 
 <nav class="navbar">
   <a href="index.html" class="back">←</a>
@@ -134,7 +124,6 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
   <a href="index.html" class="logo-s"><span class="lr">A</span><span class="lt">W</span><span class="li">I</span></a>
 </nav>
 
-<!-- SKELETON WHILE LOADING -->
 <div id="pageContent">
   <div class="wrap">
     <div class="sk sk-poster"></div>
@@ -186,6 +175,7 @@ function toast(msg) {
 // ============================================================
 let globalSettings = {};
 
+// Fetch API Link Settings from "settings" collection
 async function loadSettings() {
   try {
     const doc = await fdb.collection('settings').doc('unlock').get();
@@ -194,12 +184,11 @@ async function loadSettings() {
 }
 
 function buildContinueUrl(animeId, retUrl) {
-  // Generate a deterministic token from animeId + date (daily rotation)
   const day = Math.floor(Date.now() / 86400000);
   const token = btoa(animeId + '_' + day).replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
   const ret = encodeURIComponent(retUrl);
   let url = `continue.html?token=${token}&aid=${animeId}&ret=${ret}`;
-  // Only append shortener links if they are actually set
+  // Ensure we utilize the fetched API shortener links
   if (globalSettings.link1) url += `&l1=${encodeURIComponent(globalSettings.link1)}`;
   if (globalSettings.link2) url += `&l2=${encodeURIComponent(globalSettings.link2)}`;
   return url;
@@ -214,7 +203,7 @@ function renderPage(a) {
   document.title = a.name + (a.season ? ' ' + a.season : '') + ' — AnimeWorld India';
   document.getElementById('nbTitle').textContent = a.name + (a.season ? ' ' + a.season : '');
 
-  // Info rows — only show if value exists
+  // Info rows
   const infoData = [
     { l: '📺 Full Name', v: a.name },
     a.season && { l: '🎬 Season', v: a.season },
@@ -228,33 +217,21 @@ function renderPage(a) {
     a.studio && { l: '🏢 Studio', v: a.studio },
   ].filter(Boolean);
 
-  // Status tag class
   const stCls = (a.status || '').toLowerCase().includes('complet') ? 't-st-cm' : 't-st-on';
+  const genreTags = a.genre ? a.genre.split(',').map(g => `<span class="tag t-gn">${g.trim()}</span>`).join('') : '';
 
-  // Build genre tags
-  const genreTags = a.genre
-    ? a.genre.split(',').map(g => `<span class="tag t-gn">${g.trim()}</span>`).join('')
-    : '';
-
-  // Episodes HTML — RareToonIndia style
+  // Episodes HTML
   const sortedEps = [...eps].sort((x, y) => x.num - y.num);
   const epHtml = sortedEps.map(ep => {
     const links = ep.links || {};
-    // Build link list
-    // ep.links[q] can be:
-    //   - object {direct, short}  (saved by new admin single-ep form)
-    //   - plain string            (saved by bulk add or old format)
-    // ep.directLinks[q] may also store direct link separately
     const qLinks = Object.entries(links)
       .filter(([q, l]) => l)
       .map(([q, l]) => {
         let directHref, shortHref;
         if (l && typeof l === 'object') {
-          // New format: {direct, short}
           directHref = l.direct || '';
           shortHref  = l.short  || l.direct || '';
         } else {
-          // Plain string format — directLinks object may hold the real link
           directHref = ep.directLinks?.[q] || l;
           shortHref  = l;
         }
@@ -274,9 +251,6 @@ function renderPage(a) {
 
   const packHtml = packs.map(sp => {
     const links = sp.links || {};
-    // sp.links[q] can be:
-    //   - object {direct, short}  (saved by season pack form)
-    //   - plain string            (legacy)
     const lBtns = Object.entries(links).filter(([q, l]) => l).map(([q, l]) => {
       let href;
       if (l && typeof l === 'object') {
@@ -295,10 +269,8 @@ function renderPage(a) {
     </div>`;
   }).join('');
 
-  // Continue URL
   const continueUrl = buildContinueUrl(a.id, window.location.href);
 
-  // Access section
   const accessHtml = unlocked
     ? `<div class="unlocked-banner">
         <div class="ub-icon">🔓</div>
@@ -336,7 +308,7 @@ function renderPage(a) {
       <button class="rm-btn" onclick="toggleSyn()">▼ Read More</button>
     </div>` : ''}
 
-    <div class="ad-mid"><div class="ad-ph" style="max-width:336px;width:100%;min-height:90px"><!-- Monetag 300x250 -->Advertisement</div></div>
+    <div class="ad-mid"><div class="ad-ph" style="max-width:336px;width:100%;min-height:90px">Advertisement</div></div>
 
     ${accessHtml}
 
@@ -350,7 +322,6 @@ function renderPage(a) {
 
   </div>`;
 
-  // Timer update
   if (unlocked) {
     setInterval(() => {
       const t = document.getElementById('timerTxt');
@@ -367,9 +338,6 @@ function toggleSyn() {
   b.textContent = d.classList.contains('exp') ? '▲ Read Less' : '▼ Read More';
 }
 
-// ============================================================
-// ANALYTICS — track unlock events
-// ============================================================
 function trackUnlock(){
   try{
     const key='awi_unlock_tracked_'+new Date().toISOString().slice(0,10);
@@ -383,45 +351,57 @@ function trackUnlock(){
 }
 
 // ============================================================
-// FIREBASE LOAD — real-time listener prevents data loss on reload
+// FIREBASE LOAD — Fetch Anime & Episodes via Real-Time Listeners
 // ============================================================
 const params = new URLSearchParams(window.location.search);
 const animeId = params.get('id');
 
-let unsubscribe = null; // holds Firestore listener
+let currentAnime = null;
+let currentEps = [];
 
 async function loadAnime() {
   if (!animeId) { showNotFound(); return; }
   await loadSettings();
-  // Track unlock analytics
   if (isUnlocked()) trackUnlock();
+
   try {
-    // Use real-time listener — auto-rerenders when admin updates data
-    unsubscribe = fdb.collection('anime').doc(String(animeId))
+    // 1. Listen to the Anime details
+    fdb.collection('anime').doc(String(animeId))
       .onSnapshot(doc => {
         if (doc.exists) {
-          renderPage({ id: doc.id, ...doc.data() });
+          currentAnime = { id: doc.id, ...doc.data() };
+          renderMergedData();
         } else {
           showNotFound();
         }
-      }, err => {
-        console.error('Firestore listener error:', err);
-        document.getElementById('pageContent').innerHTML = `
-        <div class="loading-screen">
-          <div style="font-size:40px;margin-bottom:12px">⚠️</div>
-          <p>Connection error. <a href="" style="color:#1565c0">Retry</a></p>
-        </div>`;
-        document.getElementById('nbTitle').textContent = 'Error';
-      });
+      }, err => showLoadingError(err));
+
+    // 2. Listen to Episodes for this Anime ID separately
+    fdb.collection('episodes').where('animeId', '==', String(animeId))
+      .onSnapshot(snap => {
+        currentEps = snap.docs.map(d => ({id: d.id, ...d.data()}));
+        renderMergedData();
+      }, err => console.error(err));
+      
   } catch (e) {
-    console.error(e);
-    document.getElementById('pageContent').innerHTML = `
-    <div class="loading-screen">
-      <div style="font-size:40px;margin-bottom:12px">⚠️</div>
-      <p>Connection error. <a href="" style="color:#1565c0">Retry</a></p>
-    </div>`;
-    document.getElementById('nbTitle').textContent = 'Error';
+    showLoadingError(e);
   }
+}
+
+function renderMergedData() {
+  if(currentAnime) {
+     renderPage({ ...currentAnime, episodes: currentEps });
+  }
+}
+
+function showLoadingError(err) {
+  console.error('Firestore listener error:', err);
+  document.getElementById('pageContent').innerHTML = `
+  <div class="loading-screen">
+    <div style="font-size:40px;margin-bottom:12px">⚠️</div>
+    <p>Connection error. <a href="" style="color:#1565c0">Retry</a></p>
+  </div>`;
+  document.getElementById('nbTitle').textContent = 'Error';
 }
 
 function showNotFound() {
