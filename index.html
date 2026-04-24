@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AWI.TO - Watch Anime Online Free</title>
+<title>AWI.TO - Free Hindi Dubbed Anime</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
@@ -19,234 +18,179 @@ firebase.initializeApp({
 });
 const fdb=firebase.firestore();
 </script>
-
 <style>
-:root { 
-  --bg: #0b0c0f; 
-  --card: #14151a; 
-  --nav: #14151a; 
-  --accent: #ff4656; /* Aniwatch Pink/Red */
-  --text: #aaa; 
-  --text-light: #fff; 
-  --border: #23252b; 
-}
+:root { --bg: #0f1115; --card: #181a20; --nav: #181a20; --accent: #0084ff; --text: #bbb; --text-light: #fff; --border: #262933; }
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min-height:100vh}
-
 /* NAVBAR */
-.navbar{background:var(--nav);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
-.logo{display:flex;align-items:center;gap:6px;text-decoration:none}
-.logo-icon{width:32px;height:32px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
-.logo-text{font-size:22px;font-weight:700;color:#fff;letter-spacing:0.5px}
+.navbar{background:var(--nav);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:65px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.logo-icon{width:36px;height:36px;background:linear-gradient(45deg, #0084ff, #00c6ff);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:22px;letter-spacing:1px}
+.logo-text{font-size:24px;font-weight:700;color:#fff;letter-spacing:1px}
 .nav-right{display:flex;gap:12px;align-items:center}
-.nb{background:none;border:none;font-size:20px;cursor:pointer;color:#fff}
-.menu-btn{background:#1f222a;border:none;color:#fff;width:40px;height:40px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.btn-icon{background:transparent;border:none;font-size:22px;color:#fff;cursor:pointer;padding:5px}
+.menu-btn{background:#262933;border:none;color:#fff;width:42px;height:42px;border-radius:8px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
-/* SEARCH OVERLAY */
-.srch-ov{position:fixed;inset:0;background:rgba(11,12,15,.95);z-index:300;display:none;align-items:flex-start;justify-content:center;padding-top:80px}
-.srch-ov.open{display:flex}
-.srch-box{background:var(--card);width:100%;max-width:600px;border-radius:12px;overflow:hidden;border:1px solid var(--border);margin:0 16px}
-.srch-head{display:flex;align-items:center;padding:16px;border-bottom:1px solid var(--border);gap:10px}
-.srch-inp{flex:1;border:none;outline:none;font-size:16px;font-family:'Poppins',sans-serif;background:transparent;color:#fff}
-.srch-cls{background:none;border:none;font-size:24px;cursor:pointer;color:#888}
-.srch-res{max-height:400px;overflow-y:auto}
-.srch-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--border);text-decoration:none;transition:background .2s}
-.srch-item:hover{background:#1f222a}
-.srch-thumb{width:50px;height:70px;border-radius:4px;background:#111;overflow:hidden;flex-shrink:0}
-.srch-thumb img{width:100%;height:100%;object-fit:cover}
-.srch-info h4{font-size:14px;font-weight:600;color:#fff;margin-bottom:4px}
-.srch-info span{font-size:12px;color:#888}
-.srch-empty{padding:30px;text-align:center;color:#666;font-size:14px}
+/* MENU & SEARCH OVERLAY */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:none;backdrop-filter:blur(5px)}
+.ov.open{display:block}
+.side-menu{position:fixed;top:0;left:-300px;width:280px;height:100vh;background:var(--nav);z-index:201;transition:left .3s;box-shadow:5px 0 25px rgba(0,0,0,.6);overflow-y:auto}
+.side-menu.open{left:0}
+.sm-head{padding:20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.sm-head span{color:#fff;font-size:18px;font-weight:700}
+.sm-item{display:block;padding:15px 20px;color:#ddd;text-decoration:none;border-bottom:1px solid var(--border);font-size:14px;font-weight:500}
+.sm-item:hover{background:#262933;color:var(--accent)}
 
-/* HERO SLIDER */
-.hero-slider{position:relative;width:100%;height:260px;background:#000;overflow:hidden}
-.slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;display:flex}
+.srch-box{position:fixed;top:80px;left:16px;right:16px;background:var(--card);border-radius:12px;overflow:hidden;z-index:300;display:none;border:1px solid var(--border);box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.srch-box.open{display:block}
+.srch-head{display:flex;align-items:center;padding:16px;border-bottom:1px solid var(--border)}
+.srch-inp{flex:1;border:none;background:transparent;color:#fff;font-size:16px;outline:none;font-family:'Poppins',sans-serif}
+.srch-res{max-height:350px;overflow-y:auto}
+.srch-item{display:flex;align-items:center;gap:15px;padding:12px 16px;border-bottom:1px solid var(--border);text-decoration:none}
+.srch-item img{width:45px;height:60px;border-radius:6px;object-fit:cover}
+.srch-item h4{color:#fff;font-size:14px;margin-bottom:4px}
+.srch-item p{color:#888;font-size:12px}
+
+/* SLIDER */
+.hero{position:relative;width:100%;height:250px;background:#000;overflow:hidden}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity .5s;display:flex}
 .slide.active{opacity:1}
-.slide-overlay{position:absolute;inset:0;background:linear-gradient(to top, #0b0c0f 0%, rgba(11,12,15,0.2) 100%)}
-.slide-content{position:absolute;bottom:0;left:0;padding:24px;color:#fff;width:100%}
-.slide-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;margin-bottom:10px}
-.slide-title{font-size:24px;font-weight:700;line-height:1.2;margin-bottom:8px;text-shadow:0 2px 4px rgba(0,0,0,.8)}
-.slide-btn{background:var(--accent);color:#fff;border:none;padding:8px 20px;border-radius:30px;font-size:14px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-top:8px}
+.slide img{width:100%;height:100%;object-fit:cover;object-position:top}
+.slide-ov{position:absolute;inset:0;background:linear-gradient(to top, #0f1115 0%, rgba(0,0,0,0.1) 100%)}
+.slide-content{position:absolute;bottom:20px;left:20px;right:20px}
+.slide-title{color:#fff;font-size:24px;font-weight:700;margin-bottom:10px;text-shadow:0 2px 5px rgba(0,0,0,.8)}
+.slide-btn{background:var(--accent);color:#fff;padding:8px 24px;border-radius:30px;text-decoration:none;font-size:14px;font-weight:600;display:inline-block}
 
-/* GENRES */
-.genre-bar{background:var(--nav);padding:14px 16px;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
-.genre-bar::-webkit-scrollbar{display:none}
-.chip{flex-shrink:0;padding:6px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;background:#1f222a;color:#aaa;transition:all .2s}
-.chip.active,.chip:hover{background:var(--accent);color:#fff}
+/* GRID - CLEAN LOOK */
+.sec-wrap{max-width:1100px;margin:0 auto;padding:20px 16px}
+.sec-head{font-size:20px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-head::before{content:'';width:5px;height:22px;background:var(--accent);border-radius:5px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-bottom:30px}
+@media(min-width:480px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:768px){.grid{grid-template-columns:repeat(4,1fr)}}
+.card{text-decoration:none;display:block}
+.c-img{width:100%;aspect-ratio:2/3;border-radius:10px;background:#181a20;overflow:hidden;position:relative}
+.c-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.card:hover .c-img img{transform:scale(1.05);filter:brightness(0.7)}
+.c-img::after{content:'▶';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--accent);color:#fff;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;opacity:0;transition:opacity .3s;padding-left:4px}
+.card:hover .c-img::after{opacity:1}
+.c-ep{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.8);color:#fff;font-size:11px;font-weight:600;padding:4px 8px;border-radius:6px}
+.c-title{color:#fff;font-size:14px;font-weight:600;margin-top:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
-/* SECTIONS */
-.sec-wrap{max-width:1100px;margin:0 auto;padding:10px 16px 30px}
-.sec-head{font-size:20px;font-weight:700;color:#fff;margin:24px 0 16px;display:flex;align-items:center;gap:10px}
-.sec-head::before{content:'';width:4px;height:20px;background:var(--accent);border-radius:4px}
-
-/* ANIWATCH GRID STYLE */
-.anime-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
-@media(min-width:480px){.anime-grid{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:768px){.anime-grid{grid-template-columns:repeat(4,1fr);gap:16px}}
-@media(min-width:1000px){.anime-grid{grid-template-columns:repeat(6,1fr)}}
-
-.ac{text-decoration:none;display:block;position:relative}
-.ac-img{position:relative;width:100%;aspect-ratio:2/3;border-radius:8px;overflow:hidden;background:#1a1c22}
-.ac-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
-.ac:hover .ac-img img{transform:scale(1.05);filter:brightness(0.7)}
-
-/* Play Button Hover */
-.ac-img::after{content:'▶';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;color:var(--accent);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;opacity:0;transition:all .3s;padding-left:3px;box-shadow:0 4px 10px rgba(0,0,0,0.5)}
-.ac:hover .ac-img::after{opacity:1}
-
-/* Badges (Sub/Dub/Ep) */
-.badge-wrap{position:absolute;bottom:6px;left:6px;display:flex;gap:4px;z-index:2}
-.bdg{font-size:10px;font-weight:600;padding:3px 6px;border-radius:4px;color:#111}
-.b-sub{background:#fff}
-.b-dub{background:var(--accent);color:#fff}
-.b-ep{background:rgba(0,0,0,0.8);color:#fff;margin-left:auto;position:absolute;bottom:6px;right:6px}
-
-.ac-info{padding:10px 0}
-.ac-title{font-size:13px;font-weight:600;color:#fff;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;transition:color .2s}
-.ac:hover .ac-title{color:var(--accent)}
-
-/* BOTTOM NAV */
-.pad-bot{height:70px}
-.bnav{position:fixed;bottom:0;left:0;right:0;background:var(--nav);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(3,1fr);z-index:100}
-.bn-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 4px;text-decoration:none;color:#666;font-size:11px;font-weight:500;gap:4px}
-.bn-item.active,.bn-item:hover{color:var(--accent)}
-.bn-icon{font-size:18px}
+/* FOOTER BRANDING */
+.footer{background:var(--card);border-top:1px solid var(--border);padding:40px 20px;text-align:center;margin-top:20px}
+.f-logo{font-size:28px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:15px;display:flex;align-items:center;justify-content:center;gap:10px}
+.f-logo span{color:var(--accent)}
+.f-about{font-size:13px;color:#888;line-height:1.8;max-width:600px;margin:0 auto 25px}
+.f-links{display:flex;flex-wrap:wrap;justify-content:center;gap:15px;margin-bottom:20px}
+.f-links a{color:var(--accent);text-decoration:none;font-size:13px;font-weight:500}
+.f-copy{font-size:12px;color:#555}
+.pad-bot{height:60px}
 </style>
 </head>
 <body>
 
 <nav class="navbar">
   <a href="index.html" class="logo">
-    <div class="logo-icon">A</div>
-    <div class="logo-text">AWI.TO</div>
+    <div class="logo-icon">A</div><div class="logo-text">AWI.TO</div>
   </a>
   <div class="nav-right">
-    <button class="nb" onclick="openSearch()">🔍</button>
+    <button class="btn-icon" onclick="openSearch()">🔍</button>
+    <button class="menu-btn" onclick="openMenu()">☰</button>
   </div>
 </nav>
 
-<div class="srch-ov" id="srchOv">
-  <div class="srch-box">
-    <div class="srch-head">
-      <input class="srch-inp" id="srchInp" type="text" placeholder="Search anime..." oninput="doSearch(this.value)">
-      <button class="srch-cls" onclick="closeSearch()">✕</button>
-    </div>
-    <div class="srch-res" id="srchRes"><div class="srch-empty">Start typing to search...</div></div>
+<div class="ov" id="ov" onclick="closeAll()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="sm-head"><span>Categories</span><button class="btn-icon" onclick="closeAll()">✕</button></div>
+  <a href="index.html" class="sm-item">🏠 Home</a>
+  <a href="#" class="sm-item" onclick="setG('Action');closeAll()">⚔️ Action Anime</a>
+  <a href="#" class="sm-item" onclick="setG('Shonen');closeAll()">🔥 Shonen Series</a>
+  <a href="#" class="sm-item" onclick="setG('Romance');closeAll()">💕 Romance</a>
+  <a href="#" class="sm-item" onclick="setG('Movies');closeAll()">🎬 Anime Movies</a>
+</div>
+
+<div class="srch-box" id="srchBox">
+  <div class="srch-head">
+    <input type="text" id="srchInp" class="srch-inp" placeholder="Search your anime..." oninput="doSearch(this.value)">
+    <button class="btn-icon" onclick="closeAll()" style="color:#888">✕</button>
   </div>
+  <div class="srch-res" id="srchRes"><div class="srch-empty">Type to search...</div></div>
 </div>
 
-<div class="hero-slider" id="heroSlider"></div>
-
-<div class="genre-bar" id="genreBar">
-  <div class="chip active" data-g="All">All Anime</div>
-  <div class="chip" data-g="Action">Action</div>
-  <div class="chip" data-g="Shonen">Shonen</div>
-  <div class="chip" data-g="Romance">Romance</div>
-  <div class="chip" data-g="Isekai">Isekai</div>
-</div>
+<div class="hero" id="heroSlider"></div>
 
 <div class="sec-wrap">
-  <div class="sec-head">Latest Updated</div>
-  <div id="aniGrid"></div>
+  <div class="sec-head">Recent Uploads</div>
+  <div class="grid" id="aniGrid"></div>
 </div>
 
+<div class="footer">
+  <div class="f-logo">AWI<span>.</span>TO</div>
+  <div class="f-about">AWI.TO offers a vast collection of Anime & Cartoon shows in Hindi. All seasons and movies in Multiple Quality - 1080p, 720p, 480p & 360p. Enjoy fast downloading and clean UI.</div>
+  <div class="f-links">
+    <a href="#">DMCA</a>
+    <a href="#">Copyright</a>
+    <a href="#">Disclaimers</a>
+    <a href="#">About Us</a>
+    <a href="#">Contact Us</a>
+  </div>
+  <div class="f-copy">Copyright © 2024-2026 | AWI.TO India</div>
+</div>
 <div class="pad-bot"></div>
-<nav class="bnav">
-  <a href="index.html" class="bn-item active"><div class="bn-icon">🏠</div>Home</a>
-  <a href="#" class="bn-item" onclick="openSearch();return false"><div class="bn-icon">🔍</div>Search</a>
-  <a href="#" class="bn-item" onclick="document.querySelector('.chip[data-g=\\'Action\\']').click();return false"><div class="bn-icon">⚔️</div>Action</a>
-</nav>
 
 <script>
-let animeCache=[];
-let episodesCache=[];
-let curGenre='All';
+let animeCache=[], epsCache=[], curG='All';
+const fixP=u=>u?u.replace('ibb.co','i.ibb.co'):'';
 
-function fixPoster(url){return url?url.replace('https://ibb.co/','https://i.ibb.co/').replace('http://ibb.co/','https://i.ibb.co/'):'';}
-
-fdb.collection('anime').orderBy('createdAt','desc').onSnapshot(snap=>{
-  animeCache=snap.docs.map(d=>({id:d.id,...d.data()}));
-  renderCombined();
+fdb.collection('anime').orderBy('createdAt','desc').onSnapshot(s=>{
+  animeCache=s.docs.map(d=>({id:d.id,...d.data()})); renderAll();
+});
+fdb.collection('episodes').onSnapshot(s=>{
+  epsCache=s.docs.map(d=>({id:d.id,...d.data()})); renderAll();
 });
 
-fdb.collection('episodes').onSnapshot(snap=>{
-  episodesCache=snap.docs.map(d=>({id:d.id,...d.data()}));
-  renderCombined();
-});
-
-function renderCombined() {
-  animeCache.forEach(a => a.episodes = episodesCache.filter(ep => ep.animeId === a.id));
-  renderGrid(curGenre); renderSlider();
+function renderAll(){
+  animeCache.forEach(a=>a.episodes=epsCache.filter(e=>e.animeId===a.id));
+  renderGrid(curG); renderSlider();
 }
 
 function renderSlider(){
-  const items=animeCache.filter(a=>a.poster).slice(0,4);
-  const slider=document.getElementById('heroSlider');
-  if(!items.length) return slider.style.display='none';
-  slider.innerHTML=`${items.map((a,i)=>`
-    <div class="slide ${i===0?'active':''}" data-idx="${i}">
-      <img src="${fixPoster(a.poster)}" style="width:100%;height:100%;object-fit:cover;object-position:top">
-      <div class="slide-overlay"></div>
-      <div class="slide-content">
-        <div class="slide-badge">#${i+1} Spotlight</div>
-        <div class="slide-title">${a.name}</div>
-        <a href="anime.html?id=${a.id}" class="slide-btn">▶ Watch Now</a>
-      </div>
-    </div>`).join('')}`;
-  
-  // Auto slider
-  let curr = 0;
-  setInterval(() => {
-    const slides = document.querySelectorAll('.slide');
-    if(!slides.length) return;
-    slides[curr].classList.remove('active');
-    curr = (curr + 1) % slides.length;
-    slides[curr].classList.add('active');
-  }, 4000);
+  const items=animeCache.filter(a=>a.poster).slice(0,5);
+  const sl=document.getElementById('heroSlider');
+  if(!items.length) return sl.style.display='none';
+  sl.innerHTML=items.map((a,i)=>`<div class="slide ${i===0?'active':''}">
+    <img src="${fixP(a.poster)}"><div class="slide-ov"></div>
+    <div class="slide-content"><div class="slide-title">${a.name}</div>
+    <a href="anime.html?id=${a.id}" class="slide-btn">Watch / Download</a></div></div>`).join('');
+  let c=0; setInterval(()=>{
+    const s=document.querySelectorAll('.slide'); if(!s.length)return;
+    s[c].classList.remove('active'); c=(c+1)%s.length; s[c].classList.add('active');
+  },4000);
 }
 
-function renderGrid(genre='All'){
-  const el=document.getElementById('aniGrid');
-  const list=genre==='All'?animeCache:animeCache.filter(a=>(a.genre||'').includes(genre));
-  
-  el.innerHTML='<div class="anime-grid">'+list.map((a,i)=>`
-  <a href="anime.html?id=${a.id}" class="ac">
-    <div class="ac-img">
-      <img src="${fixPoster(a.poster)}" loading="lazy" onerror="this.style.display='none'">
-      <div class="badge-wrap">
-        <span class="bdg b-sub">SUB</span>
-        ${a.language && a.language.toLowerCase().includes('dub') ? '<span class="bdg b-dub">DUB</span>' : ''}
-      </div>
-      <span class="bdg b-ep">EP ${a.episodes?.length||0}</span>
-    </div>
-    <div class="ac-info"><div class="ac-title">${a.name}</div></div>
-  </a>`).join('')+'</div>';
-}
-
-document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',function(){
-  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
-  this.classList.add('active'); curGenre=this.dataset.g; renderGrid(curGenre);
-}));
-
-function openSearch(){document.getElementById('srchOv').classList.add('open'); document.getElementById('srchInp').focus();}
-function closeSearch(){document.getElementById('srchOv').classList.remove('open');}
-
-function doSearch(q){
-  const el = document.getElementById('srchRes');
-  if(!q.trim()){ el.innerHTML='<div class="srch-empty">Start typing to search...</div>'; return; }
-  const r = animeCache.filter(a => a.name.toLowerCase().includes(q.toLowerCase()) || (a.genre||'').toLowerCase().includes(q.toLowerCase()));
-  if(!r.length){ el.innerHTML=`<div class="srch-empty">"${q}" not found</div>`; return; }
-  
-  el.innerHTML = r.map(a => `
-  <a href="anime.html?id=${a.id}" class="srch-item" onclick="closeSearch()">
-    <div class="srch-thumb"><img src="${fixPoster(a.poster)}" onerror="this.style.display='none'"></div>
-    <div class="srch-info">
-      <h4>${a.name}</h4>
-      <span>${a.episodes?.length||0} Episodes</span>
-    </div>
+function renderGrid(g='All'){
+  const list=g==='All'?animeCache:animeCache.filter(a=>(a.genre||'').includes(g));
+  document.getElementById('aniGrid').innerHTML=list.map(a=>`
+  <a href="anime.html?id=${a.id}" class="card">
+    <div class="c-img"><img src="${fixP(a.poster)}" loading="lazy">
+    ${a.episodes?.length?`<div class="c-ep">EP ${a.episodes.length}</div>`:''}</div>
+    <div class="c-title">${a.name}</div>
   </a>`).join('');
 }
-document.getElementById('srchOv').addEventListener('click', function(e){ if(e.target === this) closeSearch(); });
+
+function openSearch(){document.getElementById('ov').classList.add('open');document.getElementById('srchBox').classList.add('open');document.getElementById('srchInp').focus();}
+function openMenu(){document.getElementById('ov').classList.add('open');document.getElementById('sideMenu').classList.add('open');}
+function closeAll(){document.getElementById('ov').classList.remove('open');document.getElementById('srchBox').classList.remove('open');document.getElementById('sideMenu').classList.remove('open');}
+function setG(g){curG=g;renderGrid(g);}
+
+function doSearch(q){
+  const el=document.getElementById('srchRes');
+  if(!q.trim()){el.innerHTML='<div class="srch-empty">Type to search...</div>';return;}
+  const r=animeCache.filter(a=>a.name.toLowerCase().includes(q.toLowerCase()));
+  if(!r.length){el.innerHTML=`<div class="srch-empty">No results found</div>`;return;}
+  el.innerHTML=r.map(a=>`<a href="anime.html?id=${a.id}" class="srch-item" onclick="closeAll()"><img src="${fixP(a.poster)}"><div><h4>${a.name}</h4><p>${a.episodes?.length||0} Episodes</p></div></a>`).join('');
+}
 </script>
 </body>
 </html>

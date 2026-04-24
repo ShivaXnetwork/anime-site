@@ -3,141 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anime Details — AWI</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Teko:wght@600;700&display=swap" rel="stylesheet">
-
+<title>Anime Details — AWI.TO</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
 firebase.initializeApp({ apiKey:"AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk", authDomain:"anime-website-42907.firebaseapp.com", projectId:"anime-website-42907", storageBucket:"anime-website-42907.firebasestorage.app", messagingSenderId:"747833174910", appId:"1:747833174910:web:eefcbf01901ecb58b8a12f" });
 const fdb=firebase.firestore();
 </script>
-
 <style>
-:root { --bg: #0e0f11; --card: #202329; --nav: #14151a; --accent: #ffdd95; --text: #cacaca; --border: #2c2f36; }
+:root { --bg: #0f1115; --card: #181a20; --nav: #181a20; --accent: #0084ff; --text: #bbb; --border: #262933; }
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min-height:100vh}
 
-.navbar{background:var(--nav);padding:0 14px;display:flex;align-items:center;gap:12px;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 4px 15px rgba(0,0,0,.3)}
-.back{background:#2b2d36;color:#fff;width:38px;height:38px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0;transition:all .2s}
-.back:hover{background:var(--accent);color:#111}
-.nb-title{font-family:'Teko',sans-serif;font-size:20px;font-weight:700;color:#fff;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:1px}
+.navbar{background:var(--nav);padding:0 16px;display:flex;align-items:center;gap:12px;height:65px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
+.back{color:#fff;font-size:24px;text-decoration:none;padding:5px}
+.logo-text{font-size:20px;font-weight:700;color:#fff;flex:1}
 
-.wrap{max-width:800px;margin:0 auto;padding:20px 14px 40px}
-.poster-wrap{width:100%;border-radius:12px;overflow:hidden;margin-bottom:20px;box-shadow:0 10px 30px rgba(0,0,0,.5);position:relative}
-.poster-wrap img{width:100%;max-height:400px;object-fit:cover;object-position:top;display:block}
+.wrap{max-width:800px;margin:0 auto;padding:20px 16px 50px}
+.poster{width:100%;border-radius:12px;margin-bottom:20px;box-shadow:0 10px 30px rgba(0,0,0,.5);display:block}
+.title{font-size:24px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:12px}
 
-.anime-title{font-family:'Teko',sans-serif;font-size:32px;font-weight:700;line-height:1.1;margin-bottom:12px;color:#fff;letter-spacing:1px}
+.info-box{background:var(--card);border-radius:12px;padding:16px;margin-bottom:20px;border:1px solid var(--border)}
+.info-row{display:flex;padding:8px 0;border-bottom:1px dashed var(--border);font-size:13px}
+.info-row:last-child{border-bottom:none}
+.il{color:#888;width:90px;flex-shrink:0}
+.iv{color:#fff;font-weight:500}
 
-.tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.tag{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;color:#111;background:var(--accent)}
-.t-gn{background:#2b2d36;color:#fff}
+/* SOCIAL & REACTIONS */
+.social-bar{display:flex;justify-content:center;gap:15px;margin-bottom:25px}
+.soc-btn{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;text-decoration:none;background:#262933}
+.soc-tg{background:#0088cc} .soc-yt{background:#ff0000}
 
-.info-box, .syn-box, .ep-section{background:var(--card);border-radius:12px;padding:16px;margin-bottom:20px;border:1px solid var(--border)}
-.ir{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--border);font-size:13px}
-.ir:last-child{border-bottom:none}
-.il{color:#888;min-width:100px;flex-shrink:0}
-.iv{color:#fff;font-weight:500;flex:1}
+.react-box{text-align:center;margin-bottom:30px}
+.react-box h3{color:#fff;font-size:18px;margin-bottom:12px}
+.emojis{display:flex;justify-content:center;gap:12px;background:var(--card);padding:10px;border-radius:30px;border:1px solid var(--border);display:inline-flex}
+.emojis span{font-size:28px;cursor:pointer;transition:transform .2s}
+.emojis span:hover{transform:scale(1.2)}
 
-.syn-box h3, .ep-section h2{font-family:'Teko',sans-serif;font-size:22px;color:var(--accent);margin-bottom:10px;letter-spacing:1px;border-bottom:1px solid var(--border);padding-bottom:8px}
-.syn-txt{font-size:13px;line-height:1.8;color:#bbb}
+/* MAIN DOWNLOAD BTN */
+.main-btn{display:block;width:100%;max-width:300px;margin:0 auto 30px;background:linear-gradient(45deg,#0084ff,#00c6ff);color:#fff;text-align:center;padding:14px;border-radius:8px;font-size:18px;font-weight:700;text-decoration:none;box-shadow:0 5px 20px rgba(0,132,255,.4)}
 
-/* ACCESS BOX */
-.access-box{background:linear-gradient(135deg, #2b2d36, #1a1c22);border:1px solid var(--accent);border-radius:12px;padding:24px 16px;text-align:center;margin-bottom:24px}
-.access-box h3{font-family:'Teko',sans-serif;font-size:26px;color:var(--accent);margin-bottom:8px}
-.unlock-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:30px;background:var(--accent);color:#111;font-weight:700;text-decoration:none;transition:transform .2s;margin-top:10px}
-.unlock-btn:hover{transform:scale(1.05)}
+/* EPISODE LIST (Raretoon Style) */
+.ep-list{margin-bottom:40px}
+.ep-list h2{font-size:20px;color:#fff;margin-bottom:16px;border-left:4px solid var(--accent);padding-left:10px}
+.rt-row{background:var(--card);padding:16px;border-radius:8px;margin-bottom:12px;border:1px solid var(--border)}
+.rt-title{font-size:14px;font-weight:600;color:#fff;margin-bottom:10px}
+.rt-links{font-size:13px;color:#aaa}
+.rt-btn{color:var(--accent);text-decoration:none;font-weight:600;margin:0 5px}
+.rt-btn:hover{text-decoration:underline}
+.rt-locked{color:#ff4656;font-weight:600}
 
-.unlocked-banner{background:rgba(255,221,149,0.1);border:1px solid var(--accent);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;color:#fff;margin-bottom:24px}
-.ub-timer{margin-left:auto;text-align:right;color:var(--accent);font-family:'Teko',sans-serif;font-size:24px;font-weight:700}
-
-/* EPISODES */
-.ep-row{padding:12px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px;transition:background .2s;border-radius:8px}
-.ep-row:hover{background:#2a2d36}
-.ep-title{font-size:14px;font-weight:600;color:#fff}
-.ep-links{display:flex;flex-wrap:wrap;gap:8px}
-.dl-link{background:#111;color:var(--accent);border:1px solid var(--accent);padding:4px 12px;border-radius:4px;font-size:12px;font-weight:600;text-decoration:none;transition:all .2s}
-.dl-link:hover{background:var(--accent);color:#111}
+/* COMMENTS */
+.comment-box{background:var(--card);padding:20px;border-radius:12px;border:1px solid var(--border)}
+.comment-box h3{color:#fff;font-size:18px;margin-bottom:15px}
+.c-inp{width:100%;background:var(--bg);border:1px solid var(--border);color:#fff;padding:12px;border-radius:8px;font-family:'Poppins';margin-bottom:10px;outline:none}
+.c-btn{background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:6px;font-weight:600;cursor:pointer}
 </style>
 </head>
 <body>
 
-<nav class="navbar">
-  <a href="index.html" class="back">←</a>
-  <span class="nb-title" id="nbTitle">Loading...</span>
-</nav>
+<nav class="navbar"><a href="index.html" class="back">←</a><div class="logo-text">AWI.TO</div></nav>
 
-<div id="pageContent"><div class="wrap"><div class="loading-screen" style="color:#fff;text-align:center;padding:50px">Loading...</div></div></div>
+<div id="content"><div class="wrap"><div style="text-align:center;padding:50px;color:#fff">Loading...</div></div></div>
 
 <script>
 const ACCESS_KEY = 'awi24hr_v2';
-function isUnlocked() { const a = JSON.parse(localStorage.getItem(ACCESS_KEY)||'null'); return a && Date.now() < a.expiry; }
-function getTimeLeft() { const a = JSON.parse(localStorage.getItem(ACCESS_KEY)||'null'); if (!a || Date.now() >= a.expiry) return null; const ms = a.expiry - Date.now(); return Math.floor(ms/3600000)+'h '+Math.floor((ms%3600000)/60000)+'m'; }
+const isUnlocked = () => { const a = JSON.parse(localStorage.getItem(ACCESS_KEY)||'null'); return a && Date.now() < a.expiry; };
 
-let globalSettings = {};
-async function loadSettings() { try { const doc = await fdb.collection('settings').doc('unlock').get(); if(doc.exists) globalSettings = doc.data(); } catch(e){} }
-
-function buildContinueUrl(animeId) {
-  const token = btoa(animeId + '_' + Math.floor(Date.now() / 86400000)).replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
-  let url = `continue.html?token=${token}&aid=${animeId}&ret=${encodeURIComponent(window.location.href)}`;
-  if(globalSettings.link1) url += `&l1=${encodeURIComponent(globalSettings.link1)}`;
-  if(globalSettings.link2) url += `&l2=${encodeURIComponent(globalSettings.link2)}`;
-  return url;
+let gSet = {};
+async function loadS() { try { const d = await fdb.collection('settings').doc('unlock').get(); if(d.exists) gSet = d.data(); } catch(e){} }
+function getUrl(aid) {
+  const t = btoa(aid + '_' + Math.floor(Date.now() / 86400000)).substring(0, 12);
+  let u = `continue.html?token=${t}&aid=${aid}&ret=${encodeURIComponent(window.location.href)}`;
+  if(gSet.link1) u += `&l1=${encodeURIComponent(gSet.link1)}`; return u;
 }
 
-function renderPage(a) {
-  const unlocked = isUnlocked();
+function renderP(a) {
+  const un = isUnlocked();
   const eps = (a.episodes||[]).sort((x,y)=>x.num-y.num);
-  document.getElementById('nbTitle').textContent = a.name;
 
-  const accessHtml = unlocked 
-    ? `<div class="unlocked-banner"><div>🔓 <b>UNLOCKED</b><br><small style="color:#aaa">Unlimited Downloads</small></div><div class="ub-timer">${getTimeLeft()}</div></div>`
-    : `<div class="access-box"><h3>🔐 UNLOCK ACCESS</h3><p style="color:#aaa;font-size:13px;margin-bottom:10px">1 Click = 24 Hours Unlimited Access</p><a href="${buildContinueUrl(a.id)}" class="unlock-btn">Unlock Now</a></div>`;
-
-  // HIDDEN LINKS LOGIC ADDED HERE
-  const epHtml = eps.map(ep => {
-    if (!unlocked) {
-      return `<div class="ep-row">
-                <div class="ep-title" style="color:#888">EP ${ep.num} - ${ep.title||'Episode '+ep.num}</div>
-                <div class="ep-links"><span class="dl-link" style="background:#222;color:#666;border-color:#333;cursor:not-allowed">🔒 Locked</span></div>
-              </div>`;
-    }
+  const epHtml = eps.map(e => {
+    if(!un) return `<div class="rt-row"><div class="rt-title">Episode ${String(e.num).padStart(2,'0')} – ${e.title||'Episode '+e.num}</div><div class="rt-links">Hindi – <span class="rt-locked">🔒 Unlock to Download</span></div></div>`;
     
-    // If Unlocked, show actual links
-    const qLinks = Object.entries(ep.links||{}).filter(([q,l])=>l).map(([q,l]) => {
-      const href = (l.short||l.direct||'');
-      return href ? `<a href="${href}" target="_blank" class="dl-link">${q}</a>` : '';
+    const links = Object.entries(e.links||{}).filter(([q,l])=>l).map(([q,l]) => {
+      const h = l.short||l.direct||''; return h ? `<a href="${h}" target="_blank" class="rt-btn">[Download ${q}]</a>` : '';
     }).join('');
-    
-    return qLinks ? `<div class="ep-row"><div class="ep-title">EP ${ep.num} - ${ep.title||'Episode '+ep.num}</div><div class="ep-links">${qLinks}</div></div>` : '';
+    return `<div class="rt-row"><div class="rt-title">Episode ${String(e.num).padStart(2,'0')} – ${e.title||'Episode '+e.num}</div><div class="rt-links">Hindi – ${links}</div></div>`;
   }).join('');
 
-  document.getElementById('pageContent').innerHTML = `<div class="wrap">
-    ${a.poster ? `<div class="poster-wrap"><img src="${a.poster.replace('ibb.co','i.ibb.co')}"></div>` : ''}
-    <div class="anime-title">${a.name}</div>
-    <div class="tags"><span class="tag">HD DUB</span>${(a.genre||'').split(',').map(g=>`<span class="tag t-gn">${g.trim()}</span>`).join('')}</div>
+  document.getElementById('content').innerHTML = `<div class="wrap">
+    <img src="${a.poster?a.poster.replace('ibb.co','i.ibb.co'):''}" class="poster">
+    <h1 class="title">${a.name} ${a.season||''} Hindi Dubbed Download HD</h1>
+    
     <div class="info-box">
-      <div class="ir"><span class="il">Status</span><span class="iv">${a.status||'N/A'}</span></div>
-      <div class=\"ir\"><span class=\"il\">Episodes</span><span class=\"iv\">${eps.length}</span></div>
-      <div class=\"ir\"><span class=\"il\">Quality</span><span class=\"iv\">${a.quality||'1080p'}</span></div>
+      <div class="info-row"><span class="il">Genres</span><span class="iv">${a.genre||'Anime'}</span></div>
+      <div class="info-row"><span class="il">Status</span><span class="iv">${a.status||'Ongoing'}</span></div>
+      <div class="info-row"><span class="il">Episodes</span><span class="iv">${eps.length}</span></div>
     </div>
-    ${a.description ? `<div class="syn-box"><h3>SYNOPSIS</h3><div class="syn-txt">${a.description}</div></div>` : ''}
-    ${accessHtml}
-    <div class="ep-section"><h2>EPISODES</h2>${epHtml||'<p style="color:#888;font-size:13px">No episodes yet.</p>'}</div>
+
+    <div class="social-bar">
+      <a href="#" class="soc-btn soc-tg">✈️</a>
+      <a href="#" class="soc-btn soc-yt">▶</a>
+      <a href="#" class="soc-btn">📸</a>
+    </div>
+
+    <div class="react-box">
+      <h3>What's your Reaction?</h3>
+      <div class="emojis"><span>❤️</span><span>😲</span><span>😂</span><span>😢</span></div>
+    </div>
+
+    ${!un ? `<a href="${getUrl(a.id)}" class="main-btn">🔓 UNLOCK ACCESS</a>` : `<div style="text-align:center;color:#0084ff;font-weight:700;margin-bottom:20px">✅ Access Unlocked!</div>`}
+
+    <div class="ep-list"><h2>Download Links</h2>${epHtml||'<p style="color:#888">No episodes added yet.</p>'}</div>
+
+    <div class="comment-box">
+      <h3>Leave a Comment</h3>
+      <textarea class="c-inp" rows="4" placeholder="Type here..."></textarea>
+      <input class="c-inp" type="text" placeholder="Name*">
+      <button class="c-btn">Post Comment</button>
+    </div>
   </div>`;
 }
 
-
 async function init(){
   const aid = new URLSearchParams(window.location.search).get('id');
-  if(!aid) return;
-  await loadSettings();
-  fdb.collection('anime').doc(aid).onSnapshot(doc => {
-    if(doc.exists) {
-      const a = {id: doc.id, ...doc.data()};
-      fdb.collection('episodes').where('animeId','==',aid).onSnapshot(snap => {
-        a.episodes = snap.docs.map(d=>d.data());
-        renderPage(a);
+  if(!aid) return; await loadS();
+  fdb.collection('anime').doc(aid).onSnapshot(d => {
+    if(d.exists) {
+      const a = {id: d.id, ...d.data()};
+      fdb.collection('episodes').where('animeId','==',aid).onSnapshot(s => {
+        a.episodes = s.docs.map(x=>x.data()); renderP(a);
       });
     }
   });
