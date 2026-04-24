@@ -249,9 +249,12 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
     <span class="sec-cnt" id="aniCnt">Loading...</span>
   </div>
   <div id="aniGrid">
-    <!-- Skeleton -->
+    <!-- Skeleton loading cards -->
     <div class="skel-grid">
-      ${[1,2,3,4].map(()=>`<div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>`).join('')}
+      <div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
+      <div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
+      <div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
+      <div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
     </div>
   </div>
 
@@ -269,8 +272,9 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
 </div>
 
 <div class="footer">
-  © 2025 AnimeWorld India · All rights belong to respective owners
+  © <span id="yr"></span> AnimeWorld India · All rights belong to respective owners
 </div>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
 
 <div class="pad-bot"></div>
 <nav class="bnav">
@@ -297,19 +301,39 @@ function fixPoster(url){
 }
 
 // ============================================================
-// FIREBASE LOAD
+// FIREBASE LOAD — real-time listener (no polling needed)
 // ============================================================
 async function loadData(){
   try{
-    const snap=await fdb.collection('anime').orderBy('createdAt','desc').get();
-    animeCache=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderGrid(curGenre);
-    renderLatest();
-    renderSlider();
+    // Real-time listener — grid updates instantly when admin adds anime
+    fdb.collection('anime').orderBy('createdAt','desc').onSnapshot(snap=>{
+      animeCache=snap.docs.map(d=>({id:d.id,...d.data()}));
+      renderGrid(curGenre);
+      renderLatest();
+      renderSlider();
+    }, err=>{
+      console.error('Firestore error:',err);
+      document.getElementById('aniGrid').innerHTML='<div class="empty-state"><h3>CONNECTION ERROR</h3><p>Check internet and refresh.</p></div>';
+    });
   }catch(e){
     console.error('Firebase error:',e);
     document.getElementById('aniGrid').innerHTML='<div class="empty-state"><h3>CONNECTION ERROR</h3><p>Check internet and refresh.</p></div>';
   }
+}
+
+// ============================================================
+// BASIC ANALYTICS — track unique daily visits
+// ============================================================
+function trackVisit(){
+  try{
+    const key='awi_visit_'+new Date().toISOString().slice(0,10);
+    if(localStorage.getItem(key)) return; // already tracked today
+    localStorage.setItem(key,'1');
+    fdb.collection('analytics').doc('visits').set({
+      total: firebase.firestore.FieldValue.increment(1),
+      lastVisit: new Date().toISOString()
+    },{merge:true}).catch(()=>{});
+  }catch(e){}
 }
 
 // ============================================================
@@ -376,7 +400,7 @@ function prevSlide(){
 function renderGrid(genre='All'){
   const el=document.getElementById('aniGrid');
   const cnt=document.getElementById('aniCnt');
-  const list=genre==='All'?animeCache:animeCache.filter(a=>(a.genre||'').includes(genre));
+  const list=genre==='All'?animeCache:animeCache.filter(a=>(a.genre||'').split(',').map(g=>g.trim()).some(g=>g.toLowerCase()===genre.toLowerCase()));
   cnt.textContent=list.length+' Series';
   if(!list.length){
     el.innerHTML='<div class="anime-grid"><div class="empty-state"><h3>NO ANIME YET</h3><p>Check back soon!</p></div></div>';
@@ -472,7 +496,7 @@ function closeMenu(){document.getElementById('sideMenu').classList.remove('open'
 // ============================================================
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSearch();closeMenu();}});
 loadData();
-setInterval(loadData,60000);
+trackVisit();
 </script>
 </body>
 </html>

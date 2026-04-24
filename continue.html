@@ -7,45 +7,65 @@
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0a1a;color:#fff;font-family:'Hind',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-.logo{font-family:'Teko',sans-serif;font-size:20px;font-weight:700;margin-bottom:30px;letter-spacing:1px}
-.lr{color:#e63946}.lt{color:#fff}.li{color:#ffd60a}
-.card{background:#12122a;border:1px solid #1e1e3a;border-radius:16px;padding:28px 22px;width:100%;max-width:380px;text-align:center}
-.icon{font-size:52px;margin-bottom:12px}
-h1{font-family:'Teko',sans-serif;font-size:24px;letter-spacing:1px;margin-bottom:6px}
-.sub{font-size:13px;color:#888;line-height:1.6;margin-bottom:24px}
+body{background:linear-gradient(135deg,#0a0a1a,#0d1b2a);color:#fff;font-family:'Hind',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.logo{font-family:'Teko',sans-serif;font-size:22px;font-weight:700;margin-bottom:28px;letter-spacing:2px}
+.lr{color:#c00}.lt{color:#fff}.li{color:#ffd600}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:30px 24px;width:100%;max-width:380px;text-align:center;backdrop-filter:blur(10px)}
+.icon{font-size:54px;margin-bottom:14px;display:block}
+h1{font-family:'Teko',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:6px}
+.sub{font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:22px}
 
-/* Progress */
-.progress-wrap{display:flex;gap:10px;justify-content:center;margin-bottom:20px}
-.pstep{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;max-width:120px}
-.pball{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;font-family:'Teko',sans-serif;transition:all .3s}
-.pball.pending{background:#1e1e3a;border:2px solid #333;color:#555}
-.pball.active{background:#1565c0;border:2px solid #4a90e2;color:#fff;box-shadow:0 0 16px rgba(21,101,192,.5)}
-.pball.done{background:#1b5e20;border:2px solid #2e7d32;color:#fff}
-.plabel{font-size:10px;color:#666;letter-spacing:.5px}
-.pconnect{flex:1;height:2px;background:#1e1e3a;margin-top:22px;border-radius:2px;max-width:40px}
-.pconnect.done{background:#2e7d32}
+/* INVALID STATE */
+.invalid-box{text-align:center}
+.invalid-box .icon{font-size:60px;margin-bottom:16px;display:block}
+.invalid-box h2{font-family:'Teko',sans-serif;font-size:24px;color:#ff4444;margin-bottom:8px}
+.invalid-box p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:20px}
+.back-btn{display:inline-block;background:#1565c0;color:#fff;padding:12px 28px;border-radius:9px;font-family:'Teko',sans-serif;font-size:17px;letter-spacing:.5px;text-decoration:none;transition:opacity .2s}
+.back-btn:hover{opacity:.85}
 
-/* Countdown */
-.countdown-wrap{display:none;margin-bottom:20px}
-.countdown-wrap.show{display:block}
-.cdring{width:100px;height:100px;margin:0 auto 12px;position:relative}
-.cdring svg{transform:rotate(-90deg)}
-.cdring circle{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .95s linear}
-.cdring .bg{stroke:#1e1e3a}
-.cdring .fg{stroke:#1565c0}
-.cdnum{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Teko',sans-serif;font-size:32px;color:#fff;font-weight:700}
-.cdmsg{font-size:12px;color:#888;line-height:1.5}
+/* PROGRESS */
+.prog-wrap{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:22px}
+.pstep{display:flex;flex-direction:column;align-items:center;gap:5px}
+.pball{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Teko',sans-serif;font-size:18px;font-weight:700;transition:all .3s;border:2px solid transparent}
+.pball.pending{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.3)}
+.pball.active{background:rgba(21,101,192,.3);border-color:#4a90e2;color:#fff;box-shadow:0 0 20px rgba(21,101,192,.5)}
+.pball.done{background:rgba(27,94,32,.5);border-color:#43a047;color:#fff}
+.plbl{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.8px;text-transform:uppercase}
+.pline{width:50px;height:2px;background:rgba(255,255,255,.1);margin-top:-20px;transition:background .3s}
+.pline.done{background:#43a047}
 
-/* Buttons */
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:10px;font-family:'Teko',sans-serif;font-size:18px;letter-spacing:.5px;cursor:pointer;border:none;text-decoration:none;transition:all .2s;margin-bottom:10px}
-.btn-primary{background:linear-gradient(135deg,#1565c0,#0d47a1);color:#fff}
-.btn-primary:hover{opacity:.9;transform:scale(1.02)}
-.btn-success{background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff}
-.btn-disabled{background:#1e1e3a;color:#555;cursor:not-allowed;pointer-events:none}
-.note{font-size:11px;color:#555;line-height:1.6;margin-top:12px}
-.toast-wrap{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:100}
-.toast{background:#1565c0;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;white-space:nowrap;opacity:0;transform:translateY(-10px);transition:all .3s}
+/* RING COUNTDOWN */
+.ring-wrap{display:none;flex-direction:column;align-items:center;gap:10px;margin-bottom:20px}
+.ring-wrap.show{display:flex}
+.ring{width:110px;height:110px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+circle{fill:none;stroke-width:7;stroke-linecap:round}
+.ring-bg{stroke:rgba(255,255,255,.08)}
+.ring-fg{stroke:#1565c0;stroke-dasharray:298;stroke-dashoffset:0;transition:stroke-dashoffset 0.95s linear}
+.ring-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Teko',sans-serif;font-size:38px;font-weight:700;color:#fff;line-height:1}
+.ring-msg{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;text-align:center}
+
+/* BUTTONS */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;border-radius:11px;font-family:'Teko',sans-serif;font-size:19px;letter-spacing:.5px;cursor:pointer;border:none;text-decoration:none;transition:all .2s;margin-bottom:10px;font-weight:700}
+.btn-primary{background:linear-gradient(135deg,#1565c0,#0d47a1);color:#fff;box-shadow:0 4px 20px rgba(21,101,192,.3)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(21,101,192,.4)}
+.btn-success{background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;box-shadow:0 4px 20px rgba(27,94,32,.3)}
+.btn-done{background:rgba(27,94,32,.2);border:1.5px solid #43a047;color:#81c784;cursor:default;pointer-events:none}
+.btn-wait{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);color:rgba(255,255,255,.3);cursor:not-allowed;pointer-events:none}
+
+.note{font-size:11px;color:rgba(255,255,255,.3);line-height:1.7;margin-top:10px;padding:8px;background:rgba(255,255,255,.03);border-radius:7px}
+
+/* UNLOCKED STATE */
+.unlocked-box{text-align:center}
+.unlocked-box .u-icon{font-size:60px;margin-bottom:14px;display:block;animation:bounceIn .5s ease}
+@keyframes bounceIn{0%{transform:scale(0)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
+.unlocked-box h2{font-family:'Teko',sans-serif;font-size:26px;color:#81c784;margin-bottom:6px;letter-spacing:1px}
+.unlocked-box p{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:18px;line-height:1.7}
+.timer-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(27,94,32,.25);border:1px solid #43a047;border-radius:8px;padding:7px 16px;font-family:'Teko',sans-serif;font-size:16px;color:#81c784;margin-bottom:18px}
+
+/* TOAST */
+.toast-wrap{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:200}
+.toast{background:rgba(21,101,192,.95);color:#fff;padding:11px 22px;border-radius:10px;font-size:13px;font-weight:600;white-space:nowrap;opacity:0;transform:translateY(-8px);transition:all .3s;backdrop-filter:blur(8px)}
 .toast.show{opacity:1;transform:translateY(0)}
 </style>
 </head>
@@ -53,211 +73,322 @@ h1{font-family:'Teko',sans-serif;font-size:24px;letter-spacing:1px;margin-bottom
 
 <div class="logo"><span class="lr">ANIME</span><span class="lt">WORLD</span><span class="li">INDIA</span></div>
 
-<div class="card">
-  <div class="icon" id="cardIcon">🔐</div>
-  <h1 id="cardTitle">UNLOCK FREE ACCESS</h1>
-  <p class="sub" id="cardSub">Click both links below to unlock <strong>24-hour unlimited access</strong> to all anime episodes.</p>
-
-  <!-- Progress Steps -->
-  <div class="progress-wrap">
-    <div class="pstep">
-      <div class="pball pending" id="ball1">1</div>
-      <div class="plabel">LINK 1</div>
-    </div>
-    <div class="pconnect" id="conn"></div>
-    <div class="pstep">
-      <div class="pball pending" id="ball2">2</div>
-      <div class="plabel">LINK 2</div>
-    </div>
-  </div>
-
-  <!-- Countdown Ring -->
-  <div class="countdown-wrap" id="cdWrap">
-    <div class="cdring">
-      <svg width="100" height="100" viewBox="0 0 100 100">
-        <circle class="bg" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"/>
-        <circle class="fg" id="cdArc" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"/>
-      </svg>
-      <div class="cdnum" id="cdNum">18</div>
-    </div>
-    <div class="cdmsg">Ad loading in other tab.<br>Please wait — do not close this page.</div>
-  </div>
-
-  <!-- Buttons -->
-  <div id="btnArea">
-    <button class="btn btn-primary" id="link1Btn" onclick="clickLink(1)">🔗 Click Access Link 1</button>
-    <button class="btn btn-disabled" id="link2Btn" onclick="clickLink(2)">🔗 Click Access Link 2</button>
-  </div>
-
-  <div class="note" id="noteText">⏱ Click Link 1 first → wait 18 seconds → then click Link 2 → Access unlocked!</div>
+<div class="card" id="mainCard">
+  <span class="icon" id="cardIcon">⏳</span>
+  <h1 id="cardTitle">Validating...</h1>
+  <p class="sub" id="cardSub">Please wait...</p>
 </div>
 
 <div class="toast-wrap"><div class="toast" id="toast"></div></div>
 
 <script>
-const WAIT=18;
-const ACCESS_KEY='awi24hr';
-const CLICK_KEY='awiClicks';
-const CIRCUMFERENCE=264;
+// ============================================================
+// CONSTANTS
+// ============================================================
+const ACCESS_KEY  = 'awi24hr_v2';
+const CLICKS_KEY  = 'awi_clicks_v2';
+const WAIT_SEC    = 18;
+const CIRCUMFERENCE = 298; // 2*π*r, r=47
 
-// Get params
-const params=new URLSearchParams(window.location.search);
-const animeId=params.get('aid');
-const link1=params.get('l1');
-const link2=params.get('l2');
-const returnUrl=params.get('ret')||'index.html';
+// ============================================================
+// PARSE URL PARAMS
+// ============================================================
+const params   = new URLSearchParams(window.location.search);
+const TOKEN    = (params.get('token') || '').trim();
+const LINK1    = params.get('l1') || '';
+const LINK2    = params.get('l2') || '';
+const RET_URL  = params.get('ret') || 'index.html';
+const ANIME_ID = params.get('aid') || '';
 
-function getClicks(){return JSON.parse(localStorage.getItem(CLICK_KEY)||'{}');}
-function saveClicks(c){localStorage.setItem(CLICK_KEY,JSON.stringify(c));}
-function isUnlocked(){
-  const d=localStorage.getItem(ACCESS_KEY);
-  return d&&Date.now()<parseInt(d);
+// ============================================================
+// STORAGE HELPERS
+// ============================================================
+function getAccess() {
+  try { return JSON.parse(localStorage.getItem(ACCESS_KEY) || 'null'); } catch { return null; }
+}
+function setAccess(data) {
+  try { localStorage.setItem(ACCESS_KEY, JSON.stringify(data)); } catch(e) {}
+}
+function getClickData() {
+  try { return JSON.parse(localStorage.getItem(CLICKS_KEY) || '{}'); } catch { return {}; }
+}
+function setClickData(d) {
+  try { localStorage.setItem(CLICKS_KEY, JSON.stringify(d)); } catch(e) {}
 }
 
-// If already unlocked, redirect immediately
-if(isUnlocked()){
-  window.location.href=returnUrl;
+// ============================================================
+// TOKEN VALIDATION — strict: must come from anime.html flow
+// Token format: base64(animeId_dayNumber), alphanum only, 8-16 chars
+// ============================================================
+function isValidToken() {
+  if (!TOKEN || TOKEN.length < 6 || TOKEN.length > 24) return false;
+  if (!/^[a-zA-Z0-9]+$/.test(TOKEN)) return false;
+  // Must have a return URL — naked visits to continue.html are blocked
+  if (!params.get('ret')) return false;
+  // Must have either aid or token contains enough entropy (length >= 8)
+  if (!ANIME_ID && TOKEN.length < 8) return false;
+  return true;
 }
 
-// If no links configured
-if(!link1&&!link2){
-  // Grant access directly (admin forgot to set links)
-  localStorage.setItem(ACCESS_KEY,Date.now()+24*3600000);
-  window.location.href=returnUrl;
+// ============================================================
+// ACCESS CHECK — never resets a live timer
+// ============================================================
+function isUnlocked() {
+  const a = getAccess();
+  if (!a || !a.expiry) return false;
+  return Date.now() < a.expiry;
 }
 
-// If only 1 link
-const hasTwo=!!(link1&&link2);
-if(!hasTwo){
-  // Hide link2
-  document.getElementById('link2Btn').style.display='none';
-  document.getElementById('ball2').style.display='none';
-  document.getElementById('conn').style.display='none';
-  document.getElementById('noteText').textContent='⏱ Click the link → wait 18 seconds → Access unlocked!';
+function getTimeLeft() {
+  const a = getAccess();
+  if (!a || Date.now() >= a.expiry) return null;
+  const ms = a.expiry - Date.now();
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  return h + 'h ' + m + 'm';
 }
 
-// Check already clicked
-const clicks=getClicks();
-let link1Done=!!(clicks[animeId+'_1']);
-let link2Done=!!(clicks[animeId+'_2']);
+// ============================================================
+// GRANT 24HR ACCESS — idempotent, never resets active session
+// ============================================================
+function grantAccess() {
+  const existing = getAccess();
+  // Only write if no active session
+  if (existing && Date.now() < existing.expiry) return;
+  setAccess({
+    token: TOKEN,
+    animeId: ANIME_ID,
+    expiry: Date.now() + 24 * 3600000,
+    grantedAt: Date.now()
+  });
+}
 
-// Update UI based on state
-function updateUI(){
-  const b1=document.getElementById('ball1');
-  const b2=document.getElementById('ball2');
-  const conn=document.getElementById('conn');
-  const btn1=document.getElementById('link1Btn');
-  const btn2=document.getElementById('link2Btn');
+// ============================================================
+// SHOW INVALID
+// ============================================================
+function showInvalid(reason) {
+  document.getElementById('mainCard').innerHTML = `
+    <div class="invalid-box">
+      <span class="icon">🚫</span>
+      <h2>INVALID ACCESS</h2>
+      <p>This link is invalid or has expired.<br>Go back and click the unlock button on the anime page.</p>
+      <a href="index.html" class="back-btn">← Go Home</a>
+    </div>`;
+}
 
-  if(link1Done){
-    b1.classList.remove('pending','active');b1.classList.add('done');b1.textContent='✓';
-    btn1.className='btn btn-success';btn1.textContent='✅ Link 1 Done';
-    btn1.onclick=null;
-    if(conn)conn.classList.add('done');
+// ============================================================
+// SHOW ALREADY UNLOCKED
+// ============================================================
+function showUnlocked(autoRedirect) {
+  const t = getTimeLeft();
+  const safeRet = decodeURIComponent(RET_URL);
+  document.getElementById('mainCard').innerHTML = `
+    <div class="unlocked-box">
+      <span class="u-icon">🔓</span>
+      <h2>ACCESS UNLOCKED!</h2>
+      <p>You have 24-hour unlimited access to all episodes.</p>
+      <div class="timer-badge">⏱ ${t || '—'} remaining</div><br>
+      <a href="${safeRet}" class="btn btn-success">▶ Continue Watching</a>
+    </div>`;
+  if (autoRedirect) {
+    toast('✅ Already unlocked! Redirecting...');
+    setTimeout(() => { window.location.href = safeRet; }, 1800);
   }
-  if(link2Done||!hasTwo){
-    b2.classList.remove('pending','active');b2.classList.add('done');b2.textContent='✓';
-    if(hasTwo){btn2.className='btn btn-success';btn2.textContent='✅ Link 2 Done';btn2.onclick=null;}
-  }
-  // Enable link2 only after link1
-  if(link1Done&&hasTwo&&!link2Done){
-    btn2.className='btn btn-primary';
-    btn2.style.removeProperty('pointer-events');
-  }
 }
 
-updateUI();
+// ============================================================
+// UNLOCK FLOW STATE
+// ============================================================
+let timerRunning = false;
 
-// Check if already done
-function checkUnlock(){
-  const done=hasTwo?(link1Done&&link2Done):link1Done;
-  if(done){
-    localStorage.setItem(ACCESS_KEY,Date.now()+24*3600000);
-    document.getElementById('cardIcon').textContent='🔓';
-    document.getElementById('cardTitle').textContent='ACCESS UNLOCKED!';
-    document.getElementById('cardSub').textContent='24 hours of free anime access. Redirecting...';
-    document.getElementById('cdWrap').classList.remove('show');
-    document.getElementById('btnArea').innerHTML='<a class="btn btn-success" href="'+returnUrl+'">▶ Watch Now</a>';
-    toast('🎉 Access Unlocked! Enjoy 24 hours of free anime!');
-    setTimeout(()=>window.location.href=returnUrl,2000);
+// Decode shortener URLs safely
+function decodeLink(raw) {
+  if (!raw) return '';
+  try { const d = decodeURIComponent(raw); return (d === 'null' || d === 'undefined') ? '' : d.trim(); }
+  catch { return ''; }
+}
+const L1 = decodeLink(LINK1);
+const L2 = decodeLink(LINK2);
+const hasTwo = !!(L1 && L2);
+
+// Restore click state from localStorage (survives page refresh)
+let click1Done = false;
+let click2Done = false;
+(function restoreClicks() {
+  const cd = getClickData();
+  // Only restore clicks that happened within the last 2 hours (prevents stale data)
+  const cutoff = Date.now() - 2 * 3600000;
+  if (cd[TOKEN + '_1'] && cd[TOKEN + '_1'] > cutoff) click1Done = true;
+  if (cd[TOKEN + '_2'] && cd[TOKEN + '_2'] > cutoff) click2Done = true;
+})();
+
+function showUnlockFlow() {
+  const single = !L2;
+  document.getElementById('mainCard').innerHTML = `
+    <span class="icon" id="fi">🔐</span>
+    <h1 id="ft">UNLOCK FREE ACCESS</h1>
+    <p class="sub" id="fs">Click the link${single ? '' : 's'} below → wait ${WAIT_SEC}s → get <strong>24-hour unlimited access</strong>!</p>
+
+    <div class="prog-wrap" id="progWrap" style="${single ? 'justify-content:center' : ''}">
+      <div class="pstep">
+        <div class="pball ${click1Done ? 'done' : 'pending'}" id="ball1">${click1Done ? '✓' : '1'}</div>
+        <div class="plbl">LINK 1</div>
+      </div>
+      ${!single ? `
+      <div class="pline ${click1Done ? 'done' : ''}" id="pline"></div>
+      <div class="pstep">
+        <div class="pball ${click2Done ? 'done' : 'pending'}" id="ball2">${click2Done ? '✓' : '2'}</div>
+        <div class="plbl">LINK 2</div>
+      </div>` : ''}
+    </div>
+
+    <div class="ring-wrap" id="ringWrap">
+      <div class="ring">
+        <svg width="110" height="110" viewBox="0 0 110 110">
+          <circle class="ring-bg" cx="55" cy="55" r="47"/>
+          <circle class="ring-fg" id="ringArc" cx="55" cy="55" r="47"/>
+        </svg>
+        <div class="ring-num" id="ringNum">${WAIT_SEC}</div>
+      </div>
+      <div class="ring-msg">Ad loading in other tab.<br>Please wait — do not close this page.</div>
+    </div>
+
+    <div id="btnArea">
+      <button class="btn ${click1Done ? 'btn-done' : 'btn-primary'}" id="btn1" onclick="handleClick(1)">
+        ${click1Done ? '✅ Link 1 Done' : '🔗 Click Access Link 1'}
+      </button>
+      ${!single ? `<button class="btn ${click2Done ? 'btn-done' : click1Done ? 'btn-primary' : 'btn-wait'}" id="btn2" onclick="handleClick(2)">
+        ${click2Done ? '✅ Link 2 Done' : '🔗 Click Access Link 2'}
+      </button>` : ''}
+    </div>
+    <div class="note">⏱ ${single ? 'Click the link → wait ' + WAIT_SEC + 's → access unlocked!' : 'Click Link 1 → wait → click Link 2 → wait → access unlocked!'}</div>`;
+
+  // If clicks were already done (restored from localStorage), try unlock immediately
+  checkAndUnlock();
+}
+
+// ============================================================
+// HANDLE CLICK — opens shortener, starts ring timer
+// ============================================================
+function handleClick(num) {
+  if (timerRunning) { toast('⏳ Timer running — please wait!'); return; }
+  if (num === 1 && click1Done) { toast('✅ Link 1 already done!'); return; }
+  if (num === 2 && !click1Done) { toast('⚠️ Complete Link 1 first!'); return; }
+  if (num === 2 && click2Done) { toast('✅ Link 2 already done!'); return; }
+
+  const url = num === 1 ? L1 : L2;
+  if (!url) {
+    // No shortener configured → count click directly (dev/testing mode)
+    countClick(num);
+    return;
   }
+  window.open(url, '_blank');
+  startRing(num);
 }
 
-checkUnlock();
+// ============================================================
+// RING COUNTDOWN
+// ============================================================
+function startRing(num) {
+  timerRunning = true;
+  const ringWrap = document.getElementById('ringWrap');
+  const arc      = document.getElementById('ringArc');
+  const numEl    = document.getElementById('ringNum');
+  if (ringWrap) ringWrap.classList.add('show');
 
-let timerRunning=false;
+  const ball = document.getElementById('ball' + num);
+  if (ball) { ball.className = 'pball active'; }
 
-function clickLink(num){
-  if(timerRunning)return;
-  if(num===1&&link1Done){toast('Link 1 already done!');return;}
-  if(num===2&&!link1Done&&hasTwo){toast('Click Link 1 first!');return;}
-  if(num===2&&link2Done){toast('Link 2 already done!');return;}
-
-  const url=num===1?link1:link2;
-  if(!url||url==='#'){toast('Link not configured!');return;}
-
-  // Open in new tab
-  window.open(url,'_blank');
-
-  // Start countdown
-  startCountdown(num);
-}
-
-function startCountdown(num){
-  timerRunning=true;
-  const cdWrap=document.getElementById('cdWrap');
-  cdWrap.classList.add('show');
-
-  // Update ball to active
-  const ball=document.getElementById('ball'+num);
-  ball.classList.remove('pending');ball.classList.add('active');
-
-  // Disable buttons during countdown
-  ['link1Btn','link2Btn'].forEach(id=>{
-    const b=document.getElementById(id);
-    if(b&&!b.classList.contains('btn-success'))b.className='btn btn-disabled';
+  // Disable all buttons during timer
+  ['btn1','btn2'].forEach(id => {
+    const b = document.getElementById(id);
+    if (b && !b.classList.contains('btn-done')) b.className = 'btn btn-wait';
   });
 
-  let remaining=WAIT;
-  document.getElementById('cdNum').textContent=remaining;
+  let rem = WAIT_SEC;
+  if (arc) arc.style.strokeDashoffset = '0';
 
-  const arc=document.getElementById('cdArc');
-  arc.style.strokeDashoffset='0';
+  const ticker = setInterval(() => {
+    rem--;
+    if (numEl) numEl.textContent = Math.max(rem, 0);
+    if (arc) arc.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - rem / WAIT_SEC));
 
-  const ticker=setInterval(()=>{
-    remaining--;
-    document.getElementById('cdNum').textContent=remaining;
-    // Update arc
-    const offset=CIRCUMFERENCE*(1-(remaining/WAIT));
-    arc.style.strokeDashoffset=String(offset);
-
-    if(remaining<=0){
+    if (rem <= 0) {
       clearInterval(ticker);
-      timerRunning=false;
-      cdWrap.classList.remove('show');
-      arc.style.strokeDashoffset='0';
-
-      // Save click
-      const c=getClicks();
-      if(num===1){c[animeId+'_1']=Date.now();link1Done=true;}
-      else{c[animeId+'_2']=Date.now();link2Done=true;}
-      saveClicks(c);
-
-      updateUI();
-      checkUnlock();
-
-      if(!((hasTwo&&link1Done&&link2Done)||(!hasTwo&&link1Done))){
-        toast('✅ Link '+num+' complete! Now click Link 2.');
-      }
+      timerRunning = false;
+      if (ringWrap) ringWrap.classList.remove('show');
+      if (arc) arc.style.strokeDashoffset = '0';
+      countClick(num);
     }
-  },1000);
+  }, 1000);
 }
 
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
+// ============================================================
+// COUNT CLICK — persist to localStorage so refresh doesn't reset
+// ============================================================
+function countClick(num) {
+  const cd = getClickData();
+  cd[TOKEN + '_' + num] = Date.now();
+  setClickData(cd);
+  if (num === 1) click1Done = true;
+  if (num === 2) click2Done = true;
+
+  const ball = document.getElementById('ball' + num);
+  if (ball) { ball.className = 'pball done'; ball.textContent = '✓'; }
+
+  const btn = document.getElementById('btn' + num);
+  if (btn) { btn.className = 'btn btn-done'; btn.textContent = '✅ Link ' + num + ' Done'; }
+
+  if (num === 1) {
+    const pline = document.getElementById('pline');
+    if (pline) pline.classList.add('done');
+    if (!hasTwo) {
+      checkAndUnlock();
+    } else {
+      const b2 = document.getElementById('btn2');
+      if (b2 && !click2Done) b2.className = 'btn btn-primary';
+      toast('✅ Link 1 done! Now click Link 2.');
+    }
+  }
+  if (num === 2) checkAndUnlock();
 }
+
+// ============================================================
+// GRANT + REDIRECT
+// ============================================================
+function checkAndUnlock() {
+  const done = hasTwo ? (click1Done && click2Done) : click1Done;
+  if (!done) return;
+
+  // Grant access — idempotent, never resets live timer
+  grantAccess();
+
+  setTimeout(() => {
+    showUnlocked(false);
+    toast('🎉 Access Unlocked! 24hr free access granted!');
+    setTimeout(() => { window.location.href = decodeURIComponent(RET_URL); }, 2500);
+  }, 400);
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+(function init() {
+  if (!isValidToken()) { showInvalid(); return; }
+  if (isUnlocked())    { showUnlocked(true); return; }
+  showUnlockFlow();
+})();
 </script>
 </body>
 </html>
