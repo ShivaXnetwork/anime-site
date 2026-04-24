@@ -94,12 +94,22 @@ function renderPage(a) {
     ? `<div class="unlocked-banner"><div>🔓 <b>UNLOCKED</b><br><small style="color:#aaa">Unlimited Downloads</small></div><div class="ub-timer">${getTimeLeft()}</div></div>`
     : `<div class="access-box"><h3>🔐 UNLOCK ACCESS</h3><p style="color:#aaa;font-size:13px;margin-bottom:10px">1 Click = 24 Hours Unlimited Access</p><a href="${buildContinueUrl(a.id)}" class="unlock-btn">Unlock Now</a></div>`;
 
+  // HIDDEN LINKS LOGIC ADDED HERE
   const epHtml = eps.map(ep => {
+    if (!unlocked) {
+      return `<div class="ep-row">
+                <div class="ep-title" style="color:#888">EP ${ep.num} - ${ep.title||'Episode '+ep.num}</div>
+                <div class="ep-links"><span class="dl-link" style="background:#222;color:#666;border-color:#333;cursor:not-allowed">🔒 Locked</span></div>
+              </div>`;
+    }
+    
+    // If Unlocked, show actual links
     const qLinks = Object.entries(ep.links||{}).filter(([q,l])=>l).map(([q,l]) => {
-      const href = unlocked ? (l.direct||l.short||'') : (l.short||l.direct||'');
+      const href = (l.short||l.direct||'');
       return href ? `<a href="${href}" target="_blank" class="dl-link">${q}</a>` : '';
     }).join('');
-    return qLinks ? `<div class="ep-row"><div class="ep-title">EP ${ep.num} - ${ep.title}</div><div class="ep-links">${qLinks}</div></div>` : '';
+    
+    return qLinks ? `<div class="ep-row"><div class="ep-title">EP ${ep.num} - ${ep.title||'Episode '+ep.num}</div><div class="ep-links">${qLinks}</div></div>` : '';
   }).join('');
 
   document.getElementById('pageContent').innerHTML = `<div class="wrap">
@@ -108,14 +118,15 @@ function renderPage(a) {
     <div class="tags"><span class="tag">HD DUB</span>${(a.genre||'').split(',').map(g=>`<span class="tag t-gn">${g.trim()}</span>`).join('')}</div>
     <div class="info-box">
       <div class="ir"><span class="il">Status</span><span class="iv">${a.status||'N/A'}</span></div>
-      <div class="ir"><span class="il">Episodes</span><span class="iv">${eps.length}</span></div>
-      <div class="ir"><span class="il">Quality</span><span class="iv">${a.quality||'1080p'}</span></div>
+      <div class=\"ir\"><span class=\"il\">Episodes</span><span class=\"iv\">${eps.length}</span></div>
+      <div class=\"ir\"><span class=\"il\">Quality</span><span class=\"iv\">${a.quality||'1080p'}</span></div>
     </div>
     ${a.description ? `<div class="syn-box"><h3>SYNOPSIS</h3><div class="syn-txt">${a.description}</div></div>` : ''}
     ${accessHtml}
     <div class="ep-section"><h2>EPISODES</h2>${epHtml||'<p style="color:#888;font-size:13px">No episodes yet.</p>'}</div>
   </div>`;
 }
+
 
 async function init(){
   const aid = new URLSearchParams(window.location.search).get('id');

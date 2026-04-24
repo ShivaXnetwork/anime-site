@@ -308,7 +308,41 @@ function setGenre(g){ curGenre=g; renderGrid(g); document.getElementById('sideMe
 function openSearch(){document.getElementById('srchOv').classList.add('open');}
 function closeSearch(){document.getElementById('srchOv').classList.remove('open');}
 function openMenu(){document.getElementById('sideMenu').classList.add('open');document.getElementById('sideOverlay').classList.add('open');}
-function closeMenu(){document.getElementById('sideMenu').classList.remove('open');document.getElementById('sideOverlay').classList.remove('open');}
+function closeMenu(){document.getElementById('sideMenu').classList.remove('open');document.getElementById('sideOverlay').classList.remove('open');} 
+// ====== SEARCH FUNCTION ======
+function doSearch(q){
+  const el = document.getElementById('srchRes');
+  if(!q.trim()){
+    el.innerHTML='<div class="srch-empty">Start typing to search...</div>';
+    return;
+  }
+  // Title ya Genre dono se search karega
+  const r = animeCache.filter(a => 
+    a.name.toLowerCase().includes(q.toLowerCase()) || 
+    (a.genre||'').toLowerCase().includes(q.toLowerCase())
+  );
+  
+  if(!r.length){
+    el.innerHTML=`<div class="srch-empty">"${q}" not found</div>`;
+    return;
+  }
+  
+  // Niche suggestions show karega
+  el.innerHTML = r.map((a,i) => `
+  <a href="anime.html?id=${a.id}" class="srch-item" onclick="closeSearch()">
+    <div class="srch-thumb">${a.poster ? `<img src="${fixPoster(a.poster)}" onerror="this.style.display='none'">` : `<div style="background:#222;width:100%;height:100%;display:flex;align-items:center;justify-content:center">${E(i)}</div>`}</div>
+    <div class="srch-info">
+      <h4>${a.name}</h4>
+      <span>${a.episodes?.length||0} Episodes ${a.quality ? `· ${a.quality}` : ''}</span>
+    </div>
+  </a>`).join('');
+}
+
+// Search box ke bahar click karne par band ho jayega
+document.getElementById('srchOv').addEventListener('click', function(e){
+  if(e.target === this) closeSearch();
+});
+
 </script>
 </body>
 </html>

@@ -217,6 +217,16 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
 </div>
 
 <div class="tc" id="tab-addAnime">
+
+  <div class="fcard" style="border-color:var(--accent); background:rgba(255,221,149,0.02)">
+    <div class="fcard-head" style="border-bottom:none; margin-bottom:0">🔍 AUTO-FETCH DETAILS</div>
+    <p style="font-size:11px; color:#aaa; margin-bottom:12px">Type anime name to auto-fill poster, synopsis, genres & status!</p>
+    <div style="display:flex; gap:10px">
+      <input class="lfield" id="jikanSearch" placeholder="e.g. Naruto, One Piece" style="margin-bottom:0; flex:1; text-align:left; letter-spacing:normal">
+      <button class="btn btn-primary" onclick="autoFetch()" style="width:auto; margin-top:0; padding:0 20px">FETCH</button>
+    </div>
+  </div>
+
   <div class="fcard">
     <div class="fcard-head">📝 ANIME DETAILS</div>
     <div class="row">
@@ -233,6 +243,9 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
         <label class="gchip"><input type="checkbox" value="Horror"><span>Horror</span></label>
         <label class="gchip"><input type="checkbox" value="Comedy"><span>Comedy</span></label>
         <label class="gchip"><input type="checkbox" value="Dark"><span>Dark</span></label>
+        <label class="gchip"><input type="checkbox" value="Drama"><span>Drama</span></label>
+        <label class="gchip"><input type="checkbox" value="Fantasy"><span>Fantasy</span></label>
+        <label class="gchip"><input type="checkbox" value="Sports"><span>Sports</span></label>
       </div>
     </div>
     <div class="row">
@@ -240,7 +253,7 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
       <div class="fg"><label>Quality</label><select id="aquality"><option>1080p</option><option>720p</option><option>Multiple</option></select></div>
     </div>
     <div class="row full">
-      <div class="fg"><label>Poster Direct URL (i.ibb.co)</label><input id="aposter" placeholder="https://i.ibb.co/xxxxx/image.jpg"></div>
+      <div class="fg"><label>Poster Direct URL (Auto-filled by API or i.ibb.co)</label><input id="aposter" placeholder="https://i.ibb.co/xxxxx/image.jpg"></div>
     </div>
     <div class="row full" style="margin-top:10px">
       <div class="fg"><label>Synopsis</label><textarea id="adesc" placeholder="Anime description..."></textarea></div>
@@ -388,6 +401,53 @@ function ST(t){
   if(t==='analytics')loadAnalytics();
 }
 
+// ── JIKAN API (AUTO FETCH) ──
+async function autoFetch() {
+  const q = document.getElementById('jikanSearch').value.trim();
+  if(!q) return toast('❌ Enter anime name to fetch!');
+  showLoad('Fetching from MyAnimeList...');
+  
+  try {
+    const res = await fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(q)}&limit=1`);
+    const json = await res.json();
+    
+    if(!json.data || json.data.length === 0) {
+      hideLoad(); return toast('❌ Anime not found!');
+    }
+    
+    const a = json.data[0];
+    
+    // Auto-fill fields
+    document.getElementById('aname').value = a.title_english || a.title || '';
+    document.getElementById('aposter').value = a.images?.jpg?.large_image_url || '';
+    
+    // Clean synopsis
+    let syn = a.synopsis || '';
+    syn = syn.replace('[Written by MAL Rewrite]', '').trim();
+    document.getElementById('adesc').value = syn;
+    
+    // Set Status
+    if (a.status) {
+      const st = a.status.toLowerCase();
+      document.getElementById('astatus').value = st.includes('finish') ? 'Completed' : 'Ongoing';
+    }
+    
+    // Set Genres dynamically based on MAL tags
+    document.querySelectorAll('.genre-grid input').forEach(c => c.checked = false);
+    if(a.genres) {
+      a.genres.forEach(g => {
+        const cb = document.querySelector(`.genre-grid input[value="${g.name}"]`);
+        if(cb) cb.checked = true;
+      });
+    }
+    
+    toast('✅ Auto-Filled Successfully!');
+  } catch(e) {
+    toast('❌ Fetch failed: ' + e.message);
+  }
+  hideLoad();
+}
+
 // ── ANIME ACTIONS ──
 async function addAnime(){
   const name=document.getElementById('aname').value.trim();
@@ -403,7 +463,7 @@ async function addAnime(){
   showLoad();
   try{
     await fdb.collection('anime').add(a); toast('✅ Added!');
-    ['aname','aseason','aposter','adesc'].forEach(id=>document.getElementById(id).value='');
+    ['aname','aseason','aposter','adesc','jikanSearch'].forEach(id=>document.getElementById(id).value='');
     document.querySelectorAll('.genre-grid input').forEach(c=>c.checked=false);
     await refreshAll();
   }catch(e){toast('❌ Failed: '+e.message);}
