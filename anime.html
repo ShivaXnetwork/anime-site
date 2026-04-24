@@ -3,418 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AnimeWorld India</title>
-<link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Anime Details — AWI</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="firebase.js"></script>
+<script>
+firebase.initializeApp({ apiKey:"AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk", authDomain:"anime-website-42907.firebaseapp.com", projectId:"anime-website-42907", storageBucket:"anime-website-42907.firebasestorage.app", messagingSenderId:"747833174910", appId:"1:747833174910:web:eefcbf01901ecb58b8a12f" });
+const fdb=firebase.firestore();
+</script>
+
 <style>
+:root { --bg: #0e0f11; --card: #202329; --nav: #14151a; --accent: #ffdd95; --text: #cacaca; --border: #2c2f36; }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100vh}
-.ad-bar{background:#fff;border-bottom:1px solid #e0e0e0;padding:6px 10px;display:flex;align-items:center;justify-content:center;min-height:58px}
-.ad-ph{width:100%;max-width:728px;min-height:50px;background:#f9f9f9;border:1px dashed #ccc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#bbb}
-.navbar{background:#fff;border-bottom:2px solid #e0e0e0;padding:0 14px;display:flex;align-items:center;gap:10px;height:50px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.07)}
-.back{background:#1565c0;border:none;color:#fff;width:34px;height:34px;border-radius:6px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0}
-.nb-title{font-family:'Teko',sans-serif;font-size:15px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.logo-s{font-family:'Teko',sans-serif;font-size:15px;font-weight:700;text-decoration:none;flex-shrink:0}
-.lr{color:#c00}.lt{color:#333}.li{color:#e67e00}
-.wrap{max-width:700px;margin:0 auto;padding:16px 14px 30px}
+body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min-height:100vh}
 
-/* SKELETON */
-.sk{background:linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%);background-size:200% 100%;animation:sk 1.5s infinite;border-radius:6px}
-@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.sk-poster{width:100%;height:200px;border-radius:10px;margin-bottom:14px}
-.sk-line{height:14px;margin-bottom:8px}
-.sk-line.w80{width:80%}.sk-line.w60{width:60%}.sk-line.w40{width:40%}
+.navbar{background:var(--nav);padding:0 14px;display:flex;align-items:center;gap:12px;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 4px 15px rgba(0,0,0,.3)}
+.back{background:#2b2d36;color:#fff;width:38px;height:38px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0;transition:all .2s}
+.back:hover{background:var(--accent);color:#111}
+.nb-title{font-family:'Teko',sans-serif;font-size:20px;font-weight:700;color:#fff;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:1px}
 
-/* POSTER */
-.poster-wrap{width:100%;border-radius:10px;overflow:hidden;margin-bottom:14px;background:#ddd;max-height:340px}
-.poster-wrap img{width:100%;object-fit:cover;object-position:top;display:block}
+.wrap{max-width:800px;margin:0 auto;padding:20px 14px 40px}
+.poster-wrap{width:100%;border-radius:12px;overflow:hidden;margin-bottom:20px;box-shadow:0 10px 30px rgba(0,0,0,.5);position:relative}
+.poster-wrap img{width:100%;max-height:400px;object-fit:cover;object-position:top;display:block}
 
-/* TAGS */
-.tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:11px}
-.tag{font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:.2px}
-.t-hi{background:#ffebee;color:#c62828;border:1px solid #ef9a9a}
-.t-hd{background:#e3f2fd;color:#1565c0;border:1px solid #90caf9}
-.t-gn{background:#f3e5f5;color:#6a1b9a;border:1px solid #ce93d8}
-.t-st-on{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7}
-.t-st-cm{background:#fff9c4;color:#f57f17;border:1px solid #ffe082}
+.anime-title{font-family:'Teko',sans-serif;font-size:32px;font-weight:700;line-height:1.1;margin-bottom:12px;color:#fff;letter-spacing:1px}
 
-/* TITLE */
-.anime-title{font-family:'Teko',sans-serif;font-size:24px;font-weight:700;line-height:1.1;margin-bottom:10px;color:#111}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tag{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;color:#111;background:var(--accent)}
+.t-gn{background:#2b2d36;color:#fff}
 
-/* INFO TABLE */
-.info-box{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:12px 14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.ir{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid #f5f5f5;font-size:13px;align-items:baseline}
+.info-box, .syn-box, .ep-section{background:var(--card);border-radius:12px;padding:16px;margin-bottom:20px;border:1px solid var(--border)}
+.ir{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--border);font-size:13px}
 .ir:last-child{border-bottom:none}
-.il{color:#999;min-width:90px;flex-shrink:0;font-size:12px}
-.iv{color:#1a6e2e;font-weight:600;flex:1}
+.il{color:#888;min-width:100px;flex-shrink:0}
+.iv{color:#fff;font-weight:500;flex:1}
 
-/* SYNOPSIS */
-.syn-box{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:12px 14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.syn-box h3{font-family:'Teko',sans-serif;font-size:15px;color:#1565c0;margin-bottom:7px;letter-spacing:.5px}
-.syn-txt{font-size:13px;color:#555;line-height:1.75;max-height:70px;overflow:hidden;transition:max-height .35s ease}
-.syn-txt.exp{max-height:600px}
-.rm-btn{background:none;border:none;color:#1565c0;font-size:12px;font-weight:600;cursor:pointer;padding:5px 0;display:block;margin-top:4px}
+.syn-box h3, .ep-section h2{font-family:'Teko',sans-serif;font-size:22px;color:var(--accent);margin-bottom:10px;letter-spacing:1px;border-bottom:1px solid var(--border);padding-bottom:8px}
+.syn-txt{font-size:13px;line-height:1.8;color:#bbb}
 
-/* AD MID */
-.ad-mid{background:#fff;border:1px solid #e0e0e0;border-radius:8px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;min-height:110px;padding:14px}
+/* ACCESS BOX */
+.access-box{background:linear-gradient(135deg, #2b2d36, #1a1c22);border:1px solid var(--accent);border-radius:12px;padding:24px 16px;text-align:center;margin-bottom:24px}
+.access-box h3{font-family:'Teko',sans-serif;font-size:26px;color:var(--accent);margin-bottom:8px}
+.unlock-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:30px;background:var(--accent);color:#111;font-weight:700;text-decoration:none;transition:transform .2s;margin-top:10px}
+.unlock-btn:hover{transform:scale(1.05)}
 
-/* ACCESS BOX — LOCKED */
-.access-box{background:#fff;border:2px solid #1565c0;border-radius:12px;padding:18px 16px;margin-bottom:14px;text-align:center;box-shadow:0 2px 12px rgba(21,101,192,.08)}
-.access-box h3{font-family:'Teko',sans-serif;font-size:21px;color:#1565c0;margin-bottom:5px;letter-spacing:.5px}
-.access-box p{font-size:12px;color:#555;margin-bottom:14px;line-height:1.7}
-.unlock-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;border-radius:10px;background:linear-gradient(135deg,#1565c0,#0d47a1);color:#fff;font-family:'Teko',sans-serif;font-size:19px;letter-spacing:.5px;text-decoration:none;cursor:pointer;border:none;transition:opacity .2s;box-shadow:0 4px 16px rgba(21,101,192,.25)}
-.unlock-btn:hover{opacity:.9}
-.access-note{font-size:11px;color:#aaa;background:#f9f9f9;border-radius:6px;padding:8px;line-height:1.7;margin-top:10px}
+.unlocked-banner{background:rgba(255,221,149,0.1);border:1px solid var(--accent);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;color:#fff;margin-bottom:24px}
+.ub-timer{margin-left:auto;text-align:right;color:var(--accent);font-family:'Teko',sans-serif;font-size:24px;font-weight:700}
 
-/* UNLOCKED BANNER */
-.unlocked-banner{background:linear-gradient(135deg,#1b5e20,#2e7d32);border-radius:10px;padding:13px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;color:#fff;box-shadow:0 3px 12px rgba(27,94,32,.2)}
-.ub-icon{font-size:26px;flex-shrink:0}
-.ub-text h3{font-family:'Teko',sans-serif;font-size:17px;font-weight:700;letter-spacing:.3px}
-.ub-text p{font-size:11px;opacity:.8}
-.ub-timer{margin-left:auto;text-align:right;flex-shrink:0}
-.ub-timer span{font-family:'Teko',sans-serif;font-size:19px;color:#a5d6a7;display:block;font-weight:700}
-.ub-timer small{font-size:10px;opacity:.7}
-
-/* EPISODES — RareToonIndia style */
-.ep-section{margin-bottom:14px;background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.ep-section h2{font-family:'Teko',sans-serif;font-size:19px;font-weight:700;color:#1565c0;border-left:4px solid #1565c0;padding-left:10px;margin-bottom:12px;letter-spacing:.5px}
-.ep-row{padding:10px 0;border-bottom:1px solid #f5f5f5}
-.ep-row:last-child{border-bottom:none}
-.ep-title{font-size:14px;font-weight:600;color:#222;margin-bottom:5px}
-.ep-links{display:flex;flex-wrap:wrap;align-items:center;gap:4px;font-size:13px}
-.lang-lbl{color:#2e7d32;font-weight:700}
-.dl-link{color:#1565c0;font-weight:700;text-decoration:none;transition:color .15s}
-.dl-link:hover{color:#0d47a1;text-decoration:underline}
-.locked-note{display:flex;align-items:center;gap:5px;font-size:12px;color:#bbb;margin-top:4px}
-
-/* SEASON PACKS */
-.zip-section{margin-bottom:14px;background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.zip-section h2{font-family:'Teko',sans-serif;font-size:18px;color:#2e7d32;border-left:4px solid #2e7d32;padding-left:10px;margin-bottom:12px;letter-spacing:.5px}
-.zip-card{text-align:center;padding:12px 0;border-bottom:1px solid #f5f5f5}
-.zip-card:last-child{border-bottom:none}
-.zip-title{font-family:'Teko',sans-serif;font-size:16px;color:#6a1b9a;font-weight:700;margin-bottom:4px}
-.zip-meta{font-size:11px;color:#888;margin-bottom:9px}
-.zip-links{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.zip-link{color:#fff;font-weight:700;text-decoration:none;font-size:13px;padding:7px 16px;background:#1565c0;border-radius:6px;transition:background .15s}
-.zip-link:hover{background:#0d47a1}
-.zip-lock{font-size:12px;color:#bbb}
-
-/* BOTTOM NAV */
-.pad-bot{height:68px}
-.bnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0e0e0;display:grid;grid-template-columns:repeat(3,1fr);z-index:100;box-shadow:0 -2px 8px rgba(0,0,0,.07)}
-.bn-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px 6px;text-decoration:none;color:#888;font-size:10px;font-weight:600;gap:2px}
-.bn-item:hover{color:#1565c0}.bn-icon{font-size:20px}
-
-/* TOAST */
-.toast-fixed{position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:#1565c0;color:#fff;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:600;z-index:500;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
-.toast-fixed.show{opacity:1}
-
-.loading-screen{text-align:center;padding:60px 20px;color:#aaa}
+/* EPISODES */
+.ep-row{padding:12px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px;transition:background .2s;border-radius:8px}
+.ep-row:hover{background:#2a2d36}
+.ep-title{font-size:14px;font-weight:600;color:#fff}
+.ep-links{display:flex;flex-wrap:wrap;gap:8px}
+.dl-link{background:#111;color:var(--accent);border:1px solid var(--accent);padding:4px 12px;border-radius:4px;font-size:12px;font-weight:600;text-decoration:none;transition:all .2s}
+.dl-link:hover{background:var(--accent);color:#111}
 </style>
 </head>
 <body>
 
-<div class="ad-bar"><div class="ad-ph">Advertisement</div></div>
-
 <nav class="navbar">
   <a href="index.html" class="back">←</a>
   <span class="nb-title" id="nbTitle">Loading...</span>
-  <a href="index.html" class="logo-s"><span class="lr">A</span><span class="lt">W</span><span class="li">I</span></a>
 </nav>
 
-<div id="pageContent">
-  <div class="wrap">
-    <div class="sk sk-poster"></div>
-    <div class="sk sk-line w80"></div>
-    <div class="sk sk-line w60"></div>
-    <div class="sk sk-line w40"></div>
-  </div>
-</div>
-
-<div class="pad-bot"></div>
-<nav class="bnav">
-  <a href="index.html" class="bn-item"><div class="bn-icon">🏠</div>Home</a>
-  <a href="index.html" class="bn-item"><div class="bn-icon">🔍</div>Search</a>
-  <a href="index.html" class="bn-item"><div class="bn-icon">📺</div>Anime</a>
-</nav>
-<div class="toast-fixed" id="toastEl"></div>
+<div id="pageContent"><div class="wrap"><div class="loading-screen" style="color:#fff;text-align:center;padding:50px">Loading...</div></div></div>
 
 <script>
-// ============================================================
-// ACCESS SYSTEM
-// ============================================================
 const ACCESS_KEY = 'awi24hr_v2';
+function isUnlocked() { const a = JSON.parse(localStorage.getItem(ACCESS_KEY)||'null'); return a && Date.now() < a.expiry; }
+function getTimeLeft() { const a = JSON.parse(localStorage.getItem(ACCESS_KEY)||'null'); if (!a || Date.now() >= a.expiry) return null; const ms = a.expiry - Date.now(); return Math.floor(ms/3600000)+'h '+Math.floor((ms%3600000)/60000)+'m'; }
 
-function getAccess() {
-  try { return JSON.parse(localStorage.getItem(ACCESS_KEY) || 'null'); } catch { return null; }
-}
-function isUnlocked() {
-  const a = getAccess();
-  return a && Date.now() < a.expiry;
-}
-function getTimeLeft() {
-  const a = getAccess();
-  if (!a || Date.now() >= a.expiry) return null;
-  const ms = a.expiry - Date.now();
-  return Math.floor(ms/3600000)+'h '+Math.floor((ms%3600000)/60000)+'m';
-}
-function fixPoster(url) {
-  if (!url) return '';
-  return url.replace('https://ibb.co/', 'https://i.ibb.co/').replace('http://ibb.co/', 'https://i.ibb.co/');
-}
-function toast(msg) {
-  const t = document.getElementById('toastEl');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-// ============================================================
-// RENDER PAGE
-// ============================================================
 let globalSettings = {};
+async function loadSettings() { try { const doc = await fdb.collection('settings').doc('unlock').get(); if(doc.exists) globalSettings = doc.data(); } catch(e){} }
 
-// Fetch API Link Settings from "settings" collection
-async function loadSettings() {
-  try {
-    const doc = await fdb.collection('settings').doc('unlock').get();
-    if (doc.exists) globalSettings = doc.data();
-  } catch (e) {}
-}
-
-function buildContinueUrl(animeId, retUrl) {
-  const day = Math.floor(Date.now() / 86400000);
-  const token = btoa(animeId + '_' + day).replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
-  const ret = encodeURIComponent(retUrl);
-  let url = `continue.html?token=${token}&aid=${animeId}&ret=${ret}`;
-  // Ensure we utilize the fetched API shortener links
-  if (globalSettings.link1) url += `&l1=${encodeURIComponent(globalSettings.link1)}`;
-  if (globalSettings.link2) url += `&l2=${encodeURIComponent(globalSettings.link2)}`;
+function buildContinueUrl(animeId) {
+  const token = btoa(animeId + '_' + Math.floor(Date.now() / 86400000)).replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
+  let url = `continue.html?token=${token}&aid=${animeId}&ret=${encodeURIComponent(window.location.href)}`;
+  if(globalSettings.link1) url += `&l1=${encodeURIComponent(globalSettings.link1)}`;
+  if(globalSettings.link2) url += `&l2=${encodeURIComponent(globalSettings.link2)}`;
   return url;
 }
 
 function renderPage(a) {
   const unlocked = isUnlocked();
-  const eps = a.episodes || [];
-  const packs = a.seasonPacks || [];
-  const poster = fixPoster(a.poster);
+  const eps = (a.episodes||[]).sort((x,y)=>x.num-y.num);
+  document.getElementById('nbTitle').textContent = a.name;
 
-  document.title = a.name + (a.season ? ' ' + a.season : '') + ' — AnimeWorld India';
-  document.getElementById('nbTitle').textContent = a.name + (a.season ? ' ' + a.season : '');
+  const accessHtml = unlocked 
+    ? `<div class="unlocked-banner"><div>🔓 <b>UNLOCKED</b><br><small style="color:#aaa">Unlimited Downloads</small></div><div class="ub-timer">${getTimeLeft()}</div></div>`
+    : `<div class="access-box"><h3>🔐 UNLOCK ACCESS</h3><p style="color:#aaa;font-size:13px;margin-bottom:10px">1 Click = 24 Hours Unlimited Access</p><a href="${buildContinueUrl(a.id)}" class="unlock-btn">Unlock Now</a></div>`;
 
-  // Info rows
-  const infoData = [
-    { l: '📺 Full Name', v: a.name },
-    a.season && { l: '🎬 Season', v: a.season },
-    (a.totalEps || eps.length) && { l: '📼 Episodes', v: a.totalEps || eps.length },
-    a.year && { l: '🕐 Year', v: a.year },
-    a.runtime && { l: '⌛ Runtime', v: a.runtime },
-    a.genre && { l: '🎭 Genre', v: a.genre },
-    { l: '🌐 Language', v: a.language || 'Hindi Dub' },
-    a.quality && { l: '🎥 Quality', v: a.quality },
-    a.status && { l: '📡 Status', v: a.status },
-    a.studio && { l: '🏢 Studio', v: a.studio },
-  ].filter(Boolean);
-
-  const stCls = (a.status || '').toLowerCase().includes('complet') ? 't-st-cm' : 't-st-on';
-  const genreTags = a.genre ? a.genre.split(',').map(g => `<span class="tag t-gn">${g.trim()}</span>`).join('') : '';
-
-  // Episodes HTML
-  const sortedEps = [...eps].sort((x, y) => x.num - y.num);
-  const epHtml = sortedEps.map(ep => {
-    const links = ep.links || {};
-    const qLinks = Object.entries(links)
-      .filter(([q, l]) => l)
-      .map(([q, l]) => {
-        let directHref, shortHref;
-        if (l && typeof l === 'object') {
-          directHref = l.direct || '';
-          shortHref  = l.short  || l.direct || '';
-        } else {
-          directHref = ep.directLinks?.[q] || l;
-          shortHref  = l;
-        }
-        const href = unlocked ? (directHref || shortHref) : shortHref;
-        if (!href) return '';
-        return `<a href="${href}" target="_blank" rel="noopener" class="dl-link">[${q}]</a>`;
-      }).filter(Boolean).join(' ');
-
-    if (!qLinks) return '';
-
-    return `<div class="ep-row">
-      <div class="ep-title">Episode ${String(ep.num).padStart(2,'0')} – ${ep.title || 'Episode ' + ep.num}</div>
-      <div class="ep-links"><span class="lang-lbl">Hindi</span> <span>–</span> ${qLinks}</div>
-      ${!unlocked ? '<div class="locked-note">🔒 Unlock access for direct download links</div>' : ''}
-    </div>`;
-  }).filter(Boolean).join('');
-
-  const packHtml = packs.map(sp => {
-    const links = sp.links || {};
-    const lBtns = Object.entries(links).filter(([q, l]) => l).map(([q, l]) => {
-      let href;
-      if (l && typeof l === 'object') {
-        href = unlocked ? (l.direct || l.short || '') : (l.short || l.direct || '');
-      } else {
-        const direct = sp.directLinks?.[q];
-        href = unlocked ? (direct || l) : l;
-      }
-      if (!href) return '';
-      return `<a href="${href}" target="_blank" class="zip-link">${q}</a>`;
-    }).filter(Boolean).join('');
-    return `<div class="zip-card">
-      <div class="zip-title">📦 ${sp.title || 'Full Season Pack'}</div>
-      <div class="zip-meta">${sp.episodes ? sp.episodes + ' Episodes · ' : ''}${sp.size ? sp.size + ' · ' : ''}${sp.quality || ''}</div>
-      <div class="zip-links">${lBtns || '<span class="zip-lock">🔒 Link not set</span>'}</div>
-    </div>`;
+  const epHtml = eps.map(ep => {
+    const qLinks = Object.entries(ep.links||{}).filter(([q,l])=>l).map(([q,l]) => {
+      const href = unlocked ? (l.direct||l.short||'') : (l.short||l.direct||'');
+      return href ? `<a href="${href}" target="_blank" class="dl-link">${q}</a>` : '';
+    }).join('');
+    return qLinks ? `<div class="ep-row"><div class="ep-title">EP ${ep.num} - ${ep.title}</div><div class="ep-links">${qLinks}</div></div>` : '';
   }).join('');
 
-  const continueUrl = buildContinueUrl(a.id, window.location.href);
-
-  const accessHtml = unlocked
-    ? `<div class="unlocked-banner">
-        <div class="ub-icon">🔓</div>
-        <div class="ub-text"><h3>ACCESS UNLOCKED!</h3><p>Download all episodes freely</p></div>
-        <div class="ub-timer"><span id="timerTxt">${getTimeLeft() || '—'}</span><small>remaining</small></div>
-      </div>`
-    : `<div class="access-box">
-        <h3>🔐 UNLOCK FREE ACCESS</h3>
-        <p>Complete a quick step to unlock <strong>24-hour unlimited access</strong> to all anime episodes — completely free!</p>
-        <a href="${continueUrl}" class="unlock-btn">🔗 Unlock 24hr Free Access</a>
-        <div class="access-note">⏱ One-time per day · 24 hours of full access · No registration needed</div>
-      </div>`;
-
   document.getElementById('pageContent').innerHTML = `<div class="wrap">
-
-    ${poster ? `<div class="poster-wrap"><img src="${poster}" alt="${a.name}" loading="eager" onerror="this.parentElement.style.display='none'"></div>` : ''}
-
-    <div class="anime-title">${a.name}${a.season ? ' ' + a.season : ''} Hindi Dubbed Episodes Download HD</div>
-
-    <div class="tags">
-      <span class="tag t-hi">🇮🇳 ${a.language || 'Hindi Dub'}</span>
-      ${a.quality ? `<span class="tag t-hd">${a.quality}</span>` : ''}
-      ${genreTags}
-      ${a.status ? `<span class="tag ${stCls}">${a.status}</span>` : ''}
-    </div>
-
+    ${a.poster ? `<div class="poster-wrap"><img src="${a.poster.replace('ibb.co','i.ibb.co')}"></div>` : ''}
+    <div class="anime-title">${a.name}</div>
+    <div class="tags"><span class="tag">HD DUB</span>${(a.genre||'').split(',').map(g=>`<span class="tag t-gn">${g.trim()}</span>`).join('')}</div>
     <div class="info-box">
-      ${infoData.map(r => `<div class="ir"><span class="il">${r.l}</span><span class="iv">${r.v}</span></div>`).join('')}
+      <div class="ir"><span class="il">Status</span><span class="iv">${a.status||'N/A'}</span></div>
+      <div class="ir"><span class="il">Episodes</span><span class="iv">${eps.length}</span></div>
+      <div class="ir"><span class="il">Quality</span><span class="iv">${a.quality||'1080p'}</span></div>
     </div>
-
-    ${a.description ? `
-    <div class="syn-box">
-      <h3>📖 SYNOPSIS</h3>
-      <div class="syn-txt" id="synTxt">${a.description}</div>
-      <button class="rm-btn" onclick="toggleSyn()">▼ Read More</button>
-    </div>` : ''}
-
-    <div class="ad-mid"><div class="ad-ph" style="max-width:336px;width:100%;min-height:90px">Advertisement</div></div>
-
+    ${a.description ? `<div class="syn-box"><h3>SYNOPSIS</h3><div class="syn-txt">${a.description}</div></div>` : ''}
     ${accessHtml}
-
-    ${packs.length ? `<div class="zip-section"><h2>📦 SEASON ZIP / BATCH</h2><p style="font-size:12px;color:#888;text-align:center;margin-bottom:10px">Download All Episodes at Once</p>${packHtml}</div>` : ''}
-
-    ${eps.length ? `<div class="ep-section"><h2>📺 EPISODES (${eps.length})</h2>${
-      unlocked
-        ? (epHtml || '<p style="color:#bbb;font-size:13px;text-align:center;padding:20px">No episode links added yet.</p>')
-        : '<div class="locked-note" style="padding:18px;text-align:center;font-size:13px;color:#888">🔒 Unlock 24hr access above to view all episode download links.</div>'
-    }</div>` : (unlocked ? '' : '')}
-
+    <div class="ep-section"><h2>EPISODES</h2>${epHtml||'<p style="color:#888;font-size:13px">No episodes yet.</p>'}</div>
   </div>`;
-
-  if (unlocked) {
-    setInterval(() => {
-      const t = document.getElementById('timerTxt');
-      if (t) t.textContent = getTimeLeft() || 'Expired';
-    }, 60000);
-  }
 }
 
-function toggleSyn() {
-  const d = document.getElementById('synTxt');
-  const b = document.querySelector('.rm-btn');
-  if (!d) return;
-  d.classList.toggle('exp');
-  b.textContent = d.classList.contains('exp') ? '▲ Read Less' : '▼ Read More';
-}
-
-function trackUnlock(){
-  try{
-    const key='awi_unlock_tracked_'+new Date().toISOString().slice(0,10);
-    if(localStorage.getItem(key)) return;
-    localStorage.setItem(key,'1');
-    fdb.collection('analytics').doc('unlocks').set({
-      total: firebase.firestore.FieldValue.increment(1),
-      lastUnlock: new Date().toISOString()
-    },{merge:true}).catch(()=>{});
-  }catch(e){}
-}
-
-// ============================================================
-// FIREBASE LOAD — Fetch Anime & Episodes via Real-Time Listeners
-// ============================================================
-const params = new URLSearchParams(window.location.search);
-const animeId = params.get('id');
-
-let currentAnime = null;
-let currentEps = [];
-
-async function loadAnime() {
-  if (!animeId) { showNotFound(); return; }
+async function init(){
+  const aid = new URLSearchParams(window.location.search).get('id');
+  if(!aid) return;
   await loadSettings();
-  if (isUnlocked()) trackUnlock();
-
-  try {
-    // 1. Listen to the Anime details
-    fdb.collection('anime').doc(String(animeId))
-      .onSnapshot(doc => {
-        if (doc.exists) {
-          currentAnime = { id: doc.id, ...doc.data() };
-          renderMergedData();
-        } else {
-          showNotFound();
-        }
-      }, err => showLoadingError(err));
-
-    // 2. Listen to Episodes for this Anime ID separately
-    fdb.collection('episodes').where('animeId', '==', String(animeId))
-      .onSnapshot(snap => {
-        currentEps = snap.docs.map(d => ({id: d.id, ...d.data()}));
-        renderMergedData();
-      }, err => console.error(err));
-      
-  } catch (e) {
-    showLoadingError(e);
-  }
+  fdb.collection('anime').doc(aid).onSnapshot(doc => {
+    if(doc.exists) {
+      const a = {id: doc.id, ...doc.data()};
+      fdb.collection('episodes').where('animeId','==',aid).onSnapshot(snap => {
+        a.episodes = snap.docs.map(d=>d.data());
+        renderPage(a);
+      });
+    }
+  });
 }
-
-function renderMergedData() {
-  if(currentAnime) {
-     renderPage({ ...currentAnime, episodes: currentEps });
-  }
-}
-
-function showLoadingError(err) {
-  console.error('Firestore listener error:', err);
-  document.getElementById('pageContent').innerHTML = `
-  <div class="loading-screen">
-    <div style="font-size:40px;margin-bottom:12px">⚠️</div>
-    <p>Connection error. <a href="" style="color:#1565c0">Retry</a></p>
-  </div>`;
-  document.getElementById('nbTitle').textContent = 'Error';
-}
-
-function showNotFound() {
-  document.getElementById('pageContent').innerHTML = `
-  <div class="loading-screen">
-    <div style="font-size:50px;margin-bottom:12px">🔍</div>
-    <h2 style="font-family:'Teko',sans-serif;font-size:22px;color:#888;margin-bottom:10px">ANIME NOT FOUND</h2>
-    <a href="index.html" style="color:#1565c0;text-decoration:none;font-weight:600">← Go Back</a>
-  </div>`;
-  document.getElementById('nbTitle').textContent = 'Not Found';
-}
-
-loadAnime();
+init();
 </script>
 </body>
 </html>

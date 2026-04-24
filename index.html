@@ -5,172 +5,161 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AnimeWorld India – Free Hindi Dubbed Anime Download</title>
 <meta name="description" content="Download Hindi Dubbed Anime free in HD quality. Latest episodes of JJK, Naruto, One Piece and more on AnimeWorld India.">
-<meta name="keywords" content="hindi dubbed anime, anime download free, jujutsu kaisen hindi, naruto hindi dubbed, animeworld india">
-<meta name="robots" content="index, follow">
-<meta property="og:title" content="AnimeWorld India – Free Hindi Dubbed Anime Download">
-<meta property="og:type" content="website">
-<link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Teko:wght@600;700&display=swap" rel="stylesheet">
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="firebase.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey:"AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk",
+  authDomain:"anime-website-42907.firebaseapp.com",
+  projectId:"anime-website-42907",
+  storageBucket:"anime-website-42907.firebasestorage.app",
+  messagingSenderId:"747833174910",
+  appId:"1:747833174910:web:eefcbf01901ecb58b8a12f"
+});
+const fdb=firebase.firestore();
+</script>
 
 <style>
+:root { --bg: #0e0f11; --card: #202329; --nav: #14151a; --accent: #ffdd95; --text: #cacaca; --text-light: #ffffff; --border: #2c2f36; }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100vh}
+body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min-height:100vh}
 
 /* AD */
-.ad-bar{background:#fff;border-bottom:1px solid #e0e0e0;padding:6px 10px;display:flex;align-items:center;justify-content:center;min-height:58px}
-.ad-ph{width:100%;max-width:728px;min-height:50px;background:#f9f9f9;border:1px dashed #ccc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#bbb;letter-spacing:.5px}
+.ad-bar{background:var(--nav);border-bottom:1px solid var(--border);padding:6px 10px;display:flex;align-items:center;justify-content:center;min-height:58px}
+.ad-ph{width:100%;max-width:728px;min-height:50px;background:#1a1c22;border:1px dashed #444;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#777;letter-spacing:.5px}
 
 /* NAVBAR */
-.navbar{background:#fff;border-bottom:2px solid #e0e0e0;padding:0 14px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.navbar{background:var(--nav);padding:0 14px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 4px 15px rgba(0,0,0,.3)}
 .logo{display:flex;align-items:center;gap:8px;text-decoration:none}
-.logo-icon{width:34px;height:34px;background:#1565c0;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Teko',sans-serif;font-size:18px;font-weight:700}
-.logo-text{font-family:'Teko',sans-serif;font-size:20px;font-weight:700;line-height:1}
-.lr{color:#c00}.lt{color:#333}.li{color:#e67e00}
-.nav-right{display:flex;gap:8px;align-items:center}
-.nb{background:none;border:none;font-size:22px;cursor:pointer;color:#333;padding:4px;line-height:1}
-.menu-btn{background:#1565c0;border:none;color:#fff;width:36px;height:36px;border-radius:6px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.logo-icon{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#111;font-family:'Teko',sans-serif;font-size:20px;font-weight:700}
+.logo-text{font-family:'Teko',sans-serif;font-size:22px;font-weight:700;line-height:1}
+.lr{color:#fff}.lt{color:var(--accent)}.li{color:#fff}
+.nav-right{display:flex;gap:12px;align-items:center}
+.nb{background:none;border:none;font-size:20px;cursor:pointer;color:#fff;padding:4px}
+.menu-btn{background:#2b2d36;border:none;color:#fff;width:38px;height:38px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.menu-btn:hover{background:var(--accent);color:#111}
 
-/* SIDE MENU */
-.side-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none}
-.side-overlay.open{display:block}
-.side-menu{position:fixed;top:0;left:-280px;width:280px;height:100vh;background:#fff;z-index:201;transition:left .28s ease;overflow-y:auto;box-shadow:4px 0 20px rgba(0,0,0,.15)}
+/* SEARCH & MENU OVERLAYS */
+.side-overlay, .srch-ov{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:none;backdrop-filter:blur(4px)}
+.side-overlay.open, .srch-ov.open{display:block}
+.srch-ov.open{display:flex;align-items:flex-start;justify-content:center;padding-top:60px;z-index:300}
+
+.side-menu{position:fixed;top:0;left:-280px;width:280px;height:100vh;background:var(--nav);z-index:201;transition:left .3s ease;box-shadow:4px 0 20px rgba(0,0,0,.5)}
 .side-menu.open{left:0}
-.sm-head{background:#1565c0;padding:18px 16px;display:flex;align-items:center;gap:10px}
-.sm-head .stxt{color:#fff;font-family:'Teko',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;flex:1}
-.sm-cls{background:rgba(255,255,255,.2);border:none;color:#fff;width:30px;height:30px;border-radius:5px;cursor:pointer;font-size:16px}
-.sm-sec{font-size:10px;color:#bbb;letter-spacing:1.5px;text-transform:uppercase;padding:12px 16px 4px;font-weight:600}
-.sm-item{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #f5f5f5;text-decoration:none;color:#333;font-size:14px;font-weight:500;cursor:pointer;transition:background .15s}
-.sm-item:hover{background:#f0f6ff;color:#1565c0}
-.sm-item .si{font-size:18px;width:24px}
+.sm-head{background:var(--card);padding:20px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.sm-head .stxt{color:var(--accent);font-family:'Teko',sans-serif;font-size:20px;font-weight:700;letter-spacing:1px;flex:1}
+.sm-cls{background:rgba(255,255,255,.1);border:none;color:#fff;width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:16px}
+.sm-sec{font-size:11px;color:#888;letter-spacing:1.5px;text-transform:uppercase;padding:16px 16px 8px;font-weight:600}
+.sm-item{display:flex;align-items:center;gap:12px;padding:12px 16px;text-decoration:none;color:#ddd;font-size:14px;font-weight:500;transition:all .2s;border-left:3px solid transparent}
+.sm-item:hover{background:#1e2028;color:var(--accent);border-left-color:var(--accent)}
 
-/* SEARCH OVERLAY */
-.srch-ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;display:none;align-items:flex-start;justify-content:center;padding-top:60px}
-.srch-ov.open{display:flex}
-.srch-box{background:#fff;width:100%;max-width:560px;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.2);margin:0 14px}
-.srch-head{display:flex;align-items:center;padding:12px 14px;border-bottom:1px solid #eee;gap:10px}
-.srch-inp{flex:1;border:none;outline:none;font-size:15px;font-family:'Hind',sans-serif;color:#222}
-.srch-inp::placeholder{color:#bbb}
+.srch-box{background:var(--card);width:100%;max-width:560px;border-radius:12px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.5);margin:0 14px;border:1px solid var(--border)}
+.srch-head{display:flex;align-items:center;padding:14px;border-bottom:1px solid var(--border);gap:10px}
+.srch-inp{flex:1;border:none;outline:none;font-size:15px;font-family:'Poppins',sans-serif;background:transparent;color:#fff}
+.srch-inp::placeholder{color:#666}
 .srch-cls{background:none;border:none;font-size:20px;cursor:pointer;color:#888}
 .srch-res{max-height:380px;overflow-y:auto}
-.srch-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid #f5f5f5;text-decoration:none;color:#222;transition:background .15s}
-.srch-item:hover{background:#f9f9f9}
-.srch-thumb{width:40px;height:40px;border-radius:5px;background:#eee;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px}
+.srch-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);text-decoration:none;color:#ddd;transition:background .2s}
+.srch-item:hover{background:#2a2d36}
+.srch-thumb{width:45px;height:60px;border-radius:6px;background:#111;overflow:hidden;flex-shrink:0}
 .srch-thumb img{width:100%;height:100%;object-fit:cover}
-.srch-info h4{font-size:13px;font-weight:600}
+.srch-info h4{font-size:14px;font-weight:600;color:#fff;margin-bottom:4px}
 .srch-info span{font-size:11px;color:#888}
-.srch-empty{padding:30px;text-align:center;color:#bbb;font-size:13px}
+.srch-empty{padding:30px;text-align:center;color:#666;font-size:13px}
 
 /* HERO SLIDER */
-.hero-slider{position:relative;width:100%;overflow:hidden;height:220px;background:#111}
+.hero-slider{position:relative;width:100%;overflow:hidden;height:240px;background:#000}
 .slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;display:flex}
 .slide.active{opacity:1}
 .slide-img{width:100%;height:100%;object-fit:cover;object-position:top}
-.slide-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.8) 0%,rgba(0,0,0,.3) 60%,transparent 100%)}
-.slide-content{position:absolute;bottom:0;left:0;padding:16px 18px;color:#fff;max-width:70%}
-.slide-badge{display:inline-block;background:#c00;color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.5px;margin-bottom:5px}
-.slide-title{font-family:'Teko',sans-serif;font-size:20px;font-weight:700;letter-spacing:.5px;line-height:1.1;margin-bottom:5px}
-.slide-sub{font-size:11px;color:rgba(255,255,255,.75);margin-bottom:8px}
-.slide-btn{background:#1565c0;color:#fff;border:none;padding:6px 14px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
-.slider-dots{position:absolute;bottom:10px;right:14px;display:flex;gap:5px}
-.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .2s}
-.dot.active{background:#fff;width:18px;border-radius:3px}
-.slider-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.4);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
-.slider-prev{left:8px}.slider-next{right:8px}
-.slide-skeleton{background:linear-gradient(90deg,#222 25%,#333 50%,#222 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.slide-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(14,15,17,.95) 0%,rgba(14,15,17,.6) 50%,transparent 100%)}
+.slide-content{position:absolute;bottom:0;left:0;padding:20px;color:#fff;max-width:80%}
+.slide-badge{display:inline-block;background:var(--accent);color:#111;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:.5px;margin-bottom:8px}
+.slide-title{font-family:'Teko',sans-serif;font-size:28px;font-weight:700;letter-spacing:.5px;line-height:1.1;margin-bottom:5px;text-shadow:0 2px 4px rgba(0,0,0,.5)}
+.slide-sub{font-size:12px;color:#bbb;margin-bottom:12px}
+.slide-btn{background:#fff;color:#111;border:none;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.slide-btn:hover{background:var(--accent);transform:scale(1.05)}
+.slider-dots{position:absolute;bottom:12px;right:16px;display:flex;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s}
+.dot.active{background:var(--accent);width:20px;border-radius:4px}
+.slider-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:10}
+.slider-nav:hover{background:var(--accent);color:#111}
+.slider-prev{left:10px}.slider-next{right:10px}
 
 /* GENRE BAR */
-.genre-bar{background:#fff;border-bottom:1px solid #e0e0e0;padding:10px 14px;display:flex;gap:7px;overflow-x:auto;scrollbar-width:none}
+.genre-bar{background:var(--nav);padding:12px 14px;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
 .genre-bar::-webkit-scrollbar{display:none}
-.chip{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid #ddd;background:#fff;color:#555;transition:all .15s;white-space:nowrap;user-select:none}
-.chip.active,.chip:hover{background:#1565c0;border-color:#1565c0;color:#fff}
+.chip{flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;background:#24272f;color:#aaa;transition:all .2s;white-space:nowrap;user-select:none}
+.chip.active,.chip:hover{background:var(--accent);color:#111;font-weight:600}
 
 /* SECTION */
-.sec-wrap{max-width:900px;margin:0 auto;padding:0 12px}
-.sec-head{display:flex;align-items:center;justify-content:space-between;padding:16px 0 12px}
-.sec-head h2{font-family:'Teko',sans-serif;font-size:20px;font-weight:700;letter-spacing:.5px;border-left:4px solid #1565c0;padding-left:10px}
-.sec-cnt{font-size:11px;color:#888;background:#eee;padding:3px 10px;border-radius:10px}
+.sec-wrap{max-width:1000px;margin:0 auto;padding:0 14px 20px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:24px 0 16px}
+.sec-head h2{font-family:'Teko',sans-serif;font-size:24px;font-weight:700;color:#fff;letter-spacing:1px;border-left:4px solid var(--accent);padding-left:12px;line-height:1}
+.sec-cnt{font-size:12px;color:#aaa;background:#202329;padding:4px 12px;border-radius:12px;font-weight:500}
 
-/* SKELETON */
-.skel-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
-@media(min-width:480px){.skel-grid{grid-template-columns:repeat(3,1fr)}}
-.skel-card{background:#fff;border-radius:8px;overflow:hidden;border:1px solid #e0e0e0}
-.skel-img{width:100%;aspect-ratio:2/3;background:linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-.skel-line{height:12px;border-radius:4px;background:linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;margin:10px 10px 5px}
-.skel-line.short{width:60%}
-
-/* ANIME GRID */
-.anime-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+/* ANIME GRID - HIANIME STYLE */
+.anime-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
 @media(min-width:480px){.anime-grid{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:700px){.anime-grid{grid-template-columns:repeat(4,1fr)}}
-.ac{background:#fff;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;text-decoration:none;color:#222;display:flex;flex-direction:column;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s;animation:fadeUp .35s ease both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.ac:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
-.ac-img{position:relative;width:100%;aspect-ratio:2/3;overflow:hidden;background:#eee;display:flex;align-items:center;justify-content:center;font-size:50px}
-.ac-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
-.ac:hover .ac-img img{transform:scale(1.05)}
-.ac-badge{position:absolute;top:6px;left:6px;display:flex;flex-direction:column;gap:3px}
-.badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
-.b-h{background:rgba(198,0,0,.88);color:#fff}
-.b-n{background:#ffd600;color:#333}
-.b-q{background:rgba(21,101,192,.85);color:#fff}
-.ac-ep{position:absolute;bottom:5px;right:5px;background:rgba(0,0,0,.72);color:#fff;font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600}
-.ac-info{padding:8px 9px 10px}
-.ac-title{font-size:13px;font-weight:600;line-height:1.3;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ac-btn{display:flex;align-items:center;justify-content:center;background:#1565c0;color:#fff;border:none;border-radius:5px;padding:7px;font-size:13px;width:100%;transition:background .15s;text-decoration:none;cursor:pointer}
-.ac-btn:hover{background:#0d47a1}
+@media(min-width:768px){.anime-grid{grid-template-columns:repeat(4,1fr);gap:20px}}
+@media(min-width:1000px){.anime-grid{grid-template-columns:repeat(5,1fr)}}
 
-/* EMPTY */
-.empty-state{grid-column:1/-1;text-align:center;padding:50px 20px;color:#bbb}
-.empty-state h3{font-family:'Teko',sans-serif;font-size:22px;margin-bottom:8px;color:#999}
+.ac{background:transparent;text-decoration:none;color:var(--text);display:flex;flex-direction:column;transition:all .3s;animation:fadeUp .4s ease both}
+.ac-img{position:relative;width:100%;aspect-ratio:2/3;border-radius:10px;overflow:hidden;background:#1a1c22;display:flex;align-items:center;justify-content:center;font-size:50px}
+.ac-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.ac:hover .ac-img img{transform:scale(1.1);filter:brightness(0.7)}
+
+/* Play Button Overlay */
+.ac-img::after { content: '▶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); background: var(--accent); color: #111; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 2; padding-left: 3px; }
+.ac:hover .ac-img::after { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+.ac-badge{position:absolute;bottom:8px;left:8px;display:flex;gap:4px;z-index:3}
+.badge{font-size:10px;font-weight:600;padding:3px 6px;border-radius:4px;color:#111}
+.b-h{background:var(--accent)}
+.b-q{background:#fff}
+
+.ac-ep{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.8);color:#fff;font-size:11px;padding:3px 7px;border-radius:4px;font-weight:500;z-index:3}
+.ac-info{padding:10px 4px}
+.ac-title{font-size:14px;font-weight:600;color:#fff;line-height:1.4;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;transition:color .2s}
+.ac:hover .ac-title{color:var(--accent)}
 
 /* LATEST EPISODES */
-.latest-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
-.ep-row{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:9px 12px;text-decoration:none;color:#222;box-shadow:0 1px 3px rgba(0,0,0,.04);transition:box-shadow .2s}
-.ep-row:hover{box-shadow:0 3px 12px rgba(0,0,0,.1)}
-.ep-thumb{width:44px;height:44px;border-radius:6px;background:#eee;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.latest-list{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:20px}
+@media(min-width:768px){.latest-list{grid-template-columns:repeat(2,1fr)}}
+.ep-row{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:10px;padding:10px;text-decoration:none;color:var(--text);transition:all .2s;border:1px solid transparent}
+.ep-row:hover{background:#2a2d36;border-color:#3a3e4a}
+.ep-thumb{width:60px;height:80px;border-radius:6px;background:#111;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
 .ep-thumb img{width:100%;height:100%;object-fit:cover}
 .ep-info{flex:1;min-width:0}
-.ep-info h4{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ep-info span{font-size:11px;color:#888}
-.ep-tags{display:flex;gap:4px;margin-top:3px}
-.etag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
-.t-h{background:#ffebee;color:#c00}.t-hd{background:#e3f2fd;color:#1565c0}.t-n{background:#fff9c4;color:#f57f17}
-.ep-dl{background:#1565c0;color:#fff;width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-
-/* AD MID */
-.ad-mid{background:#fff;border:1px solid #e0e0e0;border-radius:8px;margin:14px 0;display:flex;align-items:center;justify-content:center;min-height:110px;padding:14px}
+.ep-info h4{font-size:14px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.ep-info span{font-size:12px;color:#aaa}
+.ep-tags{display:flex;gap:6px;margin-top:6px}
+.etag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;color:#111}
+.t-h{background:var(--accent)}
+.t-hd{background:#fff}
+.ep-dl{background:#2b2d36;color:#fff;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:all .2s}
+.ep-row:hover .ep-dl{background:var(--accent);color:#111}
 
 /* FOOTER */
-.footer{background:#fff;border-top:2px solid #e0e0e0;padding:16px 14px 10px;text-align:center;font-size:11px;color:#aaa;margin-top:10px}
-.footer a{color:#1565c0;text-decoration:none;margin:0 6px}
+.footer{background:var(--nav);border-top:1px solid var(--border);padding:24px 14px;text-align:center;font-size:12px;color:#666}
 
 /* BOTTOM NAV */
-.pad-bot{height:72px}
-.bnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0e0e0;display:grid;grid-template-columns:repeat(3,1fr);z-index:100;box-shadow:0 -2px 8px rgba(0,0,0,.07)}
-.bn-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px 6px;text-decoration:none;color:#888;font-size:10px;font-weight:600;gap:2px;transition:color .15s}
-.bn-item.active,.bn-item:hover{color:#1565c0}
+.pad-bot{height:70px}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:var(--nav);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(3,1fr);z-index:100}
+.bn-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px;text-decoration:none;color:#666;font-size:11px;font-weight:500;gap:4px;transition:all .2s}
+.bn-item.active,.bn-item:hover{color:var(--accent)}
 .bn-icon{font-size:20px}
-
-/* TOAST */
-.toast-fixed{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#1565c0;color:#fff;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:600;z-index:500;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
-.toast-fixed.show{opacity:1}
 </style>
 </head>
 <body>
 
-<div class="ad-bar">
-  <div class="ad-ph">Advertisement</div>
-</div>
-
 <nav class="navbar">
   <a href="index.html" class="logo">
     <div class="logo-icon">A</div>
-    <div class="logo-text"><span class="lr">ANIME</span><span class="lt">WORLD</span><span class="li">INDIA</span></div>
+    <div class="logo-text"><span class="lr">AWI</span><span class="lt">.</span><span class="li">TO</span></div>
   </a>
   <div class="nav-right">
     <button class="nb" onclick="openSearch()">🔍</button>
@@ -181,16 +170,14 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
 <div class="side-overlay" id="sideOverlay" onclick="closeMenu()"></div>
 <div class="side-menu" id="sideMenu">
   <div class="sm-head">
-    <span class="stxt">🎌 ANIMEWORLD INDIA</span>
+    <span class="stxt">MENU</span>
     <button class="sm-cls" onclick="closeMenu()">✕</button>
   </div>
   <div class="sm-sec">BROWSE</div>
-  <a href="index.html" class="sm-item"><span class="si">🏠</span>Home</a>
-  <a href="#" class="sm-item" onclick="setGenre('Action');closeMenu()"><span class="si">⚔️</span>Action Anime</a>
-  <a href="#" class="sm-item" onclick="setGenre('Shonen');closeMenu()"><span class="si">🔥</span>Shonen</a>
-  <a href="#" class="sm-item" onclick="setGenre('Isekai');closeMenu()"><span class="si">🌀</span>Isekai</a>
-  <a href="#" class="sm-item" onclick="setGenre('Romance');closeMenu()"><span class="si">💕</span>Romance</a>
-  <a href="#" class="sm-item" onclick="setGenre('Dark');closeMenu()"><span class="si">🖤</span>Dark</a>
+  <a href="index.html" class="sm-item">🏠 Home</a>
+  <a href="#" class="sm-item" onclick="setGenre('Action');closeMenu()">⚔️ Action Anime</a>
+  <a href="#" class="sm-item" onclick="setGenre('Shonen');closeMenu()">🔥 Shonen</a>
+  <a href="#" class="sm-item" onclick="setGenre('Isekai');closeMenu()">🌀 Isekai</a>
 </div>
 
 <div class="srch-ov" id="srchOv">
@@ -205,53 +192,28 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
 </div>
 
 <div class="hero-slider" id="heroSlider">
-  <div class="slide active slide-skeleton" style="height:220px"></div>
-</div>
+  </div>
 
 <div class="genre-bar" id="genreBar">
-  <div class="chip active" data-g="All">🎌 All</div>
+  <div class="chip active" data-g="All">🎌 All Anime</div>
   <div class="chip" data-g="Action">⚔️ Action</div>
   <div class="chip" data-g="Shonen">🔥 Shonen</div>
   <div class="chip" data-g="Isekai">🌀 Isekai</div>
   <div class="chip" data-g="Romance">💕 Romance</div>
-  <div class="chip" data-g="Horror">💀 Horror</div>
-  <div class="chip" data-g="Sports">⚽ Sports</div>
-  <div class="chip" data-g="Slice of Life">🌸 SoL</div>
-  <div class="chip" data-g="Fantasy">🔮 Fantasy</div>
-  <div class="chip" data-g="Dark">🖤 Dark</div>
-  <div class="chip" data-g="Comedy">😂 Comedy</div>
-  <div class="chip" data-g="Mecha">🤖 Mecha</div>
 </div>
 
 <div class="sec-wrap">
-
   <div class="sec-head">
-    <h2>📺 ALL ANIME</h2>
-    <span class="sec-cnt" id="aniCnt">Loading...</span>
+    <h2>📺 RECENTLY UPDATED</h2>
+    <span class="sec-cnt" id="aniCnt">...</span>
   </div>
-  <div id="aniGrid">
-    <div class="skel-grid">
-      <div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
-      <div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
-      <div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
-      <div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
-    </div>
-  </div>
-
-  <div class="ad-mid">
-    <div class="ad-ph" style="max-width:336px;width:100%;min-height:90px">Advertisement</div>
-  </div>
+  <div id="aniGrid"></div>
 
   <div class="sec-head"><h2>⚡ LATEST EPISODES</h2></div>
-  <div class="latest-list" id="latestList">
-    <div style="color:#bbb;text-align:center;padding:20px;font-size:13px">Loading episodes...</div>
-  </div>
-
+  <div class="latest-list" id="latestList"></div>
 </div>
 
-<div class="footer">
-  © <span id="yr"></span> AnimeWorld India · All rights belong to respective owners
-</div>
+<div class="footer">© <span id="yr"></span> AWI.to · Free Anime Streaming</div>
 <script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
 
 <div class="pad-bot"></div>
@@ -261,505 +223,92 @@ body{background:#f4f4f4;color:#222;font-family:'Hind',sans-serif;min-height:100v
   <a href="#" class="bn-item" onclick="setGenre('Action');return false"><div class="bn-icon">⚔️</div>Action</a>
 </nav>
 
-<div class="toast-fixed" id="toastFixed"></div>
-
 <script>
-// ============================================================
-// DATA
-// ============================================================
 let animeCache=[];
 let episodesCache=[];
 let curGenre='All';
-const EM=['⚔️','🔮','🗡️','🌀','💥','🔥','⚡','🌊','👊','🤖','💀','🌸','😤','🐉','🦊'];
+const EM=['⚔️','🔮','🗡️','🌀','💥','🔥','⚡','🌊','👊','🤖'];
 const E=i=>EM[i%EM.length];
-const isNew=d=>d&&(Date.now()-new Date(d))<7*864e5;
 
-function fixPoster(url){
-  if(!url)return '';
-  return url.replace('https://ibb.co/','https://i.ibb.co/').replace('http://ibb.co/','https://i.ibb.co/');
+function fixPoster(url){return url?url.replace('https://ibb.co/','https://i.ibb.co/').replace('http://ibb.co/','https://i.ibb.co/'):'';}
+
+// FIREBASE LISTENERS
+fdb.collection('anime').orderBy('createdAt','desc').onSnapshot(snap=>{
+  animeCache=snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderCombined();
+});
+
+fdb.collection('episodes').onSnapshot(snap=>{
+  episodesCache=snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderCombined();
+});
+
+function renderCombined() {
+  animeCache.forEach(a => a.episodes = episodesCache.filter(ep => ep.animeId === a.id));
+  renderGrid(curGenre); renderSlider(); renderLatest();
 }
-
-// ============================================================
-// FIREBASE LOAD — real-time listener reading 2 collections
-// ============================================================
-async function loadData(){
-  try{
-    // Real-time listener for Anime
-    fdb.collection('anime').orderBy('createdAt','desc').onSnapshot(snap=>{
-      animeCache=snap.docs.map(d=>({id:d.id,...d.data()}));
-      renderCombinedData();
-    }, err=>{
-      console.error('Firestore error:',err);
-      document.getElementById('aniGrid').innerHTML='<div class="empty-state"><h3>CONNECTION ERROR</h3><p>Check internet and refresh.</p></div>';
-    });
-    
-    // Real-time listener for Episodes Collection
-    fdb.collection('episodes').onSnapshot(snap=>{
-      episodesCache=snap.docs.map(d=>({id:d.id,...d.data()}));
-      renderCombinedData();
-    }, err=>console.error('Firestore episodes error:',err));
-
-  }catch(e){
-    console.error('Firebase error:',e);
-    document.getElementById('aniGrid').innerHTML='<div class="empty-state"><h3>CONNECTION ERROR</h3><p>Check internet and refresh.</p></div>';
-  }
-}
-
-function renderCombinedData() {
-  // Attach episodes temporarily to anime for counting
-  animeCache.forEach(a => {
-    a.episodes = episodesCache.filter(ep => ep.animeId === a.id);
-  });
-  renderGrid(curGenre);
-  renderSlider();
-  renderLatest();
-}
-
-// ============================================================
-// BASIC ANALYTICS — track unique daily visits
-// ============================================================
-function trackVisit(){
-  try{
-    const key='awi_visit_'+new Date().toISOString().slice(0,10);
-    if(localStorage.getItem(key)) return; 
-    localStorage.setItem(key,'1');
-    fdb.collection('analytics').doc('visits').set({
-      total: firebase.firestore.FieldValue.increment(1),
-      lastVisit: new Date().toISOString()
-    },{merge:true}).catch(()=>{});
-  }catch(e){}
-}
-
-// ============================================================
-// HERO SLIDER */
-.hero-slider{position:relative;width:100%;overflow:hidden;height:220px;background:#111}
-.slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;display:flex}
-.slide.active{opacity:1}
-.slide-img{width:100%;height:100%;object-fit:cover;object-position:top}
-.slide-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.8) 0%,rgba(0,0,0,.3) 60%,transparent 100%)}
-.slide-content{position:absolute;bottom:0;left:0;padding:16px 18px;color:#fff;max-width:70%}
-.slide-badge{display:inline-block;background:#c00;color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.5px;margin-bottom:5px}
-.slide-title{font-family:'Teko',sans-serif;font-size:20px;font-weight:700;letter-spacing:.5px;line-height:1.1;margin-bottom:5px}
-.slide-sub{font-size:11px;color:rgba(255,255,255,.75);margin-bottom:8px}
-.slide-btn{background:#1565c0;color:#fff;border:none;padding:6px 14px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
-.slider-dots{position:absolute;bottom:10px;right:14px;display:flex;gap:5px}
-.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .2s}
-.dot.active{background:#fff;width:18px;border-radius:3px}
-.slider-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.4);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
-.slider-prev{left:8px}.slider-next{right:8px}
-.slide-skeleton{background:linear-gradient(90deg,#222 25%,#333 50%,#222 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* GENRE BAR */
-.genre-bar{background:#fff;border-bottom:1px solid #e0e0e0;padding:10px 14px;display:flex;gap:7px;overflow-x:auto;scrollbar-width:none}
-.genre-bar::-webkit-scrollbar{display:none}
-.chip{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid #ddd;background:#fff;color:#555;transition:all .15s;white-space:nowrap;user-select:none}
-.chip.active,.chip:hover{background:#1565c0;border-color:#1565c0;color:#fff}
-
-/* SECTION */
-.sec-wrap{max-width:900px;margin:0 auto;padding:0 12px}
-.sec-head{display:flex;align-items:center;justify-content:space-between;padding:16px 0 12px}
-.sec-head h2{font-family:'Teko',sans-serif;font-size:20px;font-weight:700;letter-spacing:.5px;border-left:4px solid #1565c0;padding-left:10px}
-.sec-cnt{font-size:11px;color:#888;background:#eee;padding:3px 10px;border-radius:10px}
-
-/* SKELETON */
-.skel-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
-@media(min-width:480px){.skel-grid{grid-template-columns:repeat(3,1fr)}}
-.skel-card{background:#fff;border-radius:8px;overflow:hidden;border:1px solid #e0e0e0}
-.skel-img{width:100%;aspect-ratio:2/3;background:linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-.skel-line{height:12px;border-radius:4px;background:linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;margin:10px 10px 5px}
-.skel-line.short{width:60%}
-
-/* ANIME GRID */
-.anime-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
-@media(min-width:480px){.anime-grid{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:700px){.anime-grid{grid-template-columns:repeat(4,1fr)}}
-.ac{background:#fff;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;text-decoration:none;color:#222;display:flex;flex-direction:column;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s;animation:fadeUp .35s ease both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.ac:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
-.ac-img{position:relative;width:100%;aspect-ratio:2/3;overflow:hidden;background:#eee;display:flex;align-items:center;justify-content:center;font-size:50px}
-.ac-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
-.ac:hover .ac-img img{transform:scale(1.05)}
-.ac-badge{position:absolute;top:6px;left:6px;display:flex;flex-direction:column;gap:3px}
-.badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
-.b-h{background:rgba(198,0,0,.88);color:#fff}
-.b-n{background:#ffd600;color:#333}
-.b-q{background:rgba(21,101,192,.85);color:#fff}
-.ac-ep{position:absolute;bottom:5px;right:5px;background:rgba(0,0,0,.72);color:#fff;font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600}
-.ac-info{padding:8px 9px 10px}
-.ac-title{font-size:13px;font-weight:600;line-height:1.3;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ac-btn{display:flex;align-items:center;justify-content:center;background:#1565c0;color:#fff;border:none;border-radius:5px;padding:7px;font-size:13px;width:100%;transition:background .15s;text-decoration:none;cursor:pointer}
-.ac-btn:hover{background:#0d47a1}
-
-/* EMPTY */
-.empty-state{grid-column:1/-1;text-align:center;padding:50px 20px;color:#bbb}
-.empty-state h3{font-family:'Teko',sans-serif;font-size:22px;margin-bottom:8px;color:#999}
-
-/* LATEST EPISODES */
-.latest-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
-.ep-row{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:9px 12px;text-decoration:none;color:#222;box-shadow:0 1px 3px rgba(0,0,0,.04);transition:box-shadow .2s}
-.ep-row:hover{box-shadow:0 3px 12px rgba(0,0,0,.1)}
-.ep-thumb{width:44px;height:44px;border-radius:6px;background:#eee;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.ep-thumb img{width:100%;height:100%;object-fit:cover}
-.ep-info{flex:1;min-width:0}
-.ep-info h4{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ep-info span{font-size:11px;color:#888}
-.ep-tags{display:flex;gap:4px;margin-top:3px}
-.etag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
-.t-h{background:#ffebee;color:#c00}.t-hd{background:#e3f2fd;color:#1565c0}.t-n{background:#fff9c4;color:#f57f17}
-.ep-dl{background:#1565c0;color:#fff;width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-
-/* AD MID */
-.ad-mid{background:#fff;border:1px solid #e0e0e0;border-radius:8px;margin:14px 0;display:flex;align-items:center;justify-content:center;min-height:110px;padding:14px}
-
-/* FOOTER */
-.footer{background:#fff;border-top:2px solid #e0e0e0;padding:16px 14px 10px;text-align:center;font-size:11px;color:#aaa;margin-top:10px}
-.footer a{color:#1565c0;text-decoration:none;margin:0 6px}
-
-/* BOTTOM NAV */
-.pad-bot{height:72px}
-.bnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0e0e0;display:grid;grid-template-columns:repeat(3,1fr);z-index:100;box-shadow:0 -2px 8px rgba(0,0,0,.07)}
-.bn-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px 6px;text-decoration:none;color:#888;font-size:10px;font-weight:600;gap:2px;transition:color .15s}
-.bn-item.active,.bn-item:hover{color:#1565c0}
-.bn-icon{font-size:20px}
-
-/* TOAST */
-.toast-fixed{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#1565c0;color:#fff;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:600;z-index:500;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
-.toast-fixed.show{opacity:1}
-</style>
-</head>
-<body>
-
-<div class="ad-bar">
-  <div class="ad-ph">Advertisement</div>
-</div>
-
-<nav class="navbar">
-  <a href="index.html" class="logo">
-    <div class="logo-icon">A</div>
-    <div class="logo-text"><span class="lr">ANIME</span><span class="lt">WORLD</span><span class="li">INDIA</span></div>
-  </a>
-  <div class="nav-right">
-    <button class="nb" onclick="openSearch()">🔍</button>
-    <button class="menu-btn" onclick="openMenu()">☰</button>
-  </div>
-</nav>
-
-<div class="side-overlay" id="sideOverlay" onclick="closeMenu()"></div>
-<div class="side-menu" id="sideMenu">
-  <div class="sm-head">
-    <span class="stxt">🎌 ANIMEWORLD INDIA</span>
-    <button class="sm-cls" onclick="closeMenu()">✕</button>
-  </div>
-  <div class="sm-sec">BROWSE</div>
-  <a href="index.html" class="sm-item"><span class="si">🏠</span>Home</a>
-  <a href="#" class="sm-item" onclick="setGenre('Action');closeMenu()"><span class="si">⚔️</span>Action Anime</a>
-  <a href="#" class="sm-item" onclick="setGenre('Shonen');closeMenu()"><span class="si">🔥</span>Shonen</a>
-  <a href="#" class="sm-item" onclick="setGenre('Isekai');closeMenu()"><span class="si">🌀</span>Isekai</a>
-  <a href="#" class="sm-item" onclick="setGenre('Romance');closeMenu()"><span class="si">💕</span>Romance</a>
-  <a href="#" class="sm-item" onclick="setGenre('Dark');closeMenu()"><span class="si">🖤</span>Dark</a>
-</div>
-
-<div class="srch-ov" id="srchOv">
-  <div class="srch-box">
-    <div class="srch-head">
-      <span style="font-size:18px">🔍</span>
-      <input class="srch-inp" id="srchInp" type="text" placeholder="Search anime..." oninput="doSearch(this.value)">
-      <button class="srch-cls" onclick="closeSearch()">✕</button>
-    </div>
-    <div class="srch-res" id="srchRes"><div class="srch-empty">Start typing to search...</div></div>
-  </div>
-</div>
-
-<div class="hero-slider" id="heroSlider">
-  <div class="slide active slide-skeleton" style="height:220px"></div>
-</div>
-
-<div class="genre-bar" id="genreBar">
-  <div class="chip active" data-g="All">🎌 All</div>
-  <div class="chip" data-g="Action">⚔️ Action</div>
-  <div class="chip" data-g="Shonen">🔥 Shonen</div>
-  <div class="chip" data-g="Isekai">🌀 Isekai</div>
-  <div class="chip" data-g="Romance">💕 Romance</div>
-  <div class="chip" data-g="Horror">💀 Horror</div>
-  <div class="chip" data-g="Sports">⚽ Sports</div>
-  <div class="chip" data-g="Slice of Life">🌸 SoL</div>
-  <div class="chip" data-g="Fantasy">🔮 Fantasy</div>
-  <div class="chip" data-g="Dark">🖤 Dark</div>
-  <div class="chip" data-g="Comedy">😂 Comedy</div>
-  <div class="chip" data-g="Mecha">🤖 Mecha</div>
-</div>
-
-<div class="sec-wrap">
-
-  <div class="sec-head">
-    <h2>📺 ALL ANIME</h2>
-    <span class="sec-cnt" id="aniCnt">Loading...</span>
-  </div>
-  <div id="aniGrid">
-    <div class="skel-grid">
-      <div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
-      <div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
-      <div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
-      <div class="skel-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
-    </div>
-  </div>
-
-  <div class="ad-mid">
-    <div class="ad-ph" style="max-width:336px;width:100%;min-height:90px">Advertisement</div>
-  </div>
-
-  <div class="sec-head"><h2>⚡ LATEST EPISODES</h2></div>
-  <div class="latest-list" id="latestList">
-    <div style="color:#bbb;text-align:center;padding:20px;font-size:13px">Loading episodes...</div>
-  </div>
-
-</div>
-
-<div class="footer">
-  © <span id="yr"></span> AnimeWorld India · All rights belong to respective owners
-</div>
-<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
-
-<div class="pad-bot"></div>
-<nav class="bnav">
-  <a href="index.html" class="bn-item active"><div class="bn-icon">🏠</div>Home</a>
-  <a href="#" class="bn-item" onclick="openSearch();return false"><div class="bn-icon">🔍</div>Search</a>
-  <a href="#" class="bn-item" onclick="setGenre('Action');return false"><div class="bn-icon">⚔️</div>Action</a>
-</nav>
-
-<div class="toast-fixed" id="toastFixed"></div>
-
-<script>
-// ============================================================
-// DATA
-// ============================================================
-let animeCache=[];
-let episodesCache=[];
-let curGenre='All';
-const EM=['⚔️','🔮','🗡️','🌀','💥','🔥','⚡','🌊','👊','🤖','💀','🌸','😤','🐉','🦊'];
-const E=i=>EM[i%EM.length];
-const isNew=d=>d&&(Date.now()-new Date(d))<7*864e5;
-
-function fixPoster(url){
-  if(!url)return '';
-  return url.replace('https://ibb.co/','https://i.ibb.co/').replace('http://ibb.co/','https://i.ibb.co/');
-}
-
-// ============================================================
-// FIREBASE LOAD — real-time listener reading 2 collections
-// ============================================================
-async function loadData(){
-  try{
-    // Real-time listener for Anime
-    fdb.collection('anime').orderBy('createdAt','desc').onSnapshot(snap=>{
-      animeCache=snap.docs.map(d=>({id:d.id,...d.data()}));
-      renderCombinedData();
-    }, err=>{
-      console.error('Firestore error:',err);
-      document.getElementById('aniGrid').innerHTML='<div class="empty-state"><h3>CONNECTION ERROR</h3><p>Check internet and refresh.</p></div>';
-    });
-    
-    // Real-time listener for Episodes Collection
-    fdb.collection('episodes').onSnapshot(snap=>{
-      episodesCache=snap.docs.map(d=>({id:d.id,...d.data()}));
-      renderCombinedData();
-    }, err=>console.error('Firestore episodes error:',err));
-
-  }catch(e){
-    console.error('Firebase error:',e);
-    document.getElementById('aniGrid').innerHTML='<div class="empty-state"><h3>CONNECTION ERROR</h3><p>Check internet and refresh.</p></div>';
-  }
-}
-
-function renderCombinedData() {
-  // Attach episodes temporarily to anime for counting
-  animeCache.forEach(a => {
-    a.episodes = episodesCache.filter(ep => ep.animeId === a.id);
-  });
-  renderGrid(curGenre);
-  renderSlider();
-  renderLatest();
-}
-
-// ============================================================
-// BASIC ANALYTICS — track unique daily visits
-// ============================================================
-function trackVisit(){
-  try{
-    const key='awi_visit_'+new Date().toISOString().slice(0,10);
-    if(localStorage.getItem(key)) return; 
-    localStorage.setItem(key,'1');
-    fdb.collection('analytics').doc('visits').set({
-      total: firebase.firestore.FieldValue.increment(1),
-      lastVisit: new Date().toISOString()
-    },{merge:true}).catch(()=>{});
-  }catch(e){}
-}
-
-// ============================================================
-// HERO SLIDER
-// ============================================================
-let sliderIdx=0;
-let sliderTimer=null;
 
 function renderSlider(){
-  const items=animeCache.filter(a=>a.poster).slice(0,6);
-  if(!items.length){
-    document.getElementById('heroSlider').style.display='none';
-    return;
-  }
+  const items=animeCache.filter(a=>a.poster).slice(0,5);
   const slider=document.getElementById('heroSlider');
-  slider.innerHTML=`
-    ${items.map((a,i)=>`
+  if(!items.length) return slider.style.display='none';
+  slider.innerHTML=`${items.map((a,i)=>`
     <div class="slide ${i===0?'active':''}" data-idx="${i}">
-      <img src="${fixPoster(a.poster)}" alt="${a.name}" style="width:100%;height:220px;object-fit:cover;object-position:top" loading="${i===0?'eager':'lazy'}">
+      <img src="${fixPoster(a.poster)}" alt="${a.name}" style="width:100%;height:100%;object-fit:cover;object-position:top">
       <div class="slide-overlay"></div>
       <div class="slide-content">
-        <div class="slide-badge">🇮🇳 HINDI DUB</div>
-        <div class="slide-title">${a.name}${a.season?' '+a.season:''}</div>
-        <div class="slide-sub">${a.genre||'Anime'} · ${a.episodes?.length||0} Episodes</div>
+        <div class="slide-badge">HD DUB</div>
+        <div class="slide-title">${a.name}</div>
+        <div class="slide-sub">${a.episodes?.length||0} Episodes</div>
         <a href="anime.html?id=${a.id}" class="slide-btn">▶ Watch Now</a>
       </div>
     </div>`).join('')}
-    <button class="slider-nav slider-prev" onclick="prevSlide()">‹</button>
-    <button class="slider-nav slider-next" onclick="nextSlide()">›</button>
-    <div class="slider-dots">
-      ${items.map((_,i)=>`<div class="dot ${i===0?'active':''}" onclick="goSlide(${i})"></div>`).join('')}
-    </div>`;
-  startSlider(items.length);
-}
-
-function startSlider(total){
-  if(sliderTimer)clearInterval(sliderTimer);
-  sliderTimer=setInterval(()=>nextSlide(total),4000);
+    <div class="slider-dots">${items.map((_,i)=>`<div class="dot ${i===0?'active':''}" onclick="goSlide(${i})"></div>`).join('')}</div>`;
 }
 
 function goSlide(idx){
-  const slides=document.querySelectorAll('.slide');
-  const dots=document.querySelectorAll('.dot');
-  if(!slides.length)return;
-  slides[sliderIdx]?.classList.remove('active');
-  dots[sliderIdx]?.classList.remove('active');
-  sliderIdx=idx;
-  slides[sliderIdx]?.classList.add('active');
-  dots[sliderIdx]?.classList.add('active');
+  document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===idx));
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
 }
 
-function nextSlide(total){
-  const n=(total||document.querySelectorAll('.slide').length);
-  goSlide((sliderIdx+1)%n);
-}
-function prevSlide(){
-  const n=document.querySelectorAll('.slide').length;
-  goSlide((sliderIdx-1+n)%n);
-}
-
-// ============================================================
-// GRID RENDER
-// ============================================================
 function renderGrid(genre='All'){
   const el=document.getElementById('aniGrid');
-  const cnt=document.getElementById('aniCnt');
-  const list=genre==='All'?animeCache:animeCache.filter(a=>(a.genre||'').split(',').map(g=>g.trim()).some(g=>g.toLowerCase()===genre.toLowerCase()));
-  cnt.textContent=list.length+' Series';
-  if(!list.length){
-    el.innerHTML='<div class="anime-grid"><div class="empty-state"><h3>NO ANIME YET</h3><p>Check back soon!</p></div></div>';
-    return;
-  }
+  const list=genre==='All'?animeCache:animeCache.filter(a=>(a.genre||'').includes(genre));
+  document.getElementById('aniCnt').textContent=`${list.length} Series`;
   el.innerHTML='<div class="anime-grid">'+list.map((a,i)=>`
-  <a href="anime.html?id=${a.id}" class="ac" style="animation-delay:${Math.min(i*.05,.5)}s">
+  <a href="anime.html?id=${a.id}" class="ac">
     <div class="ac-img">
-      ${a.poster
-        ?`<img src="${fixPoster(a.poster)}" alt="${a.name}" loading="lazy" onerror="this.outerHTML='<div style=font-size:50px>${E(i)}</div>'">`
-        :`<div>${E(i)}</div>`}
-      <div class="ac-badge">
-        <span class="badge b-h">🇮🇳 HINDI</span>
-        ${isNew(a.createdAt)?'<span class="badge b-n">NEW</span>':''}
-        ${a.quality?`<span class="badge b-q">${a.quality}</span>`:''}
-      </div>
+      ${a.poster?`<img src="${fixPoster(a.poster)}" loading="lazy">`:`<div>${E(i)}</div>`}
+      <div class="ac-badge"><span class="badge b-h">DUB</span>${a.quality?`<span class="badge b-q">${a.quality}</span>`:''}</div>
       <span class="ac-ep">${a.episodes?.length||0} EP</span>
     </div>
-    <div class="ac-info">
-      <div class="ac-title">${a.name}${a.season?' '+a.season:''}</div>
-      <div class="ac-btn">▶▶▶</div>
-    </div>
+    <div class="ac-info"><div class="ac-title">${a.name}</div></div>
   </a>`).join('')+'</div>';
 }
 
-// ============================================================
-// LATEST EPISODES
-// ============================================================
 function renderLatest(){
   const el=document.getElementById('latestList');
-  // Sort dynamically fetched episodes
   const sorted = [...episodesCache].sort((x,y) => new Date(y.addedAt||0) - new Date(x.addedAt||0)).slice(0,8);
-  if(!sorted.length){el.innerHTML='<p style="color:#bbb;text-align:center;padding:20px;font-size:13px">No episodes yet.</p>';return;}
-  
-  el.innerHTML=sorted.map((ep,i)=>{
+  el.innerHTML=sorted.map(ep=>{
     const a = animeCache.find(an => an.id === ep.animeId) || {};
-    return `
-    <a href="anime.html?id=${ep.animeId}" class="ep-row">
-      <div class="ep-thumb">${a.poster?`<img src="${fixPoster(a.poster)}" loading="lazy" onerror="this.style.display='none'">`:E(i)}</div>
-      <div class="ep-info">
-        <h4>${a.name || 'Anime'}${a.season?' '+a.season:''}</h4>
-        <span>Episode ${ep.num} — ${ep.title||'Episode '+ep.num}</span>
-        <div class="ep-tags">
-          <span class="etag t-h">HINDI</span>
-          ${a.quality?`<span class="etag t-hd">${a.quality}</span>`:''}
-          ${isNew(ep.addedAt)?'<span class="etag t-n">NEW</span>':''}
-        </div>
-      </div>
-      <div class="ep-dl">⬇</div>
-    </a>`;
+    return `<a href="anime.html?id=${ep.animeId}" class="ep-row">
+      <div class="ep-thumb">${a.poster?`<img src="${fixPoster(a.poster)}" loading="lazy">`:`E`}</div>
+      <div class="ep-info"><h4>${a.name||'Anime'}</h4><span>Episode ${ep.num}</span>
+      <div class="ep-tags"><span class="etag t-h">DUB</span></div></div>
+      <div class="ep-dl">▶</div></a>`;
   }).join('');
 }
 
-// ============================================================
-// GENRE
-// ============================================================
 document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',function(){
   document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
-  this.classList.add('active');curGenre=this.dataset.g;renderGrid(curGenre);
+  this.classList.add('active'); setGenre(this.dataset.g);
 }));
 
-function setGenre(g){
-  const c=document.querySelector(`.chip[data-g="${g}"]`);
-  if(c){c.click();c.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
-}
-
-// ============================================================
-// SEARCH
-// ============================================================
-function openSearch(){document.getElementById('srchOv').classList.add('open');setTimeout(()=>document.getElementById('srchInp').focus(),80);}
-function closeSearch(){document.getElementById('srchOv').classList.remove('open');document.getElementById('srchInp').value='';document.getElementById('srchRes').innerHTML='<div class="srch-empty">Start typing to search...</div>';}
-
-function doSearch(q){
-  const el=document.getElementById('srchRes');
-  if(!q.trim()){el.innerHTML='<div class="srch-empty">Start typing to search...</div>';return;}
-  const r=animeCache.filter(a=>a.name.toLowerCase().includes(q.toLowerCase())||(a.genre||'').toLowerCase().includes(q.toLowerCase()));
-  if(!r.length){el.innerHTML=`<div class="srch-empty">"${q}" not found</div>`;return;}
-  el.innerHTML=r.map((a,i)=>`
-  <a href="anime.html?id=${a.id}" class="srch-item" onclick="closeSearch()">
-    <div class="srch-thumb">${a.poster?`<img src="${fixPoster(a.poster)}" onerror="this.style.display='none'">`:E(i)}</div>
-    <div class="srch-info"><h4>${a.name}${a.season?' '+a.season:''}</h4><span>${a.genre||'Anime'} · ${a.episodes?.length||0} Episodes</span></div>
-  </a>`).join('');
-}
-
-document.getElementById('srchOv').addEventListener('click',function(e){if(e.target===this)closeSearch();});
-
-// ============================================================
-// MENU
-// ============================================================
+function setGenre(g){ curGenre=g; renderGrid(g); document.getElementById('sideMenu').classList.remove('open'); document.getElementById('sideOverlay').classList.remove('open'); }
+function openSearch(){document.getElementById('srchOv').classList.add('open');}
+function closeSearch(){document.getElementById('srchOv').classList.remove('open');}
 function openMenu(){document.getElementById('sideMenu').classList.add('open');document.getElementById('sideOverlay').classList.add('open');}
 function closeMenu(){document.getElementById('sideMenu').classList.remove('open');document.getElementById('sideOverlay').classList.remove('open');}
-
-// ============================================================
-// INIT
-// ============================================================
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSearch();closeMenu();}});
-loadData();
-trackVisit();
 </script>
 </body>
 </html>

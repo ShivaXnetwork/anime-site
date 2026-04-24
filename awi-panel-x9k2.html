@@ -3,151 +3,153 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Control Panel — AnimeWorld India</title>
-<link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Control Panel — AWI.to</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="firebase.js"></script>
+
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk",
+  authDomain: "anime-website-42907.firebaseapp.com",
+  projectId: "anime-website-42907",
+  storageBucket: "anime-website-42907.firebasestorage.app",
+  messagingSenderId: "747833174910",
+  appId: "1:747833174910:web:eefcbf01901ecb58b8a12f"
+});
+const fdb = firebase.firestore();
+</script>
+
 <style>
-:root{--blue:#1565c0;--blue-dk:#0d47a1;--green:#2e7d32;--red:#c62828;--gold:#f57f17;--purple:#6a1b9a;--bg:#f0f2f5;--card:#fff;--border:#e8e8e8;--muted:#888;--text:#222}
+:root{
+  --bg: #0e0f11; 
+  --card: #202329; 
+  --nav: #14151a; 
+  --accent: #ffdd95; 
+  --text: #cacaca; 
+  --text-light: #ffffff; 
+  --border: #2c2f36;
+  --danger: #ff4757;
+  --success: #2ed573;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-height:100vh}
+body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min-height:100vh}
 
 /* ── LOGIN ── */
-#ls{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#060d18 0%,#0d1b2a 50%,#060d18 100%);padding:20px}
-.lbox{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:34px 26px;width:100%;max-width:360px;text-align:center;backdrop-filter:blur(20px)}
+#ls{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:20px}
+.lbox{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:34px 26px;width:100%;max-width:360px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
 .l-crown{font-size:48px;margin-bottom:10px;display:block}
-.l-welcome{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
-.l-name{font-family:'Teko',sans-serif;font-size:22px;color:#ffd600;margin-bottom:2px;letter-spacing:1px}
-.l-sub{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:26px}
-.lfield{width:100%;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);color:#fff;padding:13px 16px;border-radius:11px;font-size:15px;font-family:'Hind',sans-serif;outline:none;text-align:center;letter-spacing:5px;margin-bottom:14px;transition:border-color .2s}
-.lfield:focus{border-color:var(--blue)}
-.lbtn{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue-dk));border:none;color:#fff;padding:14px;border-radius:11px;font-family:'Teko',sans-serif;font-size:21px;letter-spacing:1px;cursor:pointer;transition:opacity .15s;box-shadow:0 4px 20px rgba(21,101,192,.4)}
-.lbtn:hover{opacity:.9}
-.lerr{color:#ff6b6b;font-size:12px;margin-top:10px;display:none;min-height:18px}
-.llock{color:rgba(255,255,255,.3);font-size:11px;margin-top:8px}
+.l-welcome{font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
+.l-name{font-family:'Teko',sans-serif;font-size:26px;color:var(--accent);margin-bottom:2px;letter-spacing:1px}
+.l-sub{font-size:12px;color:#666;margin-bottom:26px}
+.lfield{width:100%;background:var(--nav);border:1px solid var(--border);color:#fff;padding:14px 16px;border-radius:8px;font-size:15px;font-family:'Poppins',sans-serif;outline:none;text-align:center;letter-spacing:5px;margin-bottom:14px;transition:border-color .2s}
+.lfield:focus{border-color:var(--accent)}
+.lbtn{width:100%;background:var(--accent);border:none;color:#111;padding:14px;border-radius:8px;font-weight:600;font-size:16px;letter-spacing:1px;cursor:pointer;transition:transform .2s}
+.lbtn:hover{transform:scale(1.02)}
+.lerr{color:var(--danger);font-size:12px;margin-top:10px;display:none;min-height:18px}
 
 /* ── TOPBAR ── */
 #ap{display:none}
-.topbar{background:linear-gradient(135deg,var(--blue),var(--blue-dk));padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(21,101,192,.4)}
-.tb-brand h1{font-family:'Teko',sans-serif;font-size:16px;color:#fff;letter-spacing:1.5px}
-.tb-brand p{font-size:10px;color:rgba(255,255,255,.6)}
-.tb-acts{display:flex;gap:7px}
-.tb-btn{padding:6px 13px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;text-decoration:none;transition:background .15s}
-.tb-btn:hover{background:rgba(255,255,255,.2)}
+.topbar{background:var(--nav);padding:0 16px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 4px 15px rgba(0,0,0,.3);border-bottom:1px solid var(--border)}
+.tb-brand h1{font-family:'Teko',sans-serif;font-size:20px;color:var(--accent);letter-spacing:1px}
+.tb-brand p{font-size:11px;color:#888}
+.tb-acts{display:flex;gap:10px}
+.tb-btn{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--accent);background:transparent;color:var(--accent);text-decoration:none;transition:all .2s}
+.tb-btn:hover{background:var(--accent);color:#111}
 
 /* ── LOADING OVERLAY ── */
-.load-ov{position:fixed;inset:0;background:rgba(255,255,255,.85);z-index:400;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;backdrop-filter:blur(4px)}
+.load-ov{position:fixed;inset:0;background:rgba(14,15,17,.9);z-index:400;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px}
 .load-ov.show{display:flex}
-.spinner{width:42px;height:42px;border:4px solid #e3f2fd;border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+.spinner{width:42px;height:42px;border:4px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.load-msg{font-size:13px;color:var(--blue);font-weight:600}
+.load-msg{font-size:13px;color:var(--accent);font-weight:600}
 
 /* ── BODY ── */
-.ab{padding:14px;max-width:700px;margin:0 auto;padding-bottom:50px}
+.ab{padding:20px 14px;max-width:800px;margin:0 auto;padding-bottom:50px}
 
 /* ── STATS ── */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-@media(max-width:400px){.stats{grid-template-columns:repeat(2,1fr)}}
-.sbox{background:var(--card);border-radius:12px;padding:14px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid var(--border);transition:transform .2s}
-.sbox:hover{transform:translateY(-2px)}
-.sv{font-family:'Teko',sans-serif;font-size:28px;font-weight:700;color:var(--blue);line-height:1;margin-bottom:3px}
-.sk{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:500px){.stats{grid-template-columns:repeat(2,1fr)}}
+.sbox{background:var(--card);border-radius:12px;padding:16px 10px;text-align:center;border:1px solid var(--border)}
+.sv{font-family:'Teko',sans-serif;font-size:32px;font-weight:700;color:var(--text-light);line-height:1;margin-bottom:4px}
+.sk{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:500}
 
 /* ── TABS ── */
-.tabs{background:var(--card);border-radius:12px;padding:7px;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid var(--border);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-bottom:16px}
+.tabs{background:var(--nav);border-radius:12px;padding:6px;border:1px solid var(--border);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-bottom:20px}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex-shrink:0;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);transition:all .15s;white-space:nowrap;font-family:'Hind',sans-serif}
-.tab.active{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(21,101,192,.3)}
-.tab:hover:not(.active){background:#e3f2fd;color:var(--blue)}
+.tab{flex-shrink:0;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;color:#888;transition:all .2s;white-space:nowrap;font-family:'Poppins',sans-serif}
+.tab.active{background:var(--card);color:var(--accent);font-weight:600;border:1px solid var(--border)}
+.tab:hover:not(.active){color:#fff}
 .tc{display:none}.tc.active{display:block}
 
 /* ── CARDS ── */
-.fcard{background:var(--card);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid var(--border)}
-.fcard-head{font-family:'Teko',sans-serif;font-size:17px;font-weight:700;letter-spacing:.5px;margin-bottom:14px;padding-bottom:9px;border-bottom:2px solid #e3f2fd;display:flex;align-items:center;gap:7px;color:var(--blue)}
-.fcard-head.green{color:var(--green);border-bottom-color:#e8f5e9}
-.fcard-head.purple{color:var(--purple);border-bottom-color:#f3e5f5}
-.fcard-head.orange{color:var(--gold);border-bottom-color:#fff9c4}
+.fcard{background:var(--card);border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid var(--border)}
+.fcard-head{font-family:'Teko',sans-serif;font-size:20px;font-weight:700;letter-spacing:1px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);color:var(--accent)}
 
 /* ── FORM ── */
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .row.full{grid-template-columns:1fr}
-.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.fg{display:flex;flex-direction:column;gap:4px}
-.fg label{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.fg input,.fg select,.fg textarea{background:#f9f9f9;border:1.5px solid var(--border);color:var(--text);padding:10px 12px;border-radius:9px;font-size:13px;font-family:'Hind',sans-serif;outline:none;transition:border-color .2s;width:100%}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:#fff}
-.fg textarea{resize:vertical;min-height:80px;line-height:1.6}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg label{font-size:11px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.fg input,.fg select,.fg textarea{background:var(--nav);border:1px solid var(--border);color:#fff;padding:10px 14px;border-radius:8px;font-size:13px;font-family:'Poppins',sans-serif;outline:none;transition:border-color .2s;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent)}
+.fg textarea{resize:vertical;min-height:80px}
 
 /* GENRE CHIPS */
-.genre-grid{display:flex;flex-wrap:wrap;gap:6px;padding:10px;background:#f9f9f9;border:1.5px solid var(--border);border-radius:9px}
-.gchip{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:5px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:12px;font-weight:600;user-select:none;transition:all .15s}
-.gchip input{width:12px;height:12px}
-.gchip:has(input:checked){background:#e3f2fd;border-color:var(--blue);color:var(--blue)}
-
-/* POSTER PREVIEW */
-.poster-prev{display:none;text-align:center;margin:8px 0}
-.poster-prev img{max-height:120px;border-radius:8px;border:2px solid var(--blue)}
-.poster-warn{display:none;background:#fff3cd;border:1px solid #ffc107;border-radius:7px;padding:9px 12px;font-size:11px;color:#856404;line-height:1.7;margin-top:6px}
+.genre-grid{display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:var(--nav);border:1px solid var(--border);border-radius:8px}
+.gchip{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:12px;font-weight:500;user-select:none;transition:all .2s}
+.gchip input{accent-color:var(--accent);width:14px;height:14px}
+.gchip:has(input:checked){border-color:var(--accent);color:var(--accent)}
 
 /* BUTTONS */
-.btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;border-radius:10px;font-family:'Teko',sans-serif;font-size:19px;letter-spacing:.5px;cursor:pointer;border:none;transition:opacity .15s;margin-top:6px;font-weight:700}
-.btn:hover{opacity:.88}
-.btn-blue{background:linear-gradient(135deg,var(--blue),var(--blue-dk));color:#fff;box-shadow:0 3px 14px rgba(21,101,192,.3)}
-.btn-green{background:linear-gradient(135deg,var(--green),#1b5e20);color:#fff;box-shadow:0 3px 14px rgba(27,94,32,.3)}
-.btn-purple{background:linear-gradient(135deg,var(--purple),#4a148c);color:#fff;box-shadow:0 3px 14px rgba(106,27,154,.3)}
-.btn-orange{background:linear-gradient(135deg,var(--gold),#e65100);color:#fff;box-shadow:0 3px 14px rgba(245,127,23,.3)}
-.btn-outline{background:var(--card);border:1.5px solid var(--border);color:var(--text);box-shadow:none}
-.btn-outline:hover{border-color:var(--blue);color:var(--blue)}
-.btn-sm{padding:8px 14px;font-size:14px;margin-top:0;width:auto}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:8px;font-size:14px;cursor:pointer;border:none;transition:transform .2s;font-weight:600;font-family:'Poppins',sans-serif;margin-top:10px}
+.btn:hover{transform:scale(1.02)}
+.btn-primary{background:var(--accent);color:#111}
+.btn-outline{background:transparent;border:1px solid var(--border);color:#fff}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm{padding:6px 12px;font-size:12px;margin-top:0;width:auto}
 
-/* INFO/WARN CARDS */
-.icard{background:#e3f2fd;border:1px solid #90caf9;border-radius:8px;padding:11px 13px;margin-bottom:11px;font-size:12px;line-height:1.85;color:#444}
-.icard strong{color:var(--blue)}
-.icard a{color:var(--blue);font-weight:600}
-.icard code{background:rgba(21,101,192,.08);padding:1px 5px;border-radius:3px;font-size:11px}
-.wcard{background:#fff9c4;border:1px solid #ffe082;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:#795548;line-height:1.75}
-.wcard strong{color:#e65100}
+/* INFO CARDS */
+.icard{background:rgba(255,221,149,0.05);border:1px solid rgba(255,221,149,0.2);border-radius:8px;padding:12px;margin-bottom:16px;font-size:12px;line-height:1.6;color:#aaa}
+.icard strong{color:var(--accent)}
+.icard code{background:var(--nav);padding:2px 6px;border-radius:4px;color:#fff}
 
 /* ANIME LIST ROWS */
-.alist{display:flex;flex-direction:column;gap:7px}
-.arow{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 13px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 4px rgba(0,0,0,.04);animation:fadeUp .3s ease both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.athumb{width:44px;height:44px;border-radius:7px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:20px;overflow:hidden;flex-shrink:0;border:1px solid var(--border)}
+.alist{display:flex;flex-direction:column;gap:10px}
+.arow{background:var(--nav);border:1px solid var(--border);border-radius:8px;padding:10px;display:flex;align-items:center;gap:12px}
+.athumb{width:45px;height:60px;border-radius:6px;background:#111;display:flex;align-items:center;justify-content:center;font-size:20px;overflow:hidden;flex-shrink:0}
 .athumb img{width:100%;height:100%;object-fit:cover}
 .arinfo{flex:1;min-width:0}
-.arinfo h4{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.arinfo span{font-size:11px;color:var(--muted)}
-.aacts{display:flex;gap:5px;flex-shrink:0}
-.abtn{width:32px;height:32px;border-radius:7px;border:1px solid var(--border);background:#f9f9f9;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s;text-decoration:none}
-.abtn:hover{border-color:var(--blue)}
-.abtn.del:hover{border-color:var(--red);background:#ffebee}
+.arinfo h4{font-size:14px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.arinfo span{font-size:11px;color:#888}
+.aacts{display:flex;gap:6px;flex-shrink:0}
+.abtn{width:32px;height:32px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;text-decoration:none}
+.abtn:hover{border-color:var(--accent);color:var(--accent)}
+.abtn.del:hover{border-color:var(--danger);color:var(--danger)}
 
 /* EP ROWS */
-.eprows{display:flex;flex-direction:column;gap:4px;margin-top:8px;max-height:210px;overflow-y:auto;padding-right:2px}
-.eprow{display:flex;align-items:center;gap:8px;background:#f9f9f9;border:1px solid #eee;border-radius:6px;padding:7px 10px}
-.epr-num{font-family:'Teko',sans-serif;font-size:13px;color:var(--blue);font-weight:700;width:26px;flex-shrink:0}
-.epr-title{flex:1;font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.epr-del{background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;padding:0 3px;flex-shrink:0}
+.eprows{display:flex;flex-direction:column;gap:6px;margin-top:12px;max-height:250px;overflow-y:auto}
+.eprow{display:flex;align-items:center;gap:10px;background:var(--nav);border:1px solid var(--border);border-radius:6px;padding:8px 12px}
+.epr-num{font-family:'Teko',sans-serif;font-size:16px;color:var(--accent);font-weight:700;width:26px;flex-shrink:0}
+.epr-title{flex:1;font-size:13px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.epr-del{background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px;padding:4px}
 
-/* DIVIDER */
-.divider{height:1px;background:var(--border);margin:14px 0}
+.divider{height:1px;background:var(--border);margin:20px 0}
 
 /* EDIT MODAL */
-#editModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;overflow-y:auto;padding:16px;backdrop-filter:blur(4px)}
-.em-inner{background:var(--card);border-radius:16px;max-width:600px;margin:0 auto;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.25)}
-.em-head{background:linear-gradient(135deg,var(--blue),var(--blue-dk));padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
-.em-head span{font-family:'Teko',sans-serif;font-size:18px;color:#fff;letter-spacing:.5px;font-weight:700}
-.em-cls{background:rgba(255,255,255,.15);border:none;color:#fff;width:30px;height:30px;border-radius:6px;font-size:18px;cursor:pointer;line-height:1;transition:background .15s}
-.em-cls:hover{background:rgba(255,255,255,.25)}
-.em-body{padding:18px}
+#editModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;overflow-y:auto;padding:20px}
+.em-inner{background:var(--bg);border-radius:12px;border:1px solid var(--border);max-width:600px;margin:0 auto;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.em-head{background:var(--card);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.em-head span{font-family:'Teko',sans-serif;font-size:22px;color:var(--accent);letter-spacing:1px}
+.em-cls{background:var(--nav);border:1px solid var(--border);color:#fff;width:32px;height:32px;border-radius:6px;font-size:16px;cursor:pointer;transition:all .2s}
+.em-cls:hover{background:var(--accent);color:#111}
+.em-body{padding:20px}
 
 /* TOAST */
-.toast-fixed{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;border-radius:10px;padding:11px 24px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(21,101,192,.4)}
+.toast-fixed{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#111;border-radius:8px;padding:12px 24px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.5)}
 .toast-fixed.show{opacity:1}
-
-/* SECTION BADGE */
-.sec-badge{display:inline-flex;align-items:center;gap:5px;background:#e3f2fd;border:1px solid #90caf9;border-radius:6px;padding:3px 10px;font-size:11px;color:var(--blue);font-weight:600;margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -155,30 +157,28 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
 <div id="ls">
   <div class="lbox">
     <span class="l-crown">👑</span>
-    <div class="l-welcome">Welcome back, Creator</div>
-    <div class="l-name">Shiva Tiwari</div>
-    <div class="l-sub">Control Panel — Powered by Shiva Tiwari 🚀</div>
+    <div class="l-welcome">Creator Panel</div>
+    <div class="l-name">AWI.TO</div>
+    <div class="l-sub">Manage your HiAnime clone</div>
     <input class="lfield" id="pinput" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="lbtn" onclick="doLogin()">ACCESS PANEL</button>
     <div class="lerr" id="lerr"></div>
-    <div class="llock" id="llock"></div>
   </div>
 </div>
 
 <div class="load-ov" id="loadOv">
   <div class="spinner"></div>
-  <div class="load-msg" id="loadMsg">Saving to Firebase...</div>
+  <div class="load-msg" id="loadMsg">Processing...</div>
 </div>
 
 <div id="ap">
 
 <div class="topbar">
   <div class="tb-brand">
-    <h1>⚡ CONTROL PANEL</h1>
-    <p>Manage your anime empire efficiently</p>
+    <h1>⚡ AWI PANEL</h1>
   </div>
   <div class="tb-acts">
-    <a href="index.html" target="_blank" class="tb-btn">🌐 Site</a>
+    <a href="index.html" target="_blank" class="tb-btn">🌐 View Site</a>
     <button class="tb-btn" onclick="logout()">Exit</button>
   </div>
 </div>
@@ -197,187 +197,95 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
   <button class="tab" onclick="ST('addAnime')">➕ Add Anime</button>
   <button class="tab" onclick="ST('addEp')">🎬 Episodes</button>
   <button class="tab" onclick="ST('season')">📦 Season Pack</button>
-  <button class="tab" onclick="ST('unlock')">🔗 API Settings</button>
-  <button class="tab" onclick="ST('manage')">📋 All Anime</button>
-  <button class="tab" onclick="ST('siteSettings')">🌐 Site Settings</button>
+  <button class="tab" onclick="ST('unlock')">🔗 API Setup</button>
+  <button class="tab" onclick="ST('manage')">📋 Manage</button>
   <button class="tab" onclick="ST('analytics')">📈 Analytics</button>
-  <button class="tab" onclick="ST('sett')">⚙️ Settings</button>
 </div>
 
 <div class="tc active" id="tab-dash">
   <div class="icard">
-    <strong>🚀 Quick Guide — Manage your anime empire efficiently ⚡</strong><br>
-    1. <strong>API Settings</strong> → Set global shortener links first<br>
-    2. <strong>Add Anime</strong> → Poster via imgbb.com (Direct Link)<br>
-    3. <strong>Episodes</strong> → Add single/bulk with direct + short links<br>
-    4. All devices get live data instantly via Firebase ✅
+    <strong>🚀 Quick Guide</strong><br>
+    1. Set Shortener Links in <b>API Setup</b>.<br>
+    2. Add Posters via imgbb.com (Direct Link).<br>
+    3. Changes instantly sync to the frontend!
   </div>
-
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
     <div class="fcard-head" style="margin:0;border:none;padding:0">📋 YOUR ANIME</div>
-    <button class="btn btn-blue btn-sm" onclick="ST('addAnime')">+ Add New</button>
+    <button class="btn btn-primary btn-sm" onclick="ST('addAnime')">+ Add New</button>
   </div>
-  <div id="dashList"><p style="color:#aaa;text-align:center;padding:20px;font-size:13px">⏳ Loading...</p></div>
-
-  <div class="divider"></div>
-  <button class="btn btn-outline" onclick="exportData()">📤 Export JSON Backup</button>
-  <button class="btn btn-outline" onclick="document.getElementById('impFile').click()">📥 Import JSON</button>
-  <input type="file" id="impFile" accept=".json" style="display:none" onchange="handleImport(this)">
+  <div id="dashList"></div>
 </div>
 
 <div class="tc" id="tab-addAnime">
   <div class="fcard">
     <div class="fcard-head">📝 ANIME DETAILS</div>
     <div class="row">
-      <div class="fg"><label>Anime Name *</label><input id="aname" placeholder="e.g. Jujutsu Kaisen"></div>
-      <div class="fg"><label>Season</label><input id="aseason" placeholder="e.g. Season 3"></div>
+      <div class="fg"><label>Anime Name *</label><input id="aname" placeholder="Jujutsu Kaisen"></div>
+      <div class="fg"><label>Season</label><input id="aseason" placeholder="Season 2"></div>
     </div>
-    <div class="fg" style="margin-bottom:10px">
-      <label>Genre (Select Multiple)</label>
-      <div class="genre-grid" id="genreGrid">
+    <div class="fg" style="margin-bottom:12px">
+      <label>Genre</label>
+      <div class="genre-grid">
         <label class="gchip"><input type="checkbox" value="Action"><span>Action</span></label>
         <label class="gchip"><input type="checkbox" value="Shonen"><span>Shonen</span></label>
         <label class="gchip"><input type="checkbox" value="Isekai"><span>Isekai</span></label>
         <label class="gchip"><input type="checkbox" value="Romance"><span>Romance</span></label>
         <label class="gchip"><input type="checkbox" value="Horror"><span>Horror</span></label>
-        <label class="gchip"><input type="checkbox" value="Sports"><span>Sports</span></label>
-        <label class="gchip"><input type="checkbox" value="Slice of Life"><span>Slice of Life</span></label>
-        <label class="gchip"><input type="checkbox" value="Mecha"><span>Mecha</span></label>
-        <label class="gchip"><input type="checkbox" value="Fantasy"><span>Fantasy</span></label>
-        <label class="gchip"><input type="checkbox" value="Dark"><span>Dark</span></label>
         <label class="gchip"><input type="checkbox" value="Comedy"><span>Comedy</span></label>
-        <label class="gchip"><input type="checkbox" value="Thriller"><span>Thriller</span></label>
-        <label class="gchip"><input type="checkbox" value="Supernatural"><span>Supernatural</span></label>
-        <label class="gchip"><input type="checkbox" value="Harem"><span>Harem</span></label>
-        <label class="gchip"><input type="checkbox" value="School"><span>School</span></label>
+        <label class="gchip"><input type="checkbox" value="Dark"><span>Dark</span></label>
       </div>
     </div>
     <div class="row">
-      <div class="fg"><label>Status</label><select id="astatus"><option>Ongoing</option><option>Completed</option><option>Upcoming</option></select></div>
-      <div class="fg"><label>Language</label><select id="alang"><option>Hindi Dub</option><option>Hindi + English</option><option>English Sub</option></select></div>
+      <div class="fg"><label>Status</label><select id="astatus"><option>Ongoing</option><option>Completed</option></select></div>
+      <div class="fg"><label>Quality</label><select id="aquality"><option>1080p</option><option>720p</option><option>Multiple</option></select></div>
     </div>
-    <div class="row">
-      <div class="fg"><label>Quality</label><select id="aquality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
-      <div class="fg"><label>Year</label><input id="ayear" placeholder="2024" type="number"></div>
+    <div class="row full">
+      <div class="fg"><label>Poster Direct URL (i.ibb.co)</label><input id="aposter" placeholder="https://i.ibb.co/xxxxx/image.jpg"></div>
     </div>
-    <div class="row">
-      <div class="fg"><label>Rating /10</label><input id="arating" placeholder="8.5" type="number" step="0.1"></div>
-      <div class="fg"><label>Total Episodes</label><input id="ateps" placeholder="24" type="number"></div>
-    </div>
-    <div class="row">
-      <div class="fg"><label>Studio</label><input id="astudio" placeholder="e.g. MAPPA"></div>
-      <div class="fg"><label>Runtime</label><input id="aruntime" placeholder="e.g. 24min"></div>
-    </div>
-  </div>
-
-  <div class="fcard">
-    <div class="fcard-head">🖼️ POSTER IMAGE</div>
-    <div class="icard">
-      <a href="https://imgbb.com" target="_blank">imgbb.com</a> → Upload → Embed codes dropdown → Select <strong>"Direct links"</strong> → Copy link starting with <code>i.ibb.co</code>
-    </div>
-    <div class="fg">
-      <label>Poster Direct URL</label>
-      <input id="aposter" placeholder="https://i.ibb.co/xxxxx/image.jpg" oninput="prevPoster(this.value)">
-    </div>
-    <div class="poster-warn" id="posterWarn">⚠️ This is a Viewer link! Use "Direct links" option on ImgBB (link starts with i.ibb.co)</div>
-    <div class="poster-prev" id="posterPrev"><img id="posterImg" src="" alt="Preview"><p style="font-size:11px;color:#2e7d32;margin-top:4px">✅ Poster preview</p></div>
     <div class="row full" style="margin-top:10px">
-      <div class="fg"><label>Synopsis / Description</label><textarea id="adesc" placeholder="Enter anime story..."></textarea></div>
+      <div class="fg"><label>Synopsis</label><textarea id="adesc" placeholder="Anime description..."></textarea></div>
     </div>
-    <button class="btn btn-blue" onclick="addAnime()">✅ ADD ANIME</button>
+    <button class="btn btn-primary" onclick="addAnime()">✅ ADD ANIME</button>
   </div>
 </div>
 
 <div class="tc" id="tab-addEp">
-
   <div class="fcard">
     <div class="fcard-head">📺 SELECT ANIME</div>
-    <div class="row full"><div class="fg"><label>Anime *</label>
+    <div class="row full"><div class="fg">
       <select id="epAnime" onchange="showExistingEps()"><option value="">— Select Anime —</option></select>
     </div></div>
     <div id="existingEps"></div>
   </div>
 
   <div class="fcard">
-    <div class="fcard-head">🎬 ADD SINGLE EPISODE</div>
+    <div class="fcard-head">🎬 ADD EPISODES (BULK / SINGLE)</div>
     <div class="row">
-      <div class="fg"><label>Episode Number *</label><input id="epnum" placeholder="1" type="number"></div>
-      <div class="fg"><label>Title</label><input id="eptit" placeholder="e.g. The Beginning"></div>
+      <div class="fg"><label>Starting Ep #</label><input id="qlkStart" type="number" value="1"></div>
+      <div class="fg"><label>Quality</label><select id="qlkQ"><option>1080p</option><option>720p</option><option>480p</option></select></div>
     </div>
-    <div class="row">
-      <div class="fg"><label>Duration</label><input id="epdur" placeholder="24m"></div>
-      <div class="fg"><label>Language</label><select id="eplang"><option>Hindi</option><option>Hindi+English</option><option>English Sub</option></select></div>
+    <div class="fg" style="margin-bottom:12px">
+      <label>Links (One shortlink per line)</label>
+      <textarea id="qlkLinks" style="min-height:120px;font-family:monospace" placeholder="https://indianshortener.com/xyz1&#10;https://indianshortener.com/xyz2"></textarea>
     </div>
-    <div class="icard" style="margin-top:4px">
-      <strong>Direct Link</strong> = Real file link (shown after unlock)<br>
-      <strong>Short Link</strong> = IndianShortener link (shown before unlock)
-    </div>
-    <div class="qgrid">
-      <div class="fg"><label>🔴 1080p Direct</label><input id="d1080" placeholder="https://real-link.com/..."></div>
-      <div class="fg"><label>🔴 1080p Short</label><input id="s1080" placeholder="https://indianshortener.in/..."></div>
-      <div class="fg"><label>🔵 720p Direct</label><input id="d720" placeholder="https://real-link.com/..."></div>
-      <div class="fg"><label>🔵 720p Short</label><input id="s720" placeholder="https://indianshortener.in/..."></div>
-      <div class="fg"><label>🟢 480p Direct</label><input id="d480" placeholder="https://..."></div>
-      <div class="fg"><label>🟢 480p Short</label><input id="s480" placeholder="https://..."></div>
-      <div class="fg"><label>⚪ 360p Direct</label><input id="d360" placeholder="https://..."></div>
-      <div class="fg"><label>⚪ 360p Short</label><input id="s360" placeholder="https://..."></div>
-    </div>
-    <button class="btn btn-blue" onclick="addEpisode()">✅ ADD EPISODE</button>
-  </div>
-
-  <div class="fcard">
-    <div class="fcard-head purple">⚡ BULK ADD — Title | ShortLink</div>
-    <div class="wcard">Format: <strong>Episode Title | short_link</strong><br>One per line · Auto-numbered from start ep</div>
-    <div class="row">
-      <div class="fg"><label>Starting Episode #</label><input id="blkStart" type="number" value="1" placeholder="1"></div>
-      <div class="fg"><label>Quality</label><select id="blkQ"><option>1080p</option><option>720p</option><option>480p</option><option>360p</option></select></div>
-    </div>
-    <div class="fg" style="margin-bottom:10px">
-      <label>Episodes (Title | Link) — One per line</label>
-      <textarea id="blkLinks" style="min-height:160px;font-size:12px;font-family:monospace" placeholder="The Beginning | https://is.in/abc&#10;The Battle | https://is.in/def&#10;The Finale | https://is.in/xyz"></textarea>
-    </div>
-    <div id="blkPreview" style="display:none;margin-bottom:10px"></div>
-    <button class="btn btn-orange" onclick="previewBulk()" style="margin-top:0;margin-bottom:8px">👁️ PREVIEW</button>
-    <button class="btn btn-purple" id="blkSubmit" style="display:none" onclick="submitBulk()">✅ ADD ALL EPISODES</button>
-  </div>
-
-  <div class="fcard">
-    <div class="fcard-head">📋 QUICK BULK — Links Only</div>
-    <div class="wcard">One link per line — auto-numbered</div>
-    <div class="row">
-      <div class="fg"><label>Starting Episode #</label><input id="qlkStart" type="number" value="1" placeholder="1"></div>
-      <div class="fg"><label>Quality</label><select id="qlkQ"><option>1080p</option><option>720p</option><option>480p</option><option>360p</option></select></div>
-    </div>
-    <div class="fg" style="margin-bottom:10px">
-      <label>Links (One per line)</label>
-      <textarea id="qlkLinks" style="min-height:140px;font-size:12px;font-family:monospace" placeholder="https://link1.com&#10;https://link2.com&#10;https://link3.com"></textarea>
-    </div>
-    <button class="btn btn-green" onclick="quickBulk()">✅ QUICK ADD ALL</button>
+    <button class="btn btn-primary" onclick="quickBulk()">✅ ADD EPISODES</button>
   </div>
 </div>
 
 <div class="tc" id="tab-season">
   <div class="fcard">
-    <div class="fcard-head green">📦 ADD SEASON PACK</div>
-    <div class="icard">Full season ZIP/batch — visitor downloads entire season at once</div>
-    <div class="row full"><div class="fg"><label>Anime *</label>
+    <div class="fcard-head">📦 ADD SEASON ZIP</div>
+    <div class="row full"><div class="fg">
       <select id="spAnime" onchange="showSpExisting()"><option value="">— Select Anime —</option></select>
     </div></div>
     <div class="row">
       <div class="fg"><label>Pack Title</label><input id="spTitle" placeholder="Season 1 Complete"></div>
-      <div class="fg"><label>File Size</label><input id="spSize" placeholder="e.g. 2.7 GB"></div>
+      <div class="fg"><label>Quality</label><select id="spQ"><option>1080p</option><option>720p</option><option>Multiple</option></select></div>
     </div>
-    <div class="row">
-      <div class="fg"><label>Episodes Count</label><input id="spEps" type="number" placeholder="24"></div>
-      <div class="fg"><label>Quality</label><select id="spQ"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div>
+    <div class="row full">
+      <div class="fg"><label>Short Link</label><input id="sps1080" placeholder="https://is.in/..."></div>
     </div>
-    <div class="qgrid">
-      <div class="fg"><label>🔴 1080p Direct</label><input id="spd1080" placeholder="https://..."></div>
-      <div class="fg"><label>🔴 1080p Short</label><input id="sps1080" placeholder="https://is.in/..."></div>
-      <div class="fg"><label>🔵 720p Direct</label><input id="spd720" placeholder="https://..."></div>
-      <div class="fg"><label>🔵 720p Short</label><input id="sps720" placeholder="https://is.in/..."></div>
-    </div>
-    <button class="btn btn-green" onclick="addSeasonPack()">✅ ADD SEASON PACK</button>
+    <button class="btn btn-primary" onclick="addSeasonPack()">✅ ADD PACK</button>
   </div>
   <div class="fcard" id="spExCard" style="display:none">
     <div class="fcard-head">📋 EXISTING PACKS</div>
@@ -388,427 +296,116 @@ body{background:var(--bg);color:var(--text);font-family:'Hind',sans-serif;min-he
 <div class="tc" id="tab-unlock">
   <div class="fcard">
     <div class="fcard-head">🔗 API / GLOBAL UNLOCK LINKS</div>
-    <div class="icard">
-      <strong>How it works:</strong><br>
-      1. Shorten <code>continue.html?token=TOKEN&...</code> on IndianShortener<br>
-      2. Or shorten your <strong>continue.html URL</strong> directly<br>
-      3. Paste 2 different shortened links below<br>
-      4. These are used globally for ALL anime · Visitor clicks both = double earning 💰
-    </div>
-    <div class="row full"><div class="fg">
-      <label>🔗 API Unlock Link 1 (IndianShortener) *</label>
-      <input id="gul1" placeholder="https://indianshortener.in/xxxxx">
-    </div></div>
-    <div class="row full"><div class="fg">
-      <label>🔗 API Unlock Link 2 (Optional — Double Earning)</label>
-      <input id="gul2" placeholder="https://indianshortener.in/xxxxx">
-    </div></div>
-    <button class="btn btn-blue" onclick="saveGlobalLinks()">💾 SAVE API LINKS</button>
-  </div>
-
-  <div class="fcard">
-    <div class="fcard-head orange">💰 INDIANSHORTENER SETUP</div>
-    <div class="icard">
-      1. <a href="https://indianshortener.in" target="_blank">indianshortener.in</a> → Register<br>
-      2. Shorten your site URL: <code>yoursite.github.io/animeworld-india/continue.html</code><br>
-      3. Create 2 different shortened versions<br>
-      4. Paste both above · Rate: <strong>~$5-8 per 1000 Indian clicks</strong>
-    </div>
+    <div class="icard">These links unlock 24hr access globally.</div>
+    <div class="row full"><div class="fg"><label>Link 1 *</label><input id="gul1" placeholder="https://indianshortener.in/..."></div></div>
+    <div class="row full"><div class="fg"><label>Link 2</label><input id="gul2" placeholder="https://indianshortener.in/..."></div></div>
+    <button class="btn btn-primary" onclick="saveGlobalLinks()">💾 SAVE</button>
   </div>
 </div>
 
 <div class="tc" id="tab-manage">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-    <div class="fcard-head" style="margin:0;border:none;padding:0">📋 ALL ANIME</div>
-    <button class="btn btn-blue btn-sm" onclick="ST('addAnime')">+ Add</button>
-  </div>
-  <div id="alist"><p style="color:#aaa;text-align:center;padding:20px;font-size:13px">Loading...</p></div>
-</div>
-
-<div class="tc" id="tab-sett">
-  <div class="fcard">
-    <div class="fcard-head">🔑 CHANGE PASSWORD</div>
-    <div class="row full"><div class="fg"><label>New Password</label><input id="newpass" type="password" placeholder="Min 6 characters"></div></div>
-    <div class="row full"><div class="fg"><label>Confirm</label><input id="confpass" type="password" placeholder="Confirm password"></div></div>
-    <button class="btn btn-blue" onclick="changePass()">🔒 Change Password</button>
-  </div>
-  <div class="fcard">
-    <div class="fcard-head orange">⚙️ SITE GUIDE</div>
-    <div class="icard">
-      <strong>Files needed (upload all 5):</strong><br>
-      • index.html · anime.html · continue.html · awi-panel-x9k2.html · firebase.js<br><br>
-      <strong>Firebase Firestore rules needed:</strong><br>
-      <code>match /{document=**} { allow read, write: if true; }</code><br>
-      Also add <code>match /settings/{doc}</code> rule<br><br>
-      <strong>Monetag:</strong> <a href="https://monetag.com" target="_blank">monetag.com</a> → Pop-under Zone ID → Uncomment script in HTML
-    </div>
-  </div>
-  <div class="fcard">
-    <div class="fcard-head green">🗄️ DATA BACKUP</div>
-    <button class="btn btn-outline" onclick="exportData()">📤 Export Full Backup</button>
-    <button class="btn btn-outline" onclick="document.getElementById('impFile2').click()">📥 Import Backup</button>
-    <input type="file" id="impFile2" accept=".json" style="display:none" onchange="handleImport(this)">
-  </div>
-</div>
-
-</div>
-
-<div class="tc" id="tab-siteSettings">
-  <div class="fcard">
-    <div class="fcard-head">🌐 SOCIAL LINKS</div>
-    <div class="icard">Toggle channels ON/OFF and set links. Saved to Firebase instantly.</div>
-    <div id="socialRows">
-      <p style="color:#aaa;font-size:12px;text-align:center;padding:16px">⏳ Loading...</p>
-    </div>
-    <button class="btn btn-blue" onclick="saveSocialLinks()">💾 SAVE SOCIAL SETTINGS</button>
-  </div>
-  <div class="fcard">
-    <div class="fcard-head orange">📢 ANNOUNCEMENT BAR</div>
-    <div class="fg" style="margin-bottom:10px">
-      <label>Announcement Text (leave blank to hide)</label>
-      <input id="announceTxt" placeholder="e.g. 🔥 New episodes added every Friday!">
-    </div>
-    <button class="btn btn-orange" onclick="saveAnnouncement()">💾 SAVE ANNOUNCEMENT</button>
-  </div>
+  <div class="fcard-head">📋 ALL ANIME</div>
+  <div id="alist"></div>
 </div>
 
 <div class="tc" id="tab-analytics">
-  <div class="stats" id="analyticsStats">
-    <div class="sbox"><div class="sv" id="aVisits">…</div><div class="sk">Total Visits</div></div>
-    <div class="sbox"><div class="sv" id="aUnlocks">…</div><div class="sk">Unlocks</div></div>
-    <div class="sbox"><div class="sv" id="aAnime">…</div><div class="sk">Anime</div></div>
-    <div class="sbox"><div class="sv" id="aEps">…</div><div class="sk">Episodes</div></div>
-  </div>
   <div class="fcard">
-    <div class="fcard-head">📊 POPULAR ANIME</div>
-    <div id="popularList"><p style="color:#aaa;font-size:12px;text-align:center;padding:16px">⏳ Loading...</p></div>
-  </div>
-  <div class="fcard">
-    <div class="fcard-head green">🔄 RESET ANALYTICS</div>
-    <div class="wcard"><strong>Warning:</strong> This will permanently reset visit & unlock counters.</div>
-    <button class="btn btn-outline" onclick="resetAnalytics()">🗑️ Reset All Analytics</button>
+    <div class="fcard-head">📈 OVERVIEW</div>
+    <p style="color:#aaa;font-size:13px">Site visits and unlocks tracking module active.</p>
+    <div class="stats" style="margin-top:16px">
+      <div class="sbox"><div class="sv" id="aVisits">…</div><div class="sk">Visits</div></div>
+      <div class="sbox"><div class="sv" id="aUnlocks">…</div><div class="sk">Unlocks</div></div>
+    </div>
   </div>
 </div>
 
 </div></div><div id="editModal">
   <div class="em-inner">
-    <div class="em-head">
-      <span>✏️ EDIT ANIME</span>
-      <button class="em-cls" onclick="closeEdit()">✕</button>
-    </div>
+    <div class="em-head"><span>✏️ EDIT ANIME</span><button class="em-cls" onclick="closeEdit()">✕</button></div>
     <div class="em-body">
       <input type="hidden" id="editId">
-      <div class="row"><div class="fg"><label>Name *</label><input id="eName"></div><div class="fg"><label>Season</label><input id="eSeason"></div></div>
-      <div class="row"><div class="fg"><label>Status</label><select id="eStatus"><option>Ongoing</option><option>Completed</option><option>Upcoming</option></select></div><div class="fg"><label>Quality</label><select id="eQuality"><option>1080p</option><option>720p</option><option>480p</option><option>Multiple</option></select></div></div>
-      <div class="row"><div class="fg"><label>Year</label><input id="eYear" type="number"></div><div class="fg"><label>Rating</label><input id="eRating" type="number" step="0.1"></div></div>
-      <div class="row full"><div class="fg"><label>Poster URL</label><input id="ePoster" placeholder="https://i.ibb.co/..." oninput="prevEditPoster(this.value)"></div></div>
-      <div class="poster-prev" id="editPrev"><img id="editPImg" src="" alt="Preview"></div>
-      <div class="row full"><div class="fg"><label>Description</label><textarea id="eDesc"></textarea></div></div>
-      <button class="btn btn-blue" onclick="saveEdit()">💾 SAVE CHANGES</button>
+      <div class="row"><div class="fg"><label>Name</label><input id="eName"></div><div class="fg"><label>Season</label><input id="eSeason"></div></div>
+      <div class="row full"><div class="fg"><label>Poster URL</label><input id="ePoster"></div></div>
+      <button class="btn btn-primary" onclick="saveEdit()">💾 SAVE</button>
     </div>
   </div>
 </div>
 
 <div class="toast-fixed" id="toastEl"></div>
-
 <script>
-// ════════════════════════════════════════════
-// AUTH
-// ════════════════════════════════════════════
-const PASS_KEY='awiPass',LOCK_KEY='awiLock',ATT_KEY='awiAtt';
-const DEFPASS='animeworld2024',MAX_ATT=5,LOCK_DUR=30*60*1000;
+// ── AUTH ──
+const PASS_KEY='awiPass', DEFPASS='animeworld2024';
 const GP=()=>localStorage.getItem(PASS_KEY)||DEFPASS;
 
 function doLogin(){
-  const lock=JSON.parse(localStorage.getItem(LOCK_KEY)||'{}');
-  if(lock.until&&Date.now()<lock.until){
-    const m=Math.ceil((lock.until-Date.now())/60000);
-    showErr('🚫 Locked for '+m+' more minutes');
-    return;
-  }
   const p=document.getElementById('pinput').value;
   if(p===GP()){
-    localStorage.removeItem(ATT_KEY);localStorage.removeItem(LOCK_KEY);
     document.getElementById('ls').style.display='none';
     document.getElementById('ap').style.display='block';
-    showLoad('Loading data...');
+    showLoad('Connecting to Firebase...');
     Promise.all([refreshAll(),loadGlobalLinks()]).finally(hideLoad);
   }else{
-    let att=parseInt(localStorage.getItem(ATT_KEY)||'0')+1;
-    localStorage.setItem(ATT_KEY,att);
-    const rem=MAX_ATT-att;
-    if(rem<=0){
-      localStorage.setItem(LOCK_KEY,JSON.stringify({until:Date.now()+LOCK_DUR}));
-      showErr('🚫 Too many attempts! Locked for 30 minutes.');
-    }else{
-      showErr('❌ Wrong password! '+rem+' attempts left.');
-    }
-    document.getElementById('pinput').value='';
+    const e=document.getElementById('lerr'); e.textContent='❌ Wrong Password!'; e.style.display='block'; setTimeout(()=>e.style.display='none',3000);
   }
 }
-function showErr(msg){const e=document.getElementById('lerr');e.textContent=msg;e.style.display='block';setTimeout(()=>e.style.display='none',3500);}
 function logout(){document.getElementById('ap').style.display='none';document.getElementById('ls').style.display='flex';document.getElementById('pinput').value='';}
-document.getElementById('pinput').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
-// ════════════════════════════════════════════
-// UTILS
-// ════════════════════════════════════════════
-let localCache=[];
-let localEps=[]; // Array to store episodes decoupled from anime
+// ── UTILS ──
+let localCache=[], localEps=[];
 const isNew=d=>d&&(Date.now()-new Date(d))<7*864e5;
-const EM=['⚔️','🔮','🌀','💥','🔥','⚡','🌊','👊','🤖','💀','🌸','😤'];
-const E=i=>EM[i%EM.length];
-function fixP(u){if(!u)return'';return u.replace('https://ibb.co/','https://i.ibb.co/').replace('http://ibb.co/','https://i.ibb.co/');}
-
-function toast(msg){const t=document.getElementById('toastEl');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+function toast(msg){const t=document.getElementById('toastEl');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 function showLoad(msg='Saving...'){document.getElementById('loadOv').classList.add('show');document.getElementById('loadMsg').textContent=msg;}
 function hideLoad(){document.getElementById('loadOv').classList.remove('show');}
 
-// ════════════════════════════════════════════
-// FIREBASE
-// ════════════════════════════════════════════
+// ── FIREBASE REFRESH ──
 async function refreshAll(){
   try{
     const snap=await fdb.collection('anime').orderBy('createdAt','desc').get();
     localCache=snap.docs.map(d=>({id:d.id,...d.data()}));
-
     const epSnap = await fdb.collection('episodes').get();
     localEps = epSnap.docs.map(d=>({id:d.id,...d.data()}));
-    
-    // Attaching for UI displays/counting logic locally
-    localCache.forEach(a => {
-        a.episodes = localEps.filter(e => e.animeId === a.id);
-    });
-
-    updateStats();renderDashList();renderAnimeList();updateSelects();
-  }catch(e){toast('❌ Firebase: '+e.message);console.error(e);}
+    localCache.forEach(a => a.episodes = localEps.filter(e => e.animeId === a.id));
+    updateStats(); renderDashList(); renderAnimeList(); updateSelects();
+  }catch(e){toast('❌ Error: '+e.message);}
 }
 
 function updateStats(){
-  const db=localCache;
-  const eps=localEps.length;
-  const links=localEps.reduce((s,e)=>s+Object.keys(e.links||{}).filter(k=>e.links[k]).length,0);
-  const nw=db.filter(a=>isNew(a.createdAt)).length;
-  ['tAnime','tEp','tLinks','tNew'].forEach((id,i)=>{
-    const el=document.getElementById(id);if(el)el.textContent=[db.length,eps,links,nw][i];
-  });
+  const eps=localEps.length, links=localEps.reduce((s,e)=>s+Object.keys(e.links||{}).filter(k=>e.links[k]).length,0), nw=localCache.filter(a=>isNew(a.createdAt)).length;
+  ['tAnime','tEp','tLinks','tNew'].forEach((id,i)=>{ const el=document.getElementById(id);if(el)el.textContent=[localCache.length,eps,links,nw][i]; });
 }
 
 function updateSelects(){
-  const opts='<option value="">— Select Anime —</option>'+
-    localCache.map(a=>`<option value="${a.id}">${a.name}${a.season?' '+a.season:''} (${a.episodes?.length||0} ep)</option>`).join('');
-  ['epAnime','spAnime'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el)return;
-    const prev=el.value; 
-    el.innerHTML=opts;
-    if(prev && el.querySelector(`option[value="${prev}"]`)){
-      el.value=prev;
-    }
-  });
+  const opts='<option value="">— Select Anime —</option>'+localCache.map(a=>`<option value="${a.id}">${a.name} (${a.episodes?.length||0} ep)</option>`).join('');
+  ['epAnime','spAnime'].forEach(id=>{ const el=document.getElementById(id); if(el){ const prev=el.value; el.innerHTML=opts; if(prev) el.value=prev; }});
 }
 
-// ════════════════════════════════════════════
-// TABS
-// ════════════════════════════════════════════
-const TAB_IDS=['dash','addAnime','addEp','season','unlock','manage','siteSettings','analytics','sett'];
 function ST(t){
   document.querySelectorAll('.tc').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-  const tc=document.getElementById('tab-'+t);
-  if(tc)tc.classList.add('active');
-  document.querySelectorAll('.tab').forEach(b=>{
-    if(b.getAttribute('onclick')==="ST('"+t+"')")b.classList.add('active');
-  });
-  if(t==='manage')renderAnimeList();
-  if(t==='addEp'||t==='season')updateSelects();
-  if(t==='siteSettings')loadSocialLinks();
+  document.getElementById('tab-'+t).classList.add('active');
+  document.querySelectorAll('.tab').forEach(b=>{ if(b.getAttribute('onclick')==="ST('"+t+"')")b.classList.add('active'); });
+  if(t==='manage')renderAnimeList(); if(t==='addEp'||t==='season')updateSelects();
   if(t==='analytics')loadAnalytics();
 }
 
-// ════════════════════════════════════════════
-// ADD ANIME
-// ════════════════════════════════════════════
+// ── ANIME ACTIONS ──
 async function addAnime(){
   const name=document.getElementById('aname').value.trim();
   if(!name){toast('❌ Anime name required!');return;}
   const genres=Array.from(document.querySelectorAll('.genre-grid input:checked')).map(c=>c.value);
-  const poster=fixP(document.getElementById('aposter').value.trim());
   const a={
-    name,
-    season:document.getElementById('aseason').value.trim()||null,
-    genre:genres.join(', ')||null,
-    status:document.getElementById('astatus').value,
-    language:document.getElementById('alang').value,
-    quality:document.getElementById('aquality').value,
-    year:document.getElementById('ayear').value||null,
-    rating:document.getElementById('arating').value||null,
-    totalEps:document.getElementById('ateps').value||null,
-    studio:document.getElementById('astudio').value.trim()||null,
-    runtime:document.getElementById('aruntime').value.trim()||null,
-    poster:poster||null,
-    description:document.getElementById('adesc').value.trim()||null,
-    seasonPacks:[],
-    createdAt:new Date().toISOString()
+    name, season:document.getElementById('aseason').value.trim()||null, genre:genres.join(', ')||null,
+    status:document.getElementById('astatus').value, quality:document.getElementById('aquality').value,
+    poster:document.getElementById('aposter').value.trim()||null, description:document.getElementById('adesc').value.trim()||null,
+    seasonPacks:[], createdAt:new Date().toISOString()
   };
-  Object.keys(a).forEach(k=>{if(a[k]===null||a[k]==='')delete a[k];});
-  a.seasonPacks=a.seasonPacks||[];
-
-  showLoad('Adding '+name+'...');
+  Object.keys(a).forEach(k=>{if(a[k]===null)delete a[k];});
+  showLoad();
   try{
-    const ref=await fdb.collection('anime').add(a);
-    toast('✅ '+name+' added! ID: '+ref.id.substring(0,8));
-    ['aname','aseason','ayear','arating','ateps','astudio','aruntime','aposter','adesc'].forEach(id=>document.getElementById(id).value='');
+    await fdb.collection('anime').add(a); toast('✅ Added!');
+    ['aname','aseason','aposter','adesc'].forEach(id=>document.getElementById(id).value='');
     document.querySelectorAll('.genre-grid input').forEach(c=>c.checked=false);
-    document.getElementById('posterPrev').style.display='none';
     await refreshAll();
-  }catch(e){toast('❌ Failed: '+e.message);console.error(e);}
-  hideLoad();
-}
-
-// ════════════════════════════════════════════
-// ADD SINGLE EPISODE (Fixed to write to episodes collection)
-// ════════════════════════════════════════════
-async function addEpisode(){
-  const animeId=document.getElementById('epAnime').value;
-  if(!animeId){toast('❌ Select anime first!');return;}
-  const epnum=parseInt(document.getElementById('epnum').value);
-  if(!epnum||epnum<1){toast('❌ Enter a valid episode number!');return;}
-
-  const quals=['1080','720','480','360'];
-  const links={};let hasLink=false;
-  quals.forEach(q=>{
-    const d=document.getElementById('d'+q)?.value.trim();
-    const s=document.getElementById('s'+q)?.value.trim();
-    if(d||s){links[q+'p']={direct:d||'',short:s||''};hasLink=true;}
-  });
-  if(!hasLink){toast('❌ Add at least one download link!');return;}
-
-  const ep={
-    animeId: animeId,
-    num:epnum,
-    title:document.getElementById('eptit').value.trim()||'Episode '+epnum,
-    duration:document.getElementById('epdur').value.trim()||'24m',
-    language:document.getElementById('eplang').value,
-    links:links,
-    directLinks:Object.fromEntries(Object.entries(links).map(([q,{direct}])=>[q,direct])),
-    addedAt:new Date().toISOString()
-  };
-
-  showLoad('Saving Episode '+epnum+'...');
-  try{
-    // Search localEps to check if replacing is needed
-    const existing = localEps.find(e => e.animeId === animeId && e.num === epnum);
-    if(existing) {
-        await fdb.collection('episodes').doc(existing.id).update(ep);
-    } else {
-        await fdb.collection('episodes').add(ep);
-    }
-    
-    toast('✅ Episode '+epnum+' saved!');
-    ['epnum','eptit','epdur','d1080','s1080','d720','s720','d480','s480','d360','s360'].forEach(id=>{
-      const el=document.getElementById(id);if(el)el.value='';
-    });
-    await refreshAll();
-    showExistingEps();
-  }catch(e){toast('❌ Failed: '+e.message);console.error(e);}
-  hideLoad();
-}
-
-// ════════════════════════════════════════════
-// SHOW EXISTING EPS (from Collection logic)
-// ════════════════════════════════════════════
-function showExistingEps(){
-  const animeId=document.getElementById('epAnime').value;
-  const el=document.getElementById('existingEps');
-  if(!animeId){el.innerHTML='';return;}
-  const eps = localEps.filter(e => e.animeId === animeId);
-  
-  if(!eps.length){el.innerHTML='<p style="color:#aaa;font-size:12px;padding:8px 0">No episodes yet.</p>';return;}
-  const sorted=[...eps].sort((a,b)=>a.num-b.num);
-  el.innerHTML='<div class="eprows">'+sorted.map(ep=>`
-  <div class="eprow">
-    <span class="epr-num">${String(ep.num).padStart(2,'0')}</span>
-    <span class="epr-title">${ep.title}</span>
-    <button class="epr-del" onclick="deleteEp('${ep.id}',${ep.num})">🗑️</button>
-  </div>`).join('')+'</div>';
-}
-
-async function deleteEp(epId,epNum){
-  if(!confirm('Delete Episode '+epNum+'?'))return;
-  showLoad('Deleting Ep '+epNum+'...');
-  try{
-    await fdb.collection('episodes').doc(epId).delete();
-    toast('🗑️ Episode '+epNum+' deleted!');
-    await refreshAll();
-    showExistingEps();
-  }catch(e){toast('❌ Failed: '+e.message);}
-  hideLoad();
-}
-
-// ════════════════════════════════════════════
-// BULK EPISODES
-// ════════════════════════════════════════════
-function previewBulk(){
-  const animeId=document.getElementById('epAnime').value;
-  if(!animeId){toast('❌ Select anime first!');return;}
-  const raw=document.getElementById('blkLinks').value.trim();
-  if(!raw){toast('❌ Paste episodes!');return;}
-  const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l.includes('|'));
-  if(!lines.length){toast('❌ Format: Title | Link');return;}
-  const start=parseInt(document.getElementById('blkStart').value)||1;
-  const q=document.getElementById('blkQ').value;
-  document.getElementById('blkPreview').style.display='block';
-  document.getElementById('blkPreview').innerHTML=`<div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:12px;font-size:12px"><strong style="color:#2e7d32">✅ ${lines.length} Episodes Ready</strong><br><br>
-  ${lines.slice(0,4).map((l,i)=>{const[t,lk]=[l.split('|')[0].trim(),l.split('|').slice(1).join('|').trim()];return`<div style="padding:2px 0">Ep ${start+i}: <b>${t}</b></div>`;}).join('')}
-  ${lines.length>4?`<div style="color:#888">...and ${lines.length-4} more</div>`:''}
-  <br><strong>Quality:</strong> ${q} · Range: Ep ${start}–${start+lines.length-1}</div>`;
-  document.getElementById('blkSubmit').style.display='flex';
-}
-
-async function submitBulk(){
-  const animeId=document.getElementById('epAnime').value;
-  if(!animeId){toast('❌ Select anime!');return;}
-  const raw=document.getElementById('blkLinks').value.trim();
-  const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l.includes('|'));
-  if(!lines.length)return;
-  const start=parseInt(document.getElementById('blkStart').value)||1;
-  const quality=document.getElementById('blkQ').value;
-
-  showLoad('Adding '+lines.length+' episodes...');
-  try{
-    const batch = fdb.batch();
-    lines.forEach((line,i)=>{
-      const parts=line.split('|');
-      const title=parts[0].trim();
-      const link=parts.slice(1).join('|').trim();
-      const num=start+i;
-      
-      const epData = {
-          animeId: animeId,
-          num, 
-          title:title||'Episode '+num, 
-          duration:'24m', 
-          language:'Hindi', 
-          links:{[quality]:{direct:'',short:link}}, 
-          addedAt:new Date().toISOString()
-      };
-      
-      const existing = localEps.find(e => e.animeId === animeId && e.num === num);
-      if(existing) {
-          batch.update(fdb.collection('episodes').doc(existing.id), epData);
-      } else {
-          batch.set(fdb.collection('episodes').doc(), epData);
-      }
-    });
-    
-    await batch.commit();
-    toast('✅ '+lines.length+' episodes added!');
-    document.getElementById('blkLinks').value='';
-    document.getElementById('blkPreview').style.display='none';
-    document.getElementById('blkSubmit').style.display='none';
-    await refreshAll();
-    showExistingEps();
   }catch(e){toast('❌ Failed: '+e.message);}
   hideLoad();
 }
@@ -816,413 +413,99 @@ async function submitBulk(){
 async function quickBulk(){
   const animeId=document.getElementById('epAnime').value;
   if(!animeId){toast('❌ Select anime!');return;}
-  const raw=document.getElementById('qlkLinks').value.trim();
-  const links=raw.split('\n').map(l=>l.trim()).filter(l=>l.length>5);
-  if(!links.length){toast('❌ Paste links!');return;}
-  const start=parseInt(document.getElementById('qlkStart').value)||1;
-  const quality=document.getElementById('qlkQ').value;
-
-  showLoad('Adding '+links.length+' episodes...');
+  const links=document.getElementById('qlkLinks').value.trim().split('\n').map(l=>l.trim()).filter(l=>l.length>5);
+  if(!links.length)return;
+  const start=parseInt(document.getElementById('qlkStart').value)||1, quality=document.getElementById('qlkQ').value;
+  showLoad();
   try{
     const batch = fdb.batch();
     links.forEach((link,i)=>{
-      const num=start+i;
-      const epData = {
-          animeId: animeId,
-          num, 
-          title:'Episode '+num, 
-          duration:'24m', 
-          language:'Hindi', 
-          links:{[quality]:{direct:'',short:link}}, 
-          addedAt:new Date().toISOString()
-      };
+      const num=start+i, epData = { animeId, num, title:'Episode '+num, links:{[quality]:{direct:'',short:link}}, addedAt:new Date().toISOString() };
       const existing = localEps.find(e => e.animeId === animeId && e.num === num);
-      if(existing) {
-          batch.update(fdb.collection('episodes').doc(existing.id), epData);
-      } else {
-          batch.set(fdb.collection('episodes').doc(), epData);
-      }
+      if(existing) batch.update(fdb.collection('episodes').doc(existing.id), epData);
+      else batch.set(fdb.collection('episodes').doc(), epData);
     });
-    await batch.commit();
-    toast('✅ '+links.length+' episodes added!');
-    document.getElementById('qlkLinks').value='';
-    await refreshAll();
-    showExistingEps();
+    await batch.commit(); toast('✅ Episodes added!'); document.getElementById('qlkLinks').value='';
+    await refreshAll(); showExistingEps();
   }catch(e){toast('❌ Failed: '+e.message);}
   hideLoad();
 }
 
-// ════════════════════════════════════════════
-// SEASON PACK
-// ════════════════════════════════════════════
-async function addSeasonPack(){
-  const animeId=document.getElementById('spAnime').value;
-  if(!animeId){toast('❌ Select anime!');return;}
-  const spd1080=document.getElementById('spd1080').value.trim();
-  const sps1080=document.getElementById('sps1080').value.trim();
-  const spd720=document.getElementById('spd720').value.trim();
-  const sps720=document.getElementById('sps720').value.trim();
-  if(!spd1080&&!sps1080&&!spd720&&!sps720){toast('❌ Add at least one link!');return;}
-  const anime=localCache.find(a=>a.id===animeId);
-  if(!anime)return;
-  const packs=[...(anime.seasonPacks||[])];
-  const pack={
-    id:Date.now(),
-    title:document.getElementById('spTitle').value.trim()||'Full Season Pack',
-    episodes:document.getElementById('spEps').value.trim(),
-    size:document.getElementById('spSize').value.trim(),
-    quality:document.getElementById('spQ').value,
-    links:{},
-    addedAt:new Date().toISOString()
-  };
-  if(spd1080)pack.links['1080p']={direct:spd1080,short:sps1080};
-  if(spd720)pack.links['720p']={direct:spd720,short:sps720};
-  packs.push(pack);
-  showLoad('Adding season pack...');
-  try{
-    await fdb.collection('anime').doc(animeId).update({seasonPacks:packs});
-    anime.seasonPacks=packs;
-    toast('✅ Season Pack added!');
-    ['spTitle','spSize','spEps','spd1080','sps1080','spd720','sps720'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-    showSpExisting();
-  }catch(e){toast('❌ Failed: '+e.message);}
-  hideLoad();
+function showExistingEps(){
+  const animeId=document.getElementById('epAnime').value, el=document.getElementById('existingEps');
+  if(!animeId){el.innerHTML='';return;}
+  const eps = localEps.filter(e => e.animeId === animeId).sort((a,b)=>a.num-b.num);
+  el.innerHTML=eps.length?'<div class="eprows">'+eps.map(ep=>`<div class="eprow"><span class="epr-num">${ep.num}</span><span class="epr-title">${ep.title}</span><button class="epr-del" onclick="deleteEp('${ep.id}')">🗑️</button></div>`).join('')+'</div>':'<p style="color:#888;font-size:12px;margin-top:10px">No episodes.</p>';
 }
 
-function showSpExisting(){
-  const animeId=document.getElementById('spAnime').value;
-  const card=document.getElementById('spExCard');
-  const el=document.getElementById('spExisting');
-  if(!animeId){card.style.display='none';return;}
-  const anime=localCache.find(a=>a.id===animeId);
-  if(!anime?.seasonPacks?.length){card.style.display='none';return;}
-  card.style.display='block';
-  el.innerHTML=anime.seasonPacks.map(sp=>`
-  <div style="background:#f9f9f9;border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:7px">
-    <div style="flex:1"><div style="font-weight:600;font-size:13px">📦 ${sp.title}</div><div style="font-size:11px;color:var(--muted)">${sp.episodes||'?'} Eps · ${sp.size||''} · ${sp.quality}</div></div>
-    <button onclick="delSP('${animeId}',${sp.id})" style="background:none;border:none;color:var(--red);font-size:18px;cursor:pointer">🗑️</button>
-  </div>`).join('');
+async function deleteEp(epId){
+  if(!confirm('Delete this episode?'))return;
+  showLoad(); try{ await fdb.collection('episodes').doc(epId).delete(); toast('🗑️ Deleted!'); await refreshAll(); showExistingEps(); }catch(e){toast('❌ Failed!');} hideLoad();
 }
 
-async function delSP(animeId,packId){
-  if(!confirm('Delete this season pack?'))return;
-  const anime=localCache.find(a=>a.id===animeId);
-  if(!anime)return;
-  anime.seasonPacks=(anime.seasonPacks||[]).filter(p=>p.id!==packId);
-  showLoad('Deleting...');
-  try{
-    await fdb.collection('anime').doc(animeId).update({seasonPacks:anime.seasonPacks});
-    toast('🗑️ Pack deleted!');showSpExisting();
-  }catch(e){toast('❌ Failed!');}
-  hideLoad();
-}
-
-// ════════════════════════════════════════════
-// API GLOBAL UNLOCK LINKS -> SETTINGS
-// ════════════════════════════════════════════
-async function saveGlobalLinks(){
-  const l1=document.getElementById('gul1').value.trim();
-  if(!l1){toast('❌ Link 1 is required!');return;}
-  const l2=document.getElementById('gul2').value.trim();
-  showLoad('Saving unlock links...');
-  try{
-    await fdb.collection('settings').doc('unlock').set({link1:l1,link2:l2||null,updatedAt:new Date().toISOString()});
-    toast('✅ Global API unlock links saved!');
-  }catch(e){toast('❌ Failed: '+e.message);}
-  hideLoad();
-}
-
-async function loadGlobalLinks(){
-  try{
-    const doc=await fdb.collection('settings').doc('unlock').get();
-    if(doc.exists){
-      const d=doc.data();
-      document.getElementById('gul1').value=d.link1||'';
-      document.getElementById('gul2').value=d.link2||'';
-    }
-  }catch(e){}
-}
-
-// ════════════════════════════════════════════
-// RENDER LISTS
-// ════════════════════════════════════════════
-function renderList(elId, emptyMsg) {
+// ── RENDER LISTS ──
+function renderList(elId) {
   const el = document.getElementById(elId);
-  if (!el) return;
-  if (!localCache.length) {
-    el.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;font-size:13px">' + (emptyMsg || 'No anime yet.') + '</p>';
-    return;
-  }
-  el.innerHTML = '<div class="alist">' + localCache.map((a, i) => `
-  <div class="arow" style="animation-delay:${i * .04}s">
-    <div class="athumb">${a.poster ? `<img src="${fixP(a.poster)}" onerror="this.style.display='none'">` : E(i)}</div>
-    <div class="arinfo"><h4>${a.name}${a.season ? ' ' + a.season : ''}</h4><span>${a.genre || 'Anime'} · ${a.episodes?.length || 0} Ep · ${a.status || '—'}</span></div>
+  el.innerHTML = localCache.length ? '<div class="alist">' + localCache.map(a => `
+  <div class="arow">
+    <div class="athumb"><img src="${a.poster||''}" onerror="this.style.display='none'"></div>
+    <div class="arinfo"><h4>${a.name}</h4><span>${a.episodes?.length||0} Ep</span></div>
     <div class="aacts">
-      <button class="abtn" onclick="openEdit('${a.id}')" title="Edit" style="border-color:#90caf9;background:#e3f2fd">✏️</button>
-      <a href="anime.html?id=${a.id}" target="_blank" class="abtn" title="Preview">👁️</a>
-      <button class="abtn del" onclick="deleteAnime('${a.id}')" title="Delete">🗑️</button>
+      <button class="abtn" onclick="openEdit('${a.id}')">✏️</button>
+      <button class="abtn del" onclick="deleteAnime('${a.id}')">🗑️</button>
     </div>
-  </div>`).join('') + '</div>';
+  </div>`).join('') + '</div>' : '<p style="color:#888">No anime.</p>';
 }
+function renderDashList() { renderList('dashList'); }
+function renderAnimeList() { renderList('alist'); }
 
-function renderDashList() { renderList('dashList', 'No anime yet — click Add Anime!'); }
-function renderAnimeList() { renderList('alist', 'No anime yet.'); }
-
-// ════════════════════════════════════════════
-// DELETE + EDIT ANIME
-// ════════════════════════════════════════════
 async function deleteAnime(id){
-  const a=localCache.find(x=>x.id===id);
-  if(!confirm('"'+a?.name+'" and ALL episodes will be permanently deleted. Confirm?'))return;
-  showLoad('Deleting...');
+  if(!confirm('Delete Anime and ALL episodes?'))return;
+  showLoad();
   try{
     await fdb.collection('anime').doc(id).delete();
-    
-    // Also delete tied episodes in batch
-    const epsToDelete = localEps.filter(e => e.animeId === id);
-    if (epsToDelete.length > 0) {
-      const batch = fdb.batch();
-      epsToDelete.forEach(e => batch.delete(fdb.collection('episodes').doc(e.id)));
-      await batch.commit();
-    }
-    
-    toast('🗑️ Deleted: '+a?.name);
-    await refreshAll();
-  }catch(e){toast('❌ Failed: '+e.message);}
-  hideLoad();
+    const batch = fdb.batch();
+    localEps.filter(e => e.animeId === id).forEach(e => batch.delete(fdb.collection('episodes').doc(e.id)));
+    await batch.commit(); toast('🗑️ Deleted!'); await refreshAll();
+  }catch(e){toast('❌ Failed!');} hideLoad();
 }
 
 function openEdit(id){
-  const a=localCache.find(x=>x.id===id);
-  if(!a){toast('❌ Not found — try refreshing!');return;}
-  document.getElementById('editId').value=id;
-  document.getElementById('eName').value=a.name||'';
-  document.getElementById('eSeason').value=a.season||'';
-  document.getElementById('eStatus').value=a.status||'Ongoing';
-  document.getElementById('eQuality').value=a.quality||'1080p';
-  document.getElementById('eYear').value=a.year||'';
-  document.getElementById('eRating').value=a.rating||'';
-  document.getElementById('ePoster').value=a.poster||'';
-  document.getElementById('eDesc').value=a.description||'';
-  prevEditPoster(a.poster||'');
+  const a=localCache.find(x=>x.id===id); if(!a)return;
+  document.getElementById('editId').value=id; document.getElementById('eName').value=a.name; document.getElementById('eSeason').value=a.season||''; document.getElementById('ePoster').value=a.poster||'';
   document.getElementById('editModal').style.display='block';
-  document.body.style.overflow='hidden';
 }
-function closeEdit(){document.getElementById('editModal').style.display='none';document.body.style.overflow='';}
+function closeEdit(){document.getElementById('editModal').style.display='none';}
 
 async function saveEdit(){
   const id=document.getElementById('editId').value;
-  const name=document.getElementById('eName').value.trim();
-  if(!name){toast('❌ Name required!');return;}
-  const a=localCache.find(x=>x.id===id);
-  if(!a){toast('❌ Not found!');return;}
-  const poster=fixP(document.getElementById('ePoster').value.trim());
-  const updated={...a,name,
-    season:document.getElementById('eSeason').value.trim()||undefined,
-    status:document.getElementById('eStatus').value,
-    quality:document.getElementById('eQuality').value,
-    year:document.getElementById('eYear').value||undefined,
-    rating:document.getElementById('eRating').value||undefined,
-    poster:poster||undefined,
-    description:document.getElementById('eDesc').value.trim()||undefined,
-    updatedAt:new Date().toISOString()
-  };
-  delete updated.id;
-  delete updated.episodes; // remove attached local cache list
-  showLoad('Saving...');
+  showLoad();
   try{
-    await fdb.collection('anime').doc(id).update(updated);
-    closeEdit();toast('✅ '+name+' updated!');
-    await refreshAll();
-  }catch(e){toast('❌ Failed: '+e.message);}
-  hideLoad();
-}
-document.getElementById('editModal').addEventListener('click',function(e){if(e.target===this)closeEdit();});
-
-// ════════════════════════════════════════════
-// POSTER PREVIEWS
-// ════════════════════════════════════════════
-function prevPoster(url){
-  const p=document.getElementById('posterPrev');
-  const img=document.getElementById('posterImg');
-  const w=document.getElementById('posterWarn');
-  if(!url.trim()){p.style.display='none';w.style.display='none';return;}
-  if(/^https?:\/\/ibb\.co\/[a-zA-Z0-9]+$/.test(url)&&!url.includes('i.ibb.co')){
-    w.style.display='block';p.style.display='none';return;
-  }
-  w.style.display='none';img.src=url;p.style.display='block';
-}
-function prevEditPoster(url){
-  const p=document.getElementById('editPrev');
-  const img=document.getElementById('editPImg');
-  if(!url.trim()){p.style.display='none';return;}
-  img.src=fixP(url);p.style.display='block';
+    await fdb.collection('anime').doc(id).update({ name:document.getElementById('eName').value, season:document.getElementById('eSeason').value||null, poster:document.getElementById('ePoster').value||null });
+    closeEdit(); toast('✅ Updated!'); await refreshAll();
+  }catch(e){} hideLoad();
 }
 
-// ════════════════════════════════════════════
-// EXPORT / IMPORT
-// ════════════════════════════════════════════
-async function exportData(){
-  const dump = { anime: localCache, episodes: localEps };
-  const blob=new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='awi-backup-'+Date.now()+'.json';a.click();
-  URL.revokeObjectURL(url);
-  toast('📤 Backup downloaded!');
-}
-
-function handleImport(input){
-  const file=input.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=async e=>{
-    try{
-      const data=JSON.parse(e.target.result);
-      // Support dual format
-      let animesToImport = data.anime || data;
-      
-      if(!confirm(animesToImport.length+' anime will be imported. Continue?'))return;
-      showLoad('Importing...');
-      
-      for(const a of animesToImport){
-        const{id, episodes, ...rest}=a;
-        await fdb.collection('anime').add({...rest,importedAt:new Date().toISOString()});
-      }
-      
-      if(data.episodes) {
-          for(const ep of data.episodes) {
-              const {id, ...restEp} = ep;
-              await fdb.collection('episodes').add({...restEp});
-          }
-      }
-      
-      await refreshAll();
-      toast('✅ Data imported!');
-    }catch(e){toast('❌ Import failed: '+e.message);}
-    hideLoad();
-  };
-  reader.readAsText(file);input.value='';
-}
-
-// PASSWORD
-function changePass(){
-  const np=document.getElementById('newpass').value;
-  const cp=document.getElementById('confpass').value;
-  if(!np){toast('❌ Enter new password!');return;}
-  if(np!==cp){toast('❌ Passwords do not match!');return;}
-  if(np.length<6){toast('❌ Minimum 6 characters!');return;}
-  localStorage.setItem(PASS_KEY,np);
-  document.getElementById('newpass').value='';
-  document.getElementById('confpass').value='';
-  toast('✅ Password changed successfully!');
-}
-
-// ════════════════════════════════════════════
-// SITE SETTINGS — social links + announcement
-// ════════════════════════════════════════════
-const SOCIAL_DEFAULTS=[
-  {key:'telegram', label:'Telegram', icon:'✈️', placeholder:'https://t.me/yourchannel'},
-  {key:'discord',  label:'Discord',  icon:'💬', placeholder:'https://discord.gg/yourserver'},
-  {key:'instagram',label:'Instagram',icon:'📸', placeholder:'https://instagram.com/yourpage'},
-  {key:'youtube',  label:'YouTube',  icon:'▶️', placeholder:'https://youtube.com/@yourchannel'},
-];
-
-let socialCache={};
-
-async function loadSocialLinks(){
-  const el=document.getElementById('socialRows');
-  if(!el)return;
+// ── API & SETTINGS ──
+async function saveGlobalLinks(){
+  showLoad();
   try{
-    const doc=await fdb.collection('settings').doc('social').get();
-    socialCache=doc.exists?doc.data():{};
-    const annDoc=await fdb.collection('settings').doc('announcement').get();
-    if(annDoc.exists&&document.getElementById('announceTxt')){
-      document.getElementById('announceTxt').value=annDoc.data().text||'';
-    }
+    await fdb.collection('settings').doc('unlock').set({link1:document.getElementById('gul1').value,link2:document.getElementById('gul2').value});
+    toast('✅ Saved!');
+  }catch(e){} hideLoad();
+}
+async function loadGlobalLinks(){
+  try{
+    const d=(await fdb.collection('settings').doc('unlock').get()).data()||{};
+    document.getElementById('gul1').value=d.link1||''; document.getElementById('gul2').value=d.link2||'';
   }catch(e){}
-  el.innerHTML=SOCIAL_DEFAULTS.map(s=>`
-  <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
-    <span style="font-size:18px;width:28px;flex-shrink:0">${s.icon}</span>
-    <div style="flex:1">
-      <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px">${s.label}</div>
-      <input id="social_${s.key}" value="${socialCache[s.key]?.url||''}" placeholder="${s.placeholder}"
-        style="width:100%;background:#f9f9f9;border:1.5px solid var(--border);color:var(--text);padding:8px 10px;border-radius:7px;font-size:12px;font-family:'Hind',sans-serif;outline:none">
-    </div>
-    <label style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0">
-      <input type="checkbox" id="social_en_${s.key}" ${socialCache[s.key]?.enabled?'checked':''} style="width:14px;height:14px">
-      ON
-    </label>
-  </div>`).join('');
 }
-
-async function saveSocialLinks(){
-  const data={};
-  SOCIAL_DEFAULTS.forEach(s=>{
-    const url=(document.getElementById('social_'+s.key)?.value||'').trim();
-    const enabled=document.getElementById('social_en_'+s.key)?.checked||false;
-    data[s.key]={url,enabled};
-  });
-  showLoad('Saving social links...');
-  try{
-    await fdb.collection('settings').doc('social').set({...data,updatedAt:new Date().toISOString()});
-    socialCache=data;
-    toast('✅ Social links saved!');
-  }catch(e){toast('❌ Failed: '+e.message);}
-  hideLoad();
-}
-
-async function saveAnnouncement(){
-  const text=(document.getElementById('announceTxt')?.value||'').trim();
-  showLoad('Saving announcement...');
-  try{
-    await fdb.collection('settings').doc('announcement').set({text,updatedAt:new Date().toISOString()});
-    toast('✅ Announcement saved!');
-  }catch(e){toast('❌ Failed: '+e.message);}
-  hideLoad();
-}
-
-// ════════════════════════════════════════════
-// ANALYTICS
-// ════════════════════════════════════════════
 async function loadAnalytics(){
   try{
-    const [visitDoc,unlockDoc]=await Promise.all([
-      fdb.collection('analytics').doc('visits').get(),
-      fdb.collection('analytics').doc('unlocks').get()
-    ]);
-    const visits=visitDoc.exists?(visitDoc.data().total||0):0;
-    const unlocks=unlockDoc.exists?(unlockDoc.data().total||0):0;
-    const el=n=>document.getElementById(n);
-    if(el('aVisits'))el('aVisits').textContent=visits;
-    if(el('aUnlocks'))el('aUnlocks').textContent=unlocks;
-    if(el('aAnime'))el('aAnime').textContent=localCache.length;
-    if(el('aEps'))el('aEps').textContent=localEps.length;
-
-    const sorted=[...localCache].sort((a,b)=>(b.episodes?.length||0)-(a.episodes?.length||0)).slice(0,8);
-    const pl=document.getElementById('popularList');
-    if(pl){
-      pl.innerHTML=sorted.length?sorted.map((a,i)=>`
-      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
-        <span style="font-family:'Teko',sans-serif;font-size:15px;color:var(--blue);width:22px;flex-shrink:0">${i+1}</span>
-        <div style="flex:1;font-size:13px;font-weight:600">${a.name}${a.season?' '+a.season:''}</div>
-        <span style="font-size:11px;color:var(--muted);flex-shrink:0">${a.episodes?.length||0} eps</span>
-      </div>`).join('')
-      :'<p style="color:#aaa;font-size:12px;text-align:center;padding:16px">No data yet.</p>';
-    }
-  }catch(e){toast('❌ Analytics load failed: '+e.message);}
-}
-
-async function resetAnalytics(){
-  if(!confirm('Reset ALL analytics counters? This cannot be undone.'))return;
-  showLoad('Resetting...');
-  try{
-    await Promise.all([
-      fdb.collection('analytics').doc('visits').set({total:0,lastVisit:null}),
-      fdb.collection('analytics').doc('unlocks').set({total:0,lastUnlock:null})
-    ]);
-    toast('✅ Analytics reset!');
-    loadAnalytics();
-  }catch(e){toast('❌ Failed: '+e.message);}
-  hideLoad();
+    const v=(await fdb.collection('analytics').doc('visits').get()).data()?.total||0;
+    const u=(await fdb.collection('analytics').doc('unlocks').get()).data()?.total||0;
+    document.getElementById('aVisits').textContent=v; document.getElementById('aUnlocks').textContent=u;
+  }catch(e){}
 }
 </script>
 </body>
