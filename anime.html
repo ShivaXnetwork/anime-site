@@ -8,7 +8,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
-// TUMHARI ASLI FIREBASE SETTINGS
 firebase.initializeApp({
   apiKey:"AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk",
   authDomain:"anime-website-42907.firebaseapp.com",
@@ -120,14 +119,16 @@ async function loadAnime(){
                 <div id="epList">
                     ${episodes.length > 0 ? episodes.map(e => {
                         
-                        // 🔥 OPTIONAL WATCH LINK LOGIC 🔥
                         let watchBtnHTML = '';
                         let watchLink = e.links?.HD?.player || '';
                         
                         if(watchLink && watchLink.trim() !== '') {
-                            // Agar link me sirf 'byse.sx/CODE' hai toh usko /v/ me convert karo
-                            if(watchLink.includes('byse.sx/') && !watchLink.includes('/v/') && !watchLink.includes('/e/') && !watchLink.includes('/d/')) {
-                                watchLink = watchLink.replace('byse.sx/', 'byse.sx/v/');
+                            // 🔥 PURANE BLOCKED DOMAIN KO NAYE DOMAIN SE REPLACE KARO 🔥
+                            if(watchLink.includes('byse.sx')) {
+                                watchLink = watchLink.replace('byse.sx', 'bysesukior.com');
+                            }
+                            if(watchLink.includes('bysesukior.com/') && !watchLink.includes('/v/') && !watchLink.includes('/e/') && !watchLink.includes('/d/')) {
+                                watchLink = watchLink.replace('bysesukior.com/', 'bysesukior.com/v/');
                             }
                             watchBtnHTML = `<a href="${watchLink}" class="btn btn-watch" target="_blank">▶ QuickWatch</a>`;
                         }
@@ -153,7 +154,7 @@ async function loadAnime(){
 
                 <div class="tg-box">
                     <div class="tg-text">Join Our TELEGRAM CHANNEL For Updates and Polls</div>
-                    <a href="https://t.me/animeworld_india1" class="tg-btn" target="_blank">CLICK HERE TO JOIN</a>
+                    <a href="https://t.me/YOUR_TELEGRAM_LINK" class="tg-btn" target="_blank">CLICK HERE TO JOIN</a>
                 </div>
 
                 <div class="rti-center">
