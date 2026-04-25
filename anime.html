@@ -3,102 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anime Details — AWI.TO</title>
+<title>Watch Anime - AWI.TO</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
-firebase.initializeApp({ apiKey:"AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk", authDomain:"anime-website-42907.firebaseapp.com", projectId:"anime-website-42907", storageBucket:"anime-website-42907.firebasestorage.app", messagingSenderId:"747833174910", appId:"1:747833174910:web:eefcbf01901ecb58b8a12f" });
+// TUMHARI ASLI FIREBASE SETTINGS
+firebase.initializeApp({
+  apiKey:"AIzaSyDfNgqR9UtKUvd2Prf2YPBFu33DJ_ubytk",
+  authDomain:"anime-website-42907.firebaseapp.com",
+  projectId:"anime-website-42907",
+  storageBucket:"anime-website-42907.firebasestorage.app",
+  messagingSenderId:"747833174910",
+  appId:"1:747833174910:web:eefcbf01901ecb58b8a12f"
+});
 const fdb=firebase.firestore();
 </script>
 <style>
-:root { --bg: #0f1115; --card: #181a20; --nav: #181a20; --accent: #0084ff; --text: #bbb; --border: #262933; }
+:root { --bg: #0b0b0c; --card: #16161a; --accent: #00d2ff; --text: #bbb; --border: #2a2a35; }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min-height:100vh}
-.navbar{background:var(--nav);padding:0 16px;display:flex;align-items:center;gap:12px;height:65px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
-.back{color:#fff;font-size:24px;text-decoration:none;padding:5px}
-.logo-text{font-size:20px;font-weight:700;color:#fff;flex:1}
-.wrap{max-width:800px;margin:0 auto;padding:20px 16px 50px}
-.poster{width:100%;border-radius:12px;margin-bottom:20px;box-shadow:0 10px 30px rgba(0,0,0,.5);display:block}
-.title{font-size:24px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:12px}
-.info-box{background:var(--card);border-radius:12px;padding:16px;margin-bottom:20px;border:1px solid var(--border)}
-.info-row{display:flex;padding:8px 0;border-bottom:1px dashed var(--border);font-size:13px}
-.info-row:last-child{border-bottom:none}
-.il{color:#888;width:90px;flex-shrink:0}
-.iv{color:#fff;font-weight:500}
-.react-box{text-align:center;margin-bottom:30px}
-.react-box h3{color:#fff;font-size:18px;margin-bottom:12px}
-.emojis{display:flex;justify-content:center;gap:12px;background:var(--card);padding:10px;border-radius:30px;border:1px solid var(--border);display:inline-flex}
-.emojis span{font-size:28px;cursor:pointer;transition:transform .2s}
-.emojis span:hover{transform:scale(1.2)}
-.main-btn{display:block;width:100%;max-width:300px;margin:0 auto 30px;background:linear-gradient(45deg,#0084ff,#00c6ff);color:#fff;text-align:center;padding:14px;border-radius:8px;font-size:18px;font-weight:700;text-decoration:none;box-shadow:0 5px 20px rgba(0,132,255,.4)}
-.ep-list{margin-bottom:40px}
-.ep-list h2{font-size:20px;color:#fff;margin-bottom:16px;border-left:4px solid var(--accent);padding-left:10px}
-.rt-row{background:var(--card);padding:16px;border-radius:8px;margin-bottom:12px;border:1px solid var(--border)}
-.rt-title{font-size:14px;font-weight:600;color:#fff;margin-bottom:10px}
-.rt-links{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13px;color:#aaa}
-.rt-btn{background:#262933;color:var(--accent);text-decoration:none;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid var(--border)}
-.rt-btn:hover{background:var(--accent);color:#fff}
-.comment-box{background:var(--card);padding:20px;border-radius:12px;border:1px solid var(--border)}
-.comment-box h3{color:#fff;font-size:18px;margin-bottom:15px}
-.c-inp{width:100%;background:var(--bg);border:1px solid var(--border);color:#fff;padding:12px;border-radius:8px;font-family:'Poppins';margin-bottom:10px;outline:none}
-.c-btn{background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:6px;font-weight:600;cursor:pointer}
+body{background:var(--bg);color:#fff;font-family:'Poppins',sans-serif}
+
+/* NAVBAR */
+.navbar{background:var(--card);padding:15px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.logo{font-size:22px;font-weight:800;color:var(--accent);text-decoration:none}
+
+/* HERO SECTION (BIG POSTER) */
+.anime-hero { width: 100%; height: 350px; position: relative; overflow: hidden; }
+.hero-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 10%, transparent 100%); }
+
+/* INFO SECTION */
+.content-wrap { padding: 20px; margin-top: -80px; position: relative; z-index: 10; }
+.main-title { font-size: 26px; font-weight: 700; margin-bottom: 10px; text-shadow: 0 2px 10px #000; }
+.meta-info { display: flex; gap: 10px; margin-bottom: 20px; }
+.badge { background: #222; padding: 5px 12px; border-radius: 5px; font-size: 12px; border: 1px solid var(--border); color: var(--accent); }
+
+/* SYNOPSIS */
+.synopsis-box { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 30px; }
+.sec-label { color: var(--accent); font-weight: bold; margin-bottom: 10px; display: block; text-transform: uppercase; font-size: 13px; }
+.synopsis-text { font-size: 14px; color: var(--text); line-height: 1.6; }
+
+/* EPISODE LIST */
+.ep-card { background: var(--card); border-radius: 10px; padding: 15px; margin-bottom: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; }
+.ep-name { font-size: 15px; font-weight: 600; color: #fff; }
+.btn-row { display: flex; gap: 10px; }
+.btn { flex: 1; padding: 12px; text-align: center; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px; transition: 0.2s; }
+.btn-watch { background: #333; color: #fff; border: 1px solid #444; }
+.btn-download { background: var(--accent); color: #000; }
 </style>
 </head>
 <body>
-<nav class="navbar"><a href="index.html" class="back">←</a><div class="logo-text">AWI.TO</div></nav>
-<div id="content"><div class="wrap"><div style="text-align:center;padding:50px;color:#fff">Loading...</div></div></div>
-<script>
-const ACCESS_KEY = 'awi24hr_v2';
-const isUnlocked = () => { const a = JSON.parse(localStorage.getItem(ACCESS_KEY)||'null'); return a && Date.now() < a.expiry; };
-let gSet = {};
-async function loadS() { try { const d = await fdb.collection('settings').doc('unlock').get(); if(d.exists) gSet = d.data(); } catch(e){} }
-function getUrl(aid) {
-  const t = btoa(aid + '_' + Math.floor(Date.now() / 86400000)).substring(0, 12);
-  let u = `continue.html?token=${t}&aid=${aid}&ret=${encodeURIComponent(window.location.href)}`;
-  if(gSet.link1) u += `&l1=${encodeURIComponent(gSet.link1)}`; return u;
-}
-function renderP(a) {
-  const un = isUnlocked();
-  const eps = (a.episodes||[]).sort((x,y)=>x.num-y.num);
-  const epHtml = eps.map(e => {
-    const epNum = String(e.num).padStart(2,'0');
-    if(!un) return `<div class="rt-row"><div class="rt-title">Episode ${epNum} – ${e.title||'Episode '+e.num}</div><div class="rt-links">Hindi – <span style="color:#ff4656;font-weight:600">🔒 Unlock to Access Links</span></div></div>`;
-    let linksHtml = "";
-    Object.entries(e.links || {}).forEach(([qual, linkObj]) => {
-      const qLink = linkObj.player || linkObj.short || '';
-      const dLink = linkObj.short || linkObj.direct || '';
-      if(qLink) linksHtml += `<a href="${qLink}" target="_blank" class="rt-btn">[Quick Watch]</a>`;
-      if(dLink) linksHtml += `<a href="${dLink}" target="_blank" class="rt-btn">[Download]</a>`;
-    });
-    return `<div class="rt-row"><div class="rt-title">Episode ${epNum} – ${e.title||'Episode '+e.num}</div><div class="rt-links">Hindi – ${linksHtml || 'Wait for updates'}</div></div>`;
-  }).join('');
-  document.getElementById('content').innerHTML = `<div class="wrap">
-    <img src="${a.poster?a.poster.replace('ibb.co','i.ibb.co'):''}" class="poster">
-    <h1 class="title">${a.name} Hindi Dubbed Download HD</h1>
-    <div class="info-box">
-      <div class="info-row"><span class="il">Status</span><span class="iv">${a.status||'Ongoing'}</span></div>
-      <div class="info-row"><span class="il">Episodes</span><span class="iv">${eps.length}</span></div>
+
+<nav class="navbar"><a href="index.html" class="logo">AWI.TO</a></nav>
+
+<div id="animePage">
     </div>
-    <div class="react-box"><h3>What's your Reaction?</h3><div class="emojis"><span>❤️</span><span>😲</span><span>😂</span><span>😢</span></div></div>
-    ${!un ? `<a href="${getUrl(a.id)}" class="main-btn">🔓 UNLOCK ACCESS (24H)</a>` : `<div style="text-align:center;color:#0084ff;font-weight:700;margin-bottom:20px">✅ Access Unlocked!</div>`}
-    <div class="ep-list"><h2>Download/Watch Links</h2>${epHtml||'<p style="color:#888">No episodes yet.</p>'}</div>
-    <div class="comment-box"><h3>Leave a Comment</h3><textarea class="c-inp" rows="4" placeholder="Type here..."></textarea><button class="c-btn">Post Comment</button></div>
-  </div>`;
+
+<script>
+const urlP = new URLSearchParams(window.location.search);
+const aniId = urlP.get('id');
+const fixP = u => u ? u.replace('ibb.co','i.ibb.co') : '';
+
+if(!aniId) window.location.href='index.html';
+
+// FETCH ANIME & EPISODES
+async function loadAnime(){
+    const doc = await fdb.collection('anime').doc(aniId).get();
+    if(!doc.exists) return;
+    const a = doc.data();
+    
+    // FETCH EPISODES FOR THIS ANIME
+    const epS = await fdb.collection('episodes').where('animeId','==',aniId).orderBy('num','asc').get();
+    const episodes = epS.docs.map(d => d.data());
+
+    document.getElementById('animePage').innerHTML = `
+        <div class="anime-hero">
+            <img src="${fixP(a.poster)}" class="hero-img">
+            <div class="hero-overlay"></div>
+        </div>
+        
+        <div class="content-wrap">
+            <h1 class="main-title">${a.name}</h1>
+            <div class="meta-info">
+                <span class="badge">${a.genre || 'Action'}</span>
+                <span class="badge">Hindi Dubbed</span>
+                <span class="badge">2026</span>
+            </div>
+
+            <div class="synopsis-box">
+                <span class="sec-label">Synopsis</span>
+                <p class="synopsis-text">${a.description || 'Set in the same eerie universe, this story dives deeper into hidden horrors...'}</p>
+            </div>
+
+            <span class="sec-label">Episodes List</span>
+            <div id="epList">
+                ${episodes.map(e => `
+                    <div class="ep-card">
+                        <div class="ep-name">Episode ${e.num} - ${e.title}</div>
+                        <div class="btn-row">
+                            <a href="${e.links?.HD?.player || '#'}" class="btn btn-watch">▶ QuickWatch</a>
+                            <a href="${e.links?.HD?.short || '#'}" class="btn btn-download">⬇ Download</a>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
 }
-async function init(){
-  const aid = new URLSearchParams(window.location.search).get('id');
-  if(!aid) return; await loadS();
-  fdb.collection('anime').doc(aid).onSnapshot(d => {
-    if(d.exists) {
-      const a = {id: d.id, ...d.data()};
-      fdb.collection('episodes').where('animeId','==',aid).onSnapshot(s => {
-        a.episodes = s.docs.map(x=>({id:x.id, ...x.data()})); renderP(a);
-      });
-    }
-  });
-}
-init();
+
+loadAnime();
 </script>
 </body>
 </html>
