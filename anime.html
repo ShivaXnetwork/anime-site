@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Watch Anime - AWI.TO</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
@@ -24,33 +24,50 @@ const fdb=firebase.firestore();
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:#fff;font-family:'Poppins',sans-serif}
 
-/* NAVBAR */
 .navbar{background:var(--card);padding:15px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
 .logo{font-size:22px;font-weight:800;color:var(--accent);text-decoration:none}
 
-/* HERO SECTION (BIG POSTER) */
 .anime-hero { width: 100%; height: 350px; position: relative; overflow: hidden; }
 .hero-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
-.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 10%, transparent 100%); }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 5%, transparent 100%); }
 
-/* INFO SECTION */
 .content-wrap { padding: 20px; margin-top: -80px; position: relative; z-index: 10; }
 .main-title { font-size: 26px; font-weight: 700; margin-bottom: 10px; text-shadow: 0 2px 10px #000; }
 .meta-info { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
 .badge { background: #222; padding: 5px 12px; border-radius: 5px; font-size: 12px; border: 1px solid var(--border); color: var(--accent); }
 
-/* SYNOPSIS */
 .synopsis-box { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 30px; }
 .sec-label { color: var(--accent); font-weight: bold; margin-bottom: 10px; display: block; text-transform: uppercase; font-size: 13px; }
 .synopsis-text { font-size: 14px; color: var(--text); line-height: 1.6; }
 
-/* EPISODE LIST */
 .ep-card { background: var(--card); border-radius: 10px; padding: 15px; margin-bottom: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; }
 .ep-name { font-size: 15px; font-weight: 600; color: #fff; }
 .btn-row { display: flex; gap: 10px; }
 .btn { flex: 1; padding: 12px; text-align: center; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px; transition: 0.2s; }
 .btn-watch { background: #333; color: #fff; border: 1px solid #444; }
 .btn-download { background: var(--accent); color: #000; }
+
+.rti-divider { height: 1px; background: var(--border); margin: 30px 0; }
+.rti-center { text-align: center; margin-bottom: 25px; }
+.rti-heading { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 15px; }
+.rti-link { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+.tg-box { background: #1a1a24; border: 1px solid var(--border); padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 30px; }
+.tg-text { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 15px; }
+.tg-btn { display: inline-block; background: #ff6600; color: #fff; padding: 12px 25px; font-size: 16px; font-weight: 800; border-radius: 30px; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4); }
+
+.watch-also-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 30px; }
+.wa-card { background: var(--card); border-radius: 8px; overflow: hidden; text-decoration: none; border: 1px solid var(--border); }
+.wa-img { width: 100%; height: 140px; object-fit: cover; }
+.wa-title { font-size: 12px; color: #fff; font-weight: 600; padding: 10px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.footer { background: var(--card); border-top: 1px solid var(--border); padding: 30px 20px; text-align: center; margin-top: 20px; }
+.f-logo { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+.f-logo span { color: var(--accent); }
+.f-about { font-size: 12px; color: #888; margin-bottom: 20px; }
+.f-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 15px; }
+.f-links a { color: var(--accent); text-decoration: none; font-size: 12px; font-weight: 500; }
+.f-copy { font-size: 11px; color: #555; }
 </style>
 </head>
 <body>
@@ -58,9 +75,7 @@ body{background:var(--bg);color:#fff;font-family:'Poppins',sans-serif}
 <nav class="navbar"><a href="index.html" class="logo">AWI.TO</a></nav>
 
 <div id="animePage">
-    <div style="text-align:center; padding: 50px; color: #888;">
-        <h2>Loading Anime Details...</h2>
-    </div>
+    <div style="text-align:center; padding: 50px; color: #888;"><h2>Loading Anime Details...</h2></div>
 </div>
 
 <script>
@@ -70,21 +85,17 @@ const fixP = u => u ? u.replace('ibb.co','i.ibb.co') : '';
 
 if(!aniId) window.location.href='index.html';
 
-// FETCH ANIME & EPISODES
 async function loadAnime(){
     try {
         const doc = await fdb.collection('anime').doc(aniId).get();
-        if(!doc.exists) {
-            document.getElementById('animePage').innerHTML = '<h2 style="text-align:center; margin-top:50px; color:red;">Anime Not Found!</h2>';
-            return;
-        }
+        if(!doc.exists) return;
         const a = doc.data();
         
-        // 🔥 ERROR FIXED: Removed orderBy() from Firebase query and added JS .sort() 🔥
         const epS = await fdb.collection('episodes').where('animeId','==',aniId).get();
-        
-        // Sorting episodes properly in JavaScript
         const episodes = epS.docs.map(d => d.data()).sort((x, y) => Number(x.num) - Number(y.num));
+
+        const recS = await fdb.collection('anime').limit(5).get();
+        const recAnimes = recS.docs.map(d => ({id: d.id, ...d.data()})).filter(x => x.id !== aniId).slice(0, 4);
 
         document.getElementById('animePage').innerHTML = `
             <div class="anime-hero">
@@ -107,24 +118,80 @@ async function loadAnime(){
 
                 <span class="sec-label">Episodes List</span>
                 <div id="epList">
-                    ${episodes.length > 0 ? episodes.map(e => `
+                    ${episodes.length > 0 ? episodes.map(e => {
+                        
+                        // 🔥 OPTIONAL WATCH LINK LOGIC 🔥
+                        let watchBtnHTML = '';
+                        let watchLink = e.links?.HD?.player || '';
+                        
+                        if(watchLink && watchLink.trim() !== '') {
+                            // Agar link me sirf 'byse.sx/CODE' hai toh usko /v/ me convert karo
+                            if(watchLink.includes('byse.sx/') && !watchLink.includes('/v/') && !watchLink.includes('/e/') && !watchLink.includes('/d/')) {
+                                watchLink = watchLink.replace('byse.sx/', 'byse.sx/v/');
+                            }
+                            watchBtnHTML = `<a href="${watchLink}" class="btn btn-watch" target="_blank">▶ QuickWatch</a>`;
+                        }
+
+                        return `
                         <div class="ep-card">
                             <div class="ep-name">Episode ${e.num} - ${e.title}</div>
                             <div class="btn-row">
-                                <a href="${e.links?.HD?.player || '#'}" class="btn btn-watch" target="_blank">▶ QuickWatch</a>
+                                ${watchBtnHTML}
                                 <a href="${e.links?.HD?.short || '#'}" class="btn btn-download" target="_blank">⬇ Download</a>
                             </div>
                         </div>
-                    `).join('') : '<p style="color:#888;">No episodes uploaded yet.</p>'}
+                        `
+                    }).join('') : '<p style="color:#888;">No episodes uploaded yet.</p>'}
                 </div>
+
+                <div class="rti-divider"></div>
+                
+                <div class="rti-center">
+                    <h3 class="rti-heading">Stay TOONed With AWI!</h3>
+                    <p style="font-size: 14px; color: #ccc;">How To Download From AWI.TO? <a href="#" class="rti-link">Click Here</a></p>
+                </div>
+
+                <div class="tg-box">
+                    <div class="tg-text">Join Our TELEGRAM CHANNEL For Updates and Polls</div>
+                    <a href="https://t.me/YOUR_TELEGRAM_LINK" class="tg-btn" target="_blank">CLICK HERE TO JOIN</a>
+                </div>
+
+                <div class="rti-center">
+                    <h3 class="rti-heading">Watch Also</h3>
+                </div>
+                
+                <div class="watch-also-grid">
+                    ${recAnimes.map(r => `
+                        <a href="anime.html?id=${r.id}" class="wa-card">
+                            <img src="${fixP(r.poster)}" class="wa-img">
+                            <div class="wa-title">${r.name}</div>
+                        </a>
+                    `).join('')}
+                </div>
+
+                <div class="rti-center">
+                    <h3 class="rti-heading">Winding Up</h3>
+                    <p style="font-size: 13px; color: #aaa; line-height: 1.6;">Thank you for visiting AWI.TO, Your destination for HD Hindi animated Movies and Series to Watch and Download. Keep Visiting & Keep Sharing. Enjoy!</p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="f-logo">AWI<span>.</span>TO</div>
+                <div class="f-about">AWI.TO offers a vast collection of Anime & Cartoon shows in Hindi. All seasons and movies in Multiple Quality - 1080p, 720p, 480p & 360p.</div>
+                <div class="f-links">
+                    <a href="#">DMCA</a>
+                    <a href="#">Copyright</a>
+                    <a href="#">Disclaimers</a>
+                    <a href="#">About Us</a>
+                    <a href="#">Contact Us</a>
+                </div>
+                <div class="f-copy">Copyright © 2024-2026 | AWI.TO India</div>
             </div>
         `;
     } catch(err) {
-        console.log("System Error:", err);
-        document.getElementById('animePage').innerHTML = '<h3 style="text-align:center; margin-top:50px; color:red;">Database Error Occurred. Check console.</h3>';
+        console.log("Error:", err);
     }
 }
-
 loadAnime();
 </script>
 </body>
